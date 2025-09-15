@@ -1,0 +1,21 @@
+# VS/Resharper
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+out/
+TestResults/
+
+# Packages & caches
+packages/
+*.cache
+*.db
+
+# Others
+*.vspscc
+*.vssscc
+*.DotSettings.user

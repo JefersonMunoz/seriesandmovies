@@ -1,0 +1,17 @@
+CREATE DATABASE db_hoteles;
+GO
+USE db_hoteles;
+GO
+
+CREATE TABLE [Habitaciones] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Numero] NVARCHAR(50) NOT NULL UNIQUE,
+	[Camas] INT NOT NULL,
+	[Capacidad] INT NOT NULL,
+	[Tipo] NVARCHAR(50) NOT NULL UNIQUE,
+	[Activa] BIT NOT NULL,
+);
+GO
+
+INSERT INTO [Habitaciones] VALUES ('K501', 0, 42, 'VIP', 1);
+GO
