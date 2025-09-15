@@ -4,14 +4,11 @@ namespace ut_presentacion.Nucleo
 {
     public class EntidadesNucleo
     {
-        public static Habitaciones? Habitaciones()
+        public static ContentTypes? ContentTypes()
         {
-            var entidad = new Habitaciones();
-            entidad.Numero = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
-            entidad.Camas = 2;
-            entidad.Capacidad = 4;
-            entidad.Tipo = "Normal";    
-            entidad.Activa = true;
+            var entidad = new ContentTypes();
+            entidad.Name = "Accion";
+            entidad.Description = "Lo mejor en accion";
             return entidad;
         }
     }

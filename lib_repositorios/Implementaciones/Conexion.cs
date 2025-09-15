@@ -15,6 +15,6 @@ namespace lib_repositorios.Implementaciones
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
-        public DbSet<Habitaciones>? Habitaciones { get; set; }
+        public DbSet<ContentTypes>? ContentTypes { get; set; }
     }
 }

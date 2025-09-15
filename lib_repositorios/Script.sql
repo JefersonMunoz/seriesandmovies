@@ -1,17 +1,156 @@
-CREATE DATABASE db_hoteles;
-GO
-USE db_hoteles;
+CREATE DATABASE db_seriesandmovies;
 GO
 
-CREATE TABLE [Habitaciones] (
+USE db_seriesandmovies;
+GO
+
+CREATE TABLE [Genre_types] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Numero] NVARCHAR(50) NOT NULL UNIQUE,
-	[Camas] INT NOT NULL,
-	[Capacidad] INT NOT NULL,
-	[Tipo] NVARCHAR(50) NOT NULL UNIQUE,
-	[Activa] BIT NOT NULL,
+	[Name] VARCHAR(50) NOT NULL
 );
-GO
 
-INSERT INTO [Habitaciones] VALUES ('K501', 0, 42, 'VIP', 1);
+CREATE TABLE [Countries] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(40) NOT NULL,
+	[Code] VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE [Languages] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(40) NOT NULL,
+	[Code] VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE [Content_types] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(50) NOT NULL,
+	[Description] VARCHAR(200) NULL
+);
+
+CREATE TABLE [Role_types] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE [Plans] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(100) NOT NULL,
+	[Description] VARCHAR(200) NULL,
+	[Price] DECIMAL(10,2) NOT NULL,
+	[Max_people] INT NOT NULL
+);
+
+CREATE TABLE [User_accounts] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(50) NOT NULL,
+	[Lastname] VARCHAR(100) NOT NULL,
+	[Username] VARCHAR(50) NOT NULL,
+	[Phone_number] VARCHAR(15) NOT NULL,
+	[Email] VARCHAR(50) NOT NULL,
+	[Password] VARCHAR(30) NOT NULL,
+	[Birthday] DATETIME NOT NULL
+);
+
+CREATE TABLE [Studios] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(100) NOT NULL,
+	[Country] INT FOREIGN KEY REFERENCES [Countries]([Id]),
+	[Description] VARCHAR(200) NULL
+);
+
+CREATE TABLE [Persons] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(100) NOT NULL,
+	[Lastame] VARCHAR(100) NOT NULL,
+	[Birthday] DATETIME NULL,
+	[Description] VARCHAR(100) NULL
+);
+
+CREATE TABLE [Contents] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Name] VARCHAR(50) NOT NULL,
+	[Description] VARCHAR(100) NULL,
+	[Content_type] INT FOREIGN KEY REFERENCES [Content_types]([Id]),
+	[Year] DATETIME NULL,
+	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id]),
+	[Studio] INT FOREIGN KEY REFERENCES [Studios]([Id]),
+	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id])
+);
+
+CREATE TABLE [Content_genres] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Genre_type] INT FOREIGN KEY REFERENCES [Genre_types]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
+);
+
+CREATE TABLE [Seasons] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Number_season] INT NOT NULL,
+	[Title] VARCHAR(100) NOT NULL,
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Description] VARCHAR(200) NULL,
+	[Released_at] DATETIME NULL
+);
+
+CREATE TABLE [Episodes] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Season] INT FOREIGN KEY REFERENCES [Seasons]([Id]),
+	[Title] VARCHAR(100) NOT NULL,
+	[Number_episode] VARCHAR(100) NOT NULL,
+	[Duration_time] TIME(2) NOT NULL,
+	[Description] VARCHAR(200) NULL,
+	[Released_at] DATETIME NULL
+);
+
+CREATE TABLE [Reviews] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[User] INT FOREIGN KEY REFERENCES [User_accounts]([Id]),
+	[Comment] VARCHAR(150) NULL,
+	[Rating] INT NULL,
+	[Created_at] DATETIME NOT NULL,
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
+);
+
+CREATE TABLE [Subscriptions] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[User] INT FOREIGN KEY REFERENCES [User_accounts]([Id]),
+	[Plan] INT FOREIGN KEY REFERENCES [Plans]([Id]),
+	[Started_at] DATETIME NOT NULL,
+	[Finished_at] DATETIME NOT NULL,
+	[Price] DECIMAL(10,2) NOT NULL,
+	[Months] INT NOT NULL,
+	[Status] BIT NOT NULL
+);
+
+CREATE TABLE [Audio_tracks] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id])
+);
+
+CREATE TABLE [Subtitles] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id])
+);
+
+CREATE TABLE [Watchlists] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[User] INT FOREIGN KEY REFERENCES [User_accounts]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
+);
+
+CREATE TABLE [Person_type_roles] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id]),
+	[Role_type] INT FOREIGN KEY REFERENCES [Role_types]([Id])
+);
+
+CREATE TABLE [Credits] (
+	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Role_type] INT NOT NULL FOREIGN KEY REFERENCES [Role_types]([Id])
+);
+
 GO

@@ -7,13 +7,13 @@ using ut_presentacion.Nucleo;
 namespace ut_presentacion.Repositorios
 {
     [TestClass]
-    public class HabitacionesPrueba
+    public class ContentTypesPrueba
     {
         private readonly IConexion? iConexion;
-        private List<Habitaciones>? lista;
-        private Habitaciones? entidad;
+        private List<ContentTypes>? lista;
+        private ContentTypes? entidad;
 
-        public HabitacionesPrueba()
+        public ContentTypesPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
@@ -30,22 +30,22 @@ namespace ut_presentacion.Repositorios
 
         public bool Listar()
         {
-            this.lista = this.iConexion!.Habitaciones!.ToList();
+            this.lista = this.iConexion!.ContentTypes!.ToList();
             return lista.Count > 0;
         }
 
         public bool Guardar()
         {
-            this.entidad = EntidadesNucleo.Habitaciones()!;
-            this.iConexion!.Habitaciones!.Add(this.entidad);
+            this.entidad = EntidadesNucleo.ContentTypes()!;
+            this.iConexion!.ContentTypes!.Add(this.entidad);
             this.iConexion!.SaveChanges();
             return true;
         }
 
         public bool Modificar()
         {
-            this.entidad!.Activa = false;
-            var entry = this.iConexion!.Entry<Habitaciones>(this.entidad);
+            this.entidad!.Name = "accion";
+            var entry = this.iConexion!.Entry<ContentTypes>(this.entidad);
             entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
@@ -53,7 +53,7 @@ namespace ut_presentacion.Repositorios
 
         public bool Borrar()
         {
-            this.iConexion!.Habitaciones!.Remove(this.entidad!);
+            this.iConexion!.ContentTypes!.Remove(this.entidad!);
             this.iConexion!.SaveChanges();
             return true;
         }

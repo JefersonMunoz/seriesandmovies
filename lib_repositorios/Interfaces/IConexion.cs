@@ -10,7 +10,7 @@ namespace lib_repositorios.Interfaces
     {
         string? StringConexion { get; set; }
 
-        DbSet<Habitaciones>? Habitaciones { get; set; }
+        DbSet<ContentTypes>? ContentTypes { get; set; }
 
         EntityEntry<T> Entry<T>(T entity) where T : class;
         int SaveChanges();
