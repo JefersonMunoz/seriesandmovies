@@ -2,7 +2,6 @@
 
 namespace lib_dominio.Entidades
 {
-    [Table("Content_types")]
     public class ContentTypes
     {
         public int Id { get; set; }

@@ -4,7 +4,7 @@ GO
 USE db_seriesandmovies;
 GO
 
-CREATE TABLE [Genre_types] (
+CREATE TABLE [GenreTypes] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] VARCHAR(50) NOT NULL
 );
@@ -21,13 +21,13 @@ CREATE TABLE [Languages] (
 	[Code] VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE [Content_types] (
+CREATE TABLE [ContentTypes] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] VARCHAR(50) NOT NULL,
 	[Description] VARCHAR(200) NULL
 );
 
-CREATE TABLE [Role_types] (
+CREATE TABLE [RoleTypes] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] VARCHAR(100) NOT NULL
 );
@@ -37,15 +37,15 @@ CREATE TABLE [Plans] (
 	[Name] VARCHAR(100) NOT NULL,
 	[Description] VARCHAR(200) NULL,
 	[Price] DECIMAL(10,2) NOT NULL,
-	[Max_people] INT NOT NULL
+	[MaxPeople] INT NOT NULL
 );
 
-CREATE TABLE [User_accounts] (
+CREATE TABLE [UserAccounts] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] VARCHAR(50) NOT NULL,
 	[Lastname] VARCHAR(100) NOT NULL,
 	[Username] VARCHAR(50) NOT NULL,
-	[Phone_number] VARCHAR(15) NOT NULL,
+	[PhoneNumber] VARCHAR(15) NOT NULL,
 	[Email] VARCHAR(50) NOT NULL,
 	[Password] VARCHAR(30) NOT NULL,
 	[Birthday] DATETIME NOT NULL
@@ -70,59 +70,59 @@ CREATE TABLE [Contents] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] VARCHAR(50) NOT NULL,
 	[Description] VARCHAR(100) NULL,
-	[Content_type] INT FOREIGN KEY REFERENCES [Content_types]([Id]),
+	[ContentType] INT FOREIGN KEY REFERENCES [ContentTypes]([Id]),
 	[Year] DATETIME NULL,
 	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id]),
 	[Studio] INT FOREIGN KEY REFERENCES [Studios]([Id]),
 	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id])
 );
 
-CREATE TABLE [Content_genres] (
+CREATE TABLE [ContentGenres] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Genre_type] INT FOREIGN KEY REFERENCES [Genre_types]([Id]),
+	[GenreType] INT FOREIGN KEY REFERENCES [GenreTypes]([Id]),
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
 );
 
 CREATE TABLE [Seasons] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Number_season] INT NOT NULL,
+	[NumberSeason] INT NOT NULL,
 	[Title] VARCHAR(100) NOT NULL,
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
 	[Description] VARCHAR(200) NULL,
-	[Released_at] DATETIME NULL
+	[ReleasedAt] DATETIME NULL
 );
 
 CREATE TABLE [Episodes] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Season] INT FOREIGN KEY REFERENCES [Seasons]([Id]),
 	[Title] VARCHAR(100) NOT NULL,
-	[Number_episode] VARCHAR(100) NOT NULL,
-	[Duration_time] TIME(2) NOT NULL,
+	[NumberEpisode] VARCHAR(100) NOT NULL,
+	[DurationTime] TIME(2) NOT NULL,
 	[Description] VARCHAR(200) NULL,
-	[Released_at] DATETIME NULL
+	[ReleasedAt] DATETIME NULL
 );
 
 CREATE TABLE [Reviews] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[User] INT FOREIGN KEY REFERENCES [User_accounts]([Id]),
+	[User] INT FOREIGN KEY REFERENCES [UserAccounts]([Id]),
 	[Comment] VARCHAR(150) NULL,
 	[Rating] INT NULL,
-	[Created_at] DATETIME NOT NULL,
+	[CreatedAt] DATETIME NOT NULL,
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
 );
 
 CREATE TABLE [Subscriptions] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[User] INT FOREIGN KEY REFERENCES [User_accounts]([Id]),
+	[User] INT FOREIGN KEY REFERENCES [UserAccounts]([Id]),
 	[Plan] INT FOREIGN KEY REFERENCES [Plans]([Id]),
-	[Started_at] DATETIME NOT NULL,
-	[Finished_at] DATETIME NOT NULL,
+	[StartedAt] DATETIME NOT NULL,
+	[FinishedAt] DATETIME NOT NULL,
 	[Price] DECIMAL(10,2) NOT NULL,
 	[Months] INT NOT NULL,
 	[Status] BIT NOT NULL
 );
 
-CREATE TABLE [Audio_tracks] (
+CREATE TABLE [AudioTracks] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
 	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id])
@@ -136,21 +136,21 @@ CREATE TABLE [Subtitles] (
 
 CREATE TABLE [Watchlists] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[User] INT FOREIGN KEY REFERENCES [User_accounts]([Id]),
+	[User] INT FOREIGN KEY REFERENCES [UserAccounts]([Id]),
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
 );
 
-CREATE TABLE [Person_type_roles] (
+CREATE TABLE [PersonTypeRoles] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id]),
-	[Role_type] INT FOREIGN KEY REFERENCES [Role_types]([Id])
+	[RoleType] INT FOREIGN KEY REFERENCES [RoleTypes]([Id])
 );
 
 CREATE TABLE [Credits] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id]),
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
-	[Role_type] INT NOT NULL FOREIGN KEY REFERENCES [Role_types]([Id])
+	[RoleType] INT NOT NULL FOREIGN KEY REFERENCES [RoleTypes]([Id])
 );
 
 GO

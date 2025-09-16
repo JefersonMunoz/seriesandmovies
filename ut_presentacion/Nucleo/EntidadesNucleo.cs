@@ -11,5 +11,13 @@ namespace ut_presentacion.Nucleo
             entidad.Description = "Lo mejor en accion";
             return entidad;
         }
+
+        public static Countries? Countries()
+        {
+            var entidad = new Countries();
+            entidad.Name = "Colombia";
+            entidad.Code = "CO";
+            return entidad;
+        }
     }
 }
