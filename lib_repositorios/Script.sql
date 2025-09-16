@@ -1,4 +1,4 @@
-CREATE DATABASE db_seriesandmovies;
+﻿CREATE DATABASE db_seriesandmovies;
 GO
 
 USE db_seriesandmovies;
