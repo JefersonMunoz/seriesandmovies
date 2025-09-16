@@ -1,3 +1,7 @@
+//{
+//	"StringConexion": "server=localhost\\DEV;database=db_seriesandmovies;Integrated Security=True;TrustServerCertificate=true;"
+//}
+
 {
-	"StringConexion": "server=localhost\\DEV;database=db_seriesandmovies;Integrated Security=True;TrustServerCertificate=true;"
+  "StringConexion": "server=localhost;database=db_seriesandmovies;Integrated Security=True;TrustServerCertificate=true;"
 }
