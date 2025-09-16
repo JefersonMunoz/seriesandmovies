@@ -1,4 +1,5 @@
 ﻿using lib_dominio.Entidades;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ut_presentacion.Nucleo
 {
@@ -17,6 +18,14 @@ namespace ut_presentacion.Nucleo
             var entidad = new Countries();
             entidad.Name = "Colombia";
             entidad.Code = "CO";
+            return entidad;
+        }
+
+        public static AudioTracks? AudioTracks()
+        {
+            var entidad = new AudioTracks();
+            entidad.Content = 2;
+            entidad.Language = 4;
             return entidad;
         }
     }
