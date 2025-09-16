@@ -13,6 +13,6 @@ namespace lib_dominio.Entidades
         public int Content { get; set; }
         [ForeignKey("Content")] public Contents? _Content { get; set; }
         public int RoleType { get; set; }
-        [ForeignKey("RoleType")] public RoleTypes? _Role_type { get; set; }
+        [ForeignKey("RoleType")] public RoleTypes? _RoleType { get; set; }
     }
 }
