@@ -11,14 +11,14 @@ CREATE TABLE [GenreTypes] (
 
 CREATE TABLE [Countries] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Name] VARCHAR(40) NOT NULL,
-	[Code] VARCHAR(10) NOT NULL
+	[Name] VARCHAR(50) NOT NULL,
+	[Code] VARCHAR(2) NOT NULL
 );
 
 CREATE TABLE [Languages] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] VARCHAR(40) NOT NULL,
-	[Code] VARCHAR(10) NOT NULL
+	[Code] VARCHAR(2) NOT NULL
 );
 
 CREATE TABLE [ContentTypes] (
@@ -29,7 +29,7 @@ CREATE TABLE [ContentTypes] (
 
 CREATE TABLE [RoleTypes] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Name] VARCHAR(100) NOT NULL
+	[Name] VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE [Plans] (
@@ -42,12 +42,12 @@ CREATE TABLE [Plans] (
 
 CREATE TABLE [UserAccounts] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Name] VARCHAR(50) NOT NULL,
+	[Name] VARCHAR(100) NOT NULL,
 	[Lastname] VARCHAR(100) NOT NULL,
 	[Username] VARCHAR(50) NOT NULL,
 	[PhoneNumber] VARCHAR(15) NOT NULL,
 	[Email] VARCHAR(50) NOT NULL,
-	[Password] VARCHAR(30) NOT NULL,
+	[Password] VARCHAR(255) NOT NULL,
 	[Birthday] DATETIME NOT NULL
 );
 
@@ -63,13 +63,13 @@ CREATE TABLE [Persons] (
 	[Name] VARCHAR(100) NOT NULL,
 	[Lastame] VARCHAR(100) NOT NULL,
 	[Birthday] DATETIME NULL,
-	[Description] VARCHAR(100) NULL
+	[Description] VARCHAR(200) NULL
 );
 
 CREATE TABLE [Contents] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Name] VARCHAR(50) NOT NULL,
-	[Description] VARCHAR(100) NULL,
+	[Name] VARCHAR(100) NOT NULL,
+	[Description] VARCHAR(200) NULL,
 	[ContentType] INT FOREIGN KEY REFERENCES [ContentTypes]([Id]),
 	[Year] DATETIME NULL,
 	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id]),
@@ -85,7 +85,7 @@ CREATE TABLE [ContentGenres] (
 
 CREATE TABLE [Seasons] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[NumberSeason] INT NOT NULL,
+	[NumberSeason] VARCHAR(3) NOT NULL,
 	[Title] VARCHAR(100) NOT NULL,
 	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
 	[Description] VARCHAR(200) NULL,
@@ -96,7 +96,7 @@ CREATE TABLE [Episodes] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Season] INT FOREIGN KEY REFERENCES [Seasons]([Id]),
 	[Title] VARCHAR(100) NOT NULL,
-	[NumberEpisode] VARCHAR(100) NOT NULL,
+	[NumberEpisode] VARCHAR(3) NOT NULL,
 	[DurationTime] TIME(2) NOT NULL,
 	[Description] VARCHAR(200) NULL,
 	[ReleasedAt] DATETIME NULL
