@@ -151,6 +151,50 @@ namespace ut_presentacion.Nucleo
             entidad.Content = 4;
             return entidad;
         }
+
+        public static ContentGenres? ContentGenres()
+        {
+            var entidad = new ContentGenres();
+            entidad.GenreType = 1;
+            entidad.Content = 11;
+
+            return entidad;
+        }
+
+        public static Contents? Contents()
+        {
+            var entidad = new Contents();
+            entidad.Name = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            entidad.Description = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            entidad.ContentType = 1;
+            entidad.Year = DateTime.Parse("1997-05-12");
+            entidad.Language = 1;
+            entidad.Studio = 1;
+            return entidad;
+        }
+
+        public static Credits? Credits()
+        {
+            var entidad = new Credits();
+            entidad.Person = 1;
+            entidad.Content = 1;
+            entidad.RoleType = 1;
+
+            return entidad;
+        }
+
+        public static Episodes? Episodes()
+        {
+            var entidad = new Episodes();
+            entidad.Season = 1;
+            entidad.Title = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            entidad.NumberEpisode = "7";
+            entidad.DurationTime = TimeOnly.Parse("00:42:30");
+            entidad.Description = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+            entidad.ReleasedAt = DateTime.Parse("2025-05-12");
+
+            return entidad;
+        }
     }
 
 }

@@ -7,13 +7,13 @@ using ut_presentacion.Nucleo;
 namespace ut_presentacion.Repositorios
 {
     [TestClass]
-    public class WatchlistsPrueba
+    public class ContentGenresPrueba
     {
         private readonly IConexion? iConexion;
-        private List<Watchlists>? lista;
-        private Watchlists? entidad;
+        private List<ContentGenres>? lista;
+        private ContentGenres? entidad;
 
-        public WatchlistsPrueba()
+        public ContentGenresPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
@@ -30,22 +30,22 @@ namespace ut_presentacion.Repositorios
 
         public bool Listar()
         {
-            this.lista = this.iConexion!.Watchlists!.ToList();
+            this.lista = this.iConexion!.ContentGenres!.ToList();
             return lista.Count > 0;
         }
 
         public bool Guardar()
         {
-            this.entidad = EntidadesNucleo.Watchlists()!;
-            this.iConexion!.Watchlists!.Add(this.entidad);
+            this.entidad = EntidadesNucleo.ContentGenres()!;
+            this.iConexion!.ContentGenres!.Add(this.entidad);
             this.iConexion!.SaveChanges();
             return true;
         }
 
         public bool Modificar()
         {
-            this.entidad!.Content = 1;
-            var entry = this.iConexion!.Entry<Watchlists>(this.entidad);
+            this.entidad!.Content = 10;
+            var entry = this.iConexion!.Entry<ContentGenres>(this.entidad);
             entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
@@ -53,9 +53,10 @@ namespace ut_presentacion.Repositorios
 
         public bool Borrar()
         {
-            this.iConexion!.Watchlists!.Remove(this.entidad!);
+            this.iConexion!.ContentGenres!.Remove(this.entidad!);
             this.iConexion!.SaveChanges();
             return true;
         }
+
     }
 }
