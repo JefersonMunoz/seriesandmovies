@@ -44,15 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 7;
-            var exist = this.iConexion!.Reviews!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Reviews()!;
-            exist.User = newData.User;
-            exist.Comment = newData.Comment;
-            exist.Rating = newData.Rating;
-            exist.CreatedAt = newData.CreatedAt;
-            exist.Content = newData.Content;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Comment = "So cool";
+            var entry = this.iConexion!.Entry<Reviews>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

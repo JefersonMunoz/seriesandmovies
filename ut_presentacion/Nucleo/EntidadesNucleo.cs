@@ -9,8 +9,8 @@ namespace ut_presentacion.Nucleo
         public static ContentTypes? ContentTypes()
         {
             var entidad = new ContentTypes();
-            entidad.Name = "Accion";
-            entidad.Description = "Lo mejor en accion";
+            entidad.Name = "Reality show";
+            entidad.Description = "Lo mejor en farandula";
             return entidad;
         }
 
@@ -77,7 +77,7 @@ namespace ut_presentacion.Nucleo
         {
             var entidad = new Reviews();
             entidad.User = 2;
-            entidad.Comment = "El suspenso estuvo bien, pero el final no me convenció, le faltó drama, segunda vez que la veo";
+            entidad.Comment = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
             entidad.Rating = 4;
             entidad.CreatedAt = DateTime.Parse("2025-05-15");
             entidad.Content = 2;
@@ -86,15 +86,15 @@ namespace ut_presentacion.Nucleo
         public static RoleTypes? RoleTypes()
         {
             var entidad = new RoleTypes();
-            entidad.Name = "Extra";
+            entidad.Name = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
             return entidad;
         }
 
         public static Seasons? Seasons()
         {
             var entidad = new Seasons();
-            entidad.NumberSeason = 1;
-            entidad.Title = "El inicio de la niña huerfana";
+            entidad.NumberSeason = "1";
+            entidad.Title = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
             entidad.Content = 1;
             entidad.Description = "Primera temporada de La Niña huerfana";
             entidad.ReleasedAt = DateTime.Parse("2015-04-01");
@@ -104,9 +104,9 @@ namespace ut_presentacion.Nucleo
         public static Studios? Studios()
         {
             var entidad = new Studios();
-            entidad.Name = "Vix";
+            entidad.Name = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
             entidad.Country = 1;
-            entidad.Description = "Canal colombiano para películas expectaclares";
+            entidad.Description = "Canal colombiano para películas expectaculares";
             return entidad;
         }
 
@@ -134,7 +134,7 @@ namespace ut_presentacion.Nucleo
         public static UserAccounts? UserAccounts()
         {
             var entidad = new UserAccounts();
-            entidad.Name = "Sandra Maria";
+            entidad.Name = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
             entidad.Lastname = "Cordoba Perez";
             entidad.Username = "Sandritacordoba";
             entidad.PhoneNumber = "3152265070";

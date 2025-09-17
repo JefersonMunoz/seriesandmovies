@@ -44,11 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 6;
-            var exist = this.iConexion!.RoleTypes!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.RoleTypes()!;
-            exist.Name = newData.Name;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Name = "Actor";
+            var entry = this.iConexion!.Entry<RoleTypes>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

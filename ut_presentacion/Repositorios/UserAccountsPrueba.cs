@@ -44,17 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 17;
-            var exist = this.iConexion!.UserAccounts!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.UserAccounts()!;
-            //exist.Name = newData.Name;
-            //exist.Lastname = newData.Lastname;
-            exist.Username = newData.Username;
-            exist.PhoneNumber = newData.PhoneNumber;
-            exist.Email = newData.Email;
-            exist.Password = newData.Password;
-            //exist.Birthday = newData.Birthday;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Name = "Juan";
+            var entry = this.iConexion!.Entry<UserAccounts>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

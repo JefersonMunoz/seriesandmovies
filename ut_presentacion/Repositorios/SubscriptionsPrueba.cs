@@ -44,18 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 4;
-            var exist = this.iConexion!.Subscriptions!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Subscriptions()!;
-            exist.User = newData.User;
-            exist.Plan = newData.Plan;
-            exist.StartedAt = newData.StartedAt;
-            exist.FinishedAt = newData.FinishedAt;
-            exist.StartedAt = newData.StartedAt;
-            exist.Price = newData.Price;
-            exist.Months = newData.Months;
-            exist.Status = newData.Status;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Plan = 2;
+            var entry = this.iConexion!.Entry<Subscriptions>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

@@ -42,15 +42,11 @@ namespace ut_presentacion.Repositorios
             this.iConexion!.SaveChanges();
             return true;
         }
-
         public bool Modificar()
         {
-            int id = 5;
-            var exist = this.iConexion!.Subtitles!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Subtitles()!;
-            exist.Content = newData.Content;
-            exist.Language = newData.Language;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Language = 1;
+            var entry = this.iConexion!.Entry<Subtitles>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

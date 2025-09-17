@@ -44,12 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 5;
-            var exist = this.iConexion!.Watchlists!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Watchlists()!;
-            exist.User = newData.User;
-            exist.Content = newData.Content;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Content = 1;
+            var entry = this.iConexion!.Entry<Watchlists>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

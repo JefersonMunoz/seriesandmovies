@@ -44,12 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 6;
-            var exist = this.iConexion!.Languages!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Languages()!;
-            exist.Name = newData.Name;
-            exist.Code = newData.Code;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Name = "Mandarin";
+            var entry = this.iConexion!.Entry<Languages>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

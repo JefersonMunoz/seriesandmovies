@@ -30,7 +30,10 @@ namespace ut_presentacion.Repositorios
 
         public bool Listar()
         {
-            this.lista = this.iConexion!.AudioTracks!.ToList();
+            this.lista = this.iConexion!.AudioTracks!
+                .Include(x => x._Content)
+                .Include(x => x._Language)
+                .ToList();
             return lista.Count > 0;
         }
 
@@ -44,12 +47,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 23;
-            var exist = this.iConexion!.AudioTracks!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.AudioTracks()!;
-            exist.Content = newData.Content;
-            exist.Language = newData.Language;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Content = 1;
+            var entry = this.iConexion!.Entry<AudioTracks>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

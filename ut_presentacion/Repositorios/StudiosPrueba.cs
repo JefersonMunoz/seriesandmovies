@@ -44,13 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 6;
-            var exist = this.iConexion!.Studios!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Studios()!;
-            exist.Name = newData.Name;
-            exist.Country = newData.Country;
-            exist.Description = newData.Description;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Name = "Warner";
+            var entry = this.iConexion!.Entry<Studios>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

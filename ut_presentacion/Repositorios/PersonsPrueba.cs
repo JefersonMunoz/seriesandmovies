@@ -41,17 +41,11 @@ namespace ut_presentacion.Repositorios
             this.iConexion!.SaveChanges();
             return true;
         }
-
         public bool Modificar()
         {
-            int id = 12;
-            var exist = this.iConexion!.Persons!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Persons()!;
-            exist.Name = newData.Name;
-            exist.Lastame = newData.Lastame;
-            exist.Birthday = newData.Birthday;
-            exist.Description = newData.Description;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Name = "Marcela";
+            var entry = this.iConexion!.Entry<Persons>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }

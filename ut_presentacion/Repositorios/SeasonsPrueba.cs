@@ -2,8 +2,6 @@
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using ut_presentacion.Nucleo;
 
 namespace ut_presentacion.Repositorios
@@ -46,15 +44,9 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            int id = 7;
-            var exist = this.iConexion!.Seasons!.FirstOrDefault(t => t.Id == id);
-            var newData = EntidadesNucleo.Seasons()!;
-            exist.NumberSeason = newData.NumberSeason;
-            exist.Title = newData.Title;
-            exist.Content = newData.Content;
-            exist.Description = newData.Description;
-            exist.ReleasedAt = newData.ReleasedAt;
-            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.entidad!.Title = "El despertar";
+            var entry = this.iConexion!.Entry<Seasons>(this.entidad);
+            entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }
@@ -65,6 +57,5 @@ namespace ut_presentacion.Repositorios
             this.iConexion!.SaveChanges();
             return true;
         }
-
     }
 }
