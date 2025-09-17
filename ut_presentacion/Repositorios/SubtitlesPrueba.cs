@@ -1,0 +1,65 @@
+﻿using lib_dominio.Entidades;
+using lib_repositorios.Implementaciones;
+using lib_repositorios.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using ut_presentacion.Nucleo;
+
+namespace ut_presentacion.Repositorios
+{
+    [TestClass]
+    public class SubtitlesPrueba
+    {
+        private readonly IConexion? iConexion;
+        private List<Subtitles>? lista;
+        private Subtitles? entidad;
+
+        public SubtitlesPrueba()
+        {
+            iConexion = new Conexion();
+            iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
+        }
+
+        [TestMethod]
+        public void Ejecutar()
+        {
+            Assert.AreEqual(true, Guardar());
+            Assert.AreEqual(true, Modificar());
+            Assert.AreEqual(true, Listar());
+            Assert.AreEqual(true, Borrar());
+        }
+
+        public bool Listar()
+        {
+            this.lista = this.iConexion!.Subtitles!.ToList();
+            return lista.Count > 0;
+        }
+
+        public bool Guardar()
+        {
+            this.entidad = EntidadesNucleo.Subtitles()!;
+            this.iConexion!.Subtitles!.Add(this.entidad);
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+        public bool Modificar()
+        {
+            int id = 5;
+            var exist = this.iConexion!.Subtitles!.FirstOrDefault(t => t.Id == id);
+            var newData = EntidadesNucleo.Subtitles()!;
+            exist.Content = newData.Content;
+            exist.Language = newData.Language;
+            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+        public bool Borrar()
+        {
+            this.iConexion!.Subtitles!.Remove(this.entidad!);
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+    }
+}

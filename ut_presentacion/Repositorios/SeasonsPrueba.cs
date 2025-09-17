@@ -1,0 +1,70 @@
+﻿using lib_dominio.Entidades;
+using lib_repositorios.Implementaciones;
+using lib_repositorios.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using ut_presentacion.Nucleo;
+
+namespace ut_presentacion.Repositorios
+{
+    [TestClass]
+    public class SeasonsPrueba
+    {
+        private readonly IConexion? iConexion;
+        private List<Seasons>? lista;
+        private Seasons? entidad;
+
+        public SeasonsPrueba()
+        {
+            iConexion = new Conexion();
+            iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
+        }
+
+        [TestMethod]
+        public void Ejecutar()
+        {
+            Assert.AreEqual(true, Guardar());
+            Assert.AreEqual(true, Modificar());
+            Assert.AreEqual(true, Listar());
+            Assert.AreEqual(true, Borrar());
+        }
+
+        public bool Listar()
+        {
+            this.lista = this.iConexion!.Seasons!.ToList();
+            return lista.Count > 0;
+        }
+
+        public bool Guardar()
+        {
+            this.entidad = EntidadesNucleo.Seasons()!;
+            this.iConexion!.Seasons!.Add(this.entidad);
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+        public bool Modificar()
+        {
+            int id = 7;
+            var exist = this.iConexion!.Seasons!.FirstOrDefault(t => t.Id == id);
+            var newData = EntidadesNucleo.Seasons()!;
+            exist.NumberSeason = newData.NumberSeason;
+            exist.Title = newData.Title;
+            exist.Content = newData.Content;
+            exist.Description = newData.Description;
+            exist.ReleasedAt = newData.ReleasedAt;
+            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+        public bool Borrar()
+        {
+            this.iConexion!.Seasons!.Remove(this.entidad!);
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+    }
+}

@@ -13,7 +13,7 @@ namespace lib_dominio.Entidades
         [ForeignKey("Plan")] public Plans? _Plan { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime FinishedAt { get; set; }
-        public float Price { get; set; }
+        public decimal Price { get; set; }
         public int Months { get; set; }
         public bool Status { get; set; }
     }
