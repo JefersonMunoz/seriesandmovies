@@ -1,0 +1,63 @@
+﻿using lib_dominio.Entidades;
+using lib_repositorios.Implementaciones;
+using lib_repositorios.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using ut_presentacion.Nucleo;
+
+namespace ut_presentacion.Repositorios
+{
+    [TestClass]
+    public class RoleTypesPrueba
+    {
+        private readonly IConexion? iConexion;
+        private List<RoleTypes>? lista;
+        private RoleTypes? entidad;
+
+        public RoleTypesPrueba()
+        {
+            iConexion = new Conexion();
+            iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
+        }
+
+        [TestMethod]
+        public void Ejecutar()
+        {
+            Assert.AreEqual(true, Guardar());
+            Assert.AreEqual(true, Modificar());
+            Assert.AreEqual(true, Listar());
+            Assert.AreEqual(true, Borrar());
+        }
+
+        public bool Listar()
+        {
+            this.lista = this.iConexion!.RoleTypes!.ToList();
+            return lista.Count > 0;
+        }
+
+        public bool Guardar()
+        {
+            this.entidad = EntidadesNucleo.RoleTypes()!;
+            this.iConexion!.RoleTypes!.Add(this.entidad);
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+        public bool Modificar()
+        {
+            int id = 6;
+            var exist = this.iConexion!.RoleTypes!.FirstOrDefault(t => t.Id == id);
+            var newData = EntidadesNucleo.RoleTypes()!;
+            exist.Name = newData.Name;
+            this.iConexion.Entry(exist).State = EntityState.Modified;
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+
+        public bool Borrar()
+        {
+            this.iConexion!.RoleTypes!.Remove(this.entidad!);
+            this.iConexion!.SaveChanges();
+            return true;
+        }
+    }
+}

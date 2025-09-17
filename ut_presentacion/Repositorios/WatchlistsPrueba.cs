@@ -7,13 +7,13 @@ using ut_presentacion.Nucleo;
 namespace ut_presentacion.Repositorios
 {
     [TestClass]
-    public class AudioTracksPruebas
+    public class WatchlistsPrueba
     {
         private readonly IConexion? iConexion;
-        private List<AudioTracks>? lista;
-        private AudioTracks? entidad;
+        private List<Watchlists>? lista;
+        private Watchlists? entidad;
 
-        public AudioTracksPruebas()
+        public WatchlistsPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
@@ -23,37 +23,40 @@ namespace ut_presentacion.Repositorios
         public void Ejecutar()
         {
             Assert.AreEqual(true, Guardar());
-            //Assert.AreEqual(true, Modificar());
+            Assert.AreEqual(true, Modificar());
             Assert.AreEqual(true, Listar());
             Assert.AreEqual(true, Borrar());
         }
 
         public bool Listar()
         {
-            this.lista = this.iConexion!.AudioTracks!.ToList();
+            this.lista = this.iConexion!.Watchlists!.ToList();
             return lista.Count > 0;
         }
 
         public bool Guardar()
         {
-            this.entidad = EntidadesNucleo.AudioTracks()!;
-            this.iConexion!.AudioTracks!.Add(this.entidad);
+            this.entidad = EntidadesNucleo.Watchlists()!;
+            this.iConexion!.Watchlists!.Add(this.entidad);
             this.iConexion!.SaveChanges();
             return true;
         }
 
         public bool Modificar()
         {
-            this.entidad!.Id = 6;
-            var entry = this.iConexion!.Entry<AudioTracks>(this.entidad);
-            entry.State = EntityState.Modified;
+            int id = 5;
+            var exist = this.iConexion!.Watchlists!.FirstOrDefault(t => t.Id == id);
+            var newData = EntidadesNucleo.Watchlists()!;
+            exist.User = newData.User;
+            exist.Content = newData.Content;
+            this.iConexion.Entry(exist).State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;
         }
 
         public bool Borrar()
         {
-            this.iConexion!.AudioTracks!.Remove(this.entidad!);
+            this.iConexion!.Watchlists!.Remove(this.entidad!);
             this.iConexion!.SaveChanges();
             return true;
         }
