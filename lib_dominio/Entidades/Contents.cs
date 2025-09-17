@@ -17,7 +17,5 @@ namespace lib_dominio.Entidades
         [ForeignKey("Language")] public Languages? _Language { get; set; }
         public int Studio { get; set; }
         [ForeignKey("Studio")] public Studios? _Studio { get; set; }
-        public int Person { get; set; }
-        [ForeignKey("Person")] public Persons? _Person { get; set; }
     }
 }
