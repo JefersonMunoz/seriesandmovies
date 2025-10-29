@@ -37,5 +37,6 @@ namespace lib_repositorios.Implementaciones
         public DbSet<Watchlists>? Watchlists { get; set; }
         public DbSet<PersonTypeRoles>? PersonTypeRoles { get; set; }
         public DbSet<Credits>? Credits { get; set; }
+        public DbSet<Usuarios>? Usuarios { get; set; }
     }
 }
