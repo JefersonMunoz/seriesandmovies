@@ -21,12 +21,15 @@ namespace lib_repositorios.Implementaciones
         public Persons? Borrar(Persons? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("No se encontró la persona ingresado");
 
             if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Debe especificar el ID del contenido a eliminar");
 
             // Operaciones
+            var existente = this.IConexion!.Persons!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("La persona ingresada no existe");
 
             this.IConexion!.Persons!.Remove(entidad);
             this.IConexion.SaveChanges();
@@ -36,12 +39,25 @@ namespace lib_repositorios.Implementaciones
         public Persons? Guardar(Persons? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("Ingrese toda la información");
+            
+            // Operaciones
+            if (entidad.Birthday == default(DateTime))
+            {
+                throw new Exception("Debe ingresar una fecha válida");
+            }
+
+            if (entidad.Birthday == DateTime.MinValue)
+                throw new Exception("Debe ingresar una fecha válida.");
 
             if (entidad.Id != 0)
-                throw new Exception("lbYaSeGuardo");
+                throw new Exception("Persona guardada correctamente");
 
-            // Operaciones
+
+            //Validar que la´persona ya exista
+            bool existe = this.IConexion.Persons!.Any(a => a.Name == entidad.Name && a.Lastame == entidad.Lastame);
+            if (existe)
+                throw new Exception("Ya existe una persona con la misma información");
 
             this.IConexion!.Persons!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,18 +66,28 @@ namespace lib_repositorios.Implementaciones
 
         public List<Persons> Listar()
         {
-            return this.IConexion!.Persons!.Take(20).ToList();
+            var lista = this.IConexion!.Persons!.ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen personas registrados.");
+
+            return lista;
         }
 
         public Persons? Modificar(Persons? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
-
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            var existente = this.IConexion!.Persons!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("La persona ingresada no existe");
+
+            //Validar persona duplicada
+            bool existe = this.IConexion.Persons!.Any(a => a.Name == entidad.Name && a.Lastame == entidad.Lastame && a.Id != entidad.Id);
+            if (existe)
+                throw new Exception("Ya existe una persona con la misma información");
 
             var entry = this.IConexion!.Entry<Persons>(entidad);
             entry.State = EntityState.Modified;

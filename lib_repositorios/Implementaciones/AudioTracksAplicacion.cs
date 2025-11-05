@@ -21,53 +21,86 @@ namespace lib_repositorios.Implementaciones
         public AudioTracks? Borrar(AudioTracks? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("No se encontró el audio ingresado");
 
             if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Debe especificar el ID del audio a eliminar");
 
             // Operaciones
-
+            var existente = this.IConexion!.AudioTracks!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("El audio ingresado no existe");
+            
             this.IConexion!.AudioTracks!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
         }
 
+
         public AudioTracks? Guardar(AudioTracks? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("Ingrese toda la información");
 
             if (entidad.Id != 0)
-                throw new Exception("lbYaSeGuardo");
+                throw new Exception("Audio guardaddo correctamente");
 
             // Operaciones
+            //Validar que el contenido y el lenguaje exista
+            var contenido = this.IConexion!.Contents!.Find(entidad.Content);
+            var idioma = this.IConexion!.Languages!.Find(entidad.Language);
+            if (contenido == null || idioma == null)
+                throw new Exception("El contenido o el idioma no existen");
 
+            //Validar audio duplicada
+            bool existe = this.IConexion.AudioTracks!.Any(a => a.Content == entidad.Content && a.Language == entidad.Language);
+            if (existe)
+               throw new Exception("Ya existe un audio con la misma información");
+
+            //Guardar cambios
             this.IConexion!.AudioTracks!.Add(entidad);
             this.IConexion.SaveChanges();
             return entidad;
         }
 
+
         public List<AudioTracks> Listar()
         {
-            return this.IConexion!.AudioTracks!.Take(20).ToList();
+            var lista = this.IConexion!.AudioTracks!.Include(a => a._Content).Include(a => a._Language).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen Audios registrados.");
+
+            return lista;
         }
+
 
         public AudioTracks? Modificar(AudioTracks? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
-
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            var existente = this.IConexion.AudioTracks!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("No se encontró el audio que intenta modificar.");
 
+            //Validar que el contenido y el lenguaje exista
+            var contenido = this.IConexion!.Contents!.Find(entidad.Content);
+            var idioma = this.IConexion!.Languages!.Find(entidad.Language);
+            if (contenido == null || idioma == null)
+                throw new Exception("El contenido o el idioma no existen");
+
+            //Validar audio duplicada
+            bool existe = this.IConexion.AudioTracks!.Any(a => a.Content == entidad.Content && a.Language == entidad.Language);
+            if (existe)
+                throw new Exception("Ya existe un audio con la misma información");
 
             var entry = this.IConexion!.Entry<AudioTracks>(entidad);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
             return entidad;
         }
+
     }
 }

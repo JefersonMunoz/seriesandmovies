@@ -44,7 +44,7 @@ namespace ut_presentacion.Repositorios
 
         public bool Modificar()
         {
-            this.entidad!.Name = "Suspenso";
+            this.entidad!.Name = "Terror";
             var entry = this.iConexion!.Entry<GenreTypes>(this.entidad);
             entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
