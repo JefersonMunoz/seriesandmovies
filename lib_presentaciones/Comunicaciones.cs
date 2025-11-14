@@ -74,8 +74,8 @@ namespace lib_presentaciones
             {
                 var url = datos["UrlLlave"].ToString();
                 var temp = new Dictionary<string, object>();
-                temp["Nombre"] = "Pepito@email.com";
-                temp["Contraseña"] = "JHGjkhtu6387456yssdf";
+                temp["Username"] = "Pepito@email.com";
+                temp["Password"] = "JHGjkhtu6387456yssdf";
                 var stringData = JsonConversor.ConvertirAString(temp);
                 var httpClient = new HttpClient();
                 httpClient.Timeout = new TimeSpan(0, 1, 0);

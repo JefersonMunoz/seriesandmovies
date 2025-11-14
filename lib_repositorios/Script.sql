@@ -152,10 +152,12 @@ CREATE TABLE [Credits] (
 	[RoleType] INT NOT NULL FOREIGN KEY REFERENCES [RoleTypes]([Id])
 );
 
-CREATE TABLE [Usuarios] (
+CREATE TABLE [Users] (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-	[Nombre] NVARCHAR(100) NOT NULL,
-	[Contraseña] NVARCHAR(100) NOT NULL,
+	[Name] NVARCHAR(100) NOT NULL,
+	[Lastname] NVARCHAR(100) NOT NULL,
+	[Username] NVARCHAR(100) NOT NULL,
+	[Password] NVARCHAR(100) NOT NULL,
 ); 
 
 GO
@@ -385,7 +387,7 @@ INSERT INTO [Credits] ([Person], [Content], [RoleType]) VALUES
 (10,10,1), (11,11,2), (12,13,2), (13,13,3), (14,14,1), (15,15,3), (16,16,1), 
 (18,7,2), (19,9,2), (20,11,2), (21,12,2), (22,16,1), (5,9,6), (6,10,4), (7,11,5);
 
-INSERT INTO [Usuarios] ([Nombre], [Contraseña]) VALUES 
-('Pepito@email.com', 'JHGjkhtu6387456yssdf');
+INSERT INTO [Users] ([Name], [Lastname],[Username],[Password]) VALUES 
+('Pepito', 'Perez', 'Pepito@email.com', 'JHGjkhtu6387456yssdf');
 
 GO
