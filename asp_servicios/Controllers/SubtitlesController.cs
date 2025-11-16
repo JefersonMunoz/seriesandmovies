@@ -8,12 +8,12 @@ namespace asp_servicios.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class PersonsController : ControllerBase
+    public class SubtitlesController : ControllerBase
     {
-        private IPersonsAplicacion? iAplicacion = null;
+        private ISubtitlesAplicacion? iAplicacion = null;
         //private TokenController? tokenController = null;
 
-        public PersonsController(IPersonsAplicacion? iAplicacion /*, TokenController tokenController*/)
+        public SubtitlesController(ISubtitlesAplicacion? iAplicacion /*, TokenController tokenController*/)
         {
             this.iAplicacion = iAplicacion;
             //this.tokenController = tokenController;
@@ -52,6 +52,35 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
+        //public string PorAutor()
+        //{
+        //    var respuesta = new Dictionary<string, object>();
+        //    try
+        //    {
+        //        var datos = ObtenerDatos();
+        //        /*if (!tokenController!.Validate(datos))
+        //        {
+        //            respuesta["Error"] = "lbNoAutenticacion";
+        //            return JsonConversor.ConvertirAString(respuesta);
+        //        }*/
+        //        var entidad = JsonConversor.ConvertirAObjeto<Subtitles>(
+
+        //        JsonConversor.ConvertirAString(datos["Entidad"]));
+        //        this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
+
+        //        respuesta["Entidades"] = this.iAplicacion!.Listar();
+        //        respuesta["Respuesta"] = "OK";
+        //        respuesta["Fecha"] = DateTime.Now.ToString();
+        //        return JsonConversor.ConvertirAString(respuesta);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        respuesta["Error"] = ex.Message.ToString();
+        //        return JsonConversor.ConvertirAString(respuesta);
+        //    }
+        //}
+
+        [HttpPost]
         public string Guardar()
         {
             var respuesta = new Dictionary<string, object>();
@@ -63,12 +92,13 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<Subtitles>(
+
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
-                respuesta["Respuesta"] = "Se guardó la persona correctamente";
+                respuesta["Respuesta"] = "Se guardó el subtítulo correctamente";
             }
             catch (Exception ex)
             {
@@ -90,11 +120,11 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<Subtitles>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
-                respuesta["Respuesta"] = "Se modificó la persona correctamente";
+                respuesta["Respuesta"] = "Se modificó el subtítulo correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -117,12 +147,12 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
 
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<Subtitles>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
-                respuesta["Respuesta"] = "Persona eliminado correctamente";
+                respuesta["Respuesta"] = "Subtítulo eliminado correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

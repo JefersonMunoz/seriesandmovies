@@ -10,7 +10,7 @@ namespace lib_dominio.Entidades
         [ForeignKey("User")] public UserAccounts? _User { get; set; }
         public string? Comment { get; set; }
         public int? Rating { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
         public int Content { get; set; }
         [ForeignKey("Content")] public Contents? _Content { get; set; }
     }

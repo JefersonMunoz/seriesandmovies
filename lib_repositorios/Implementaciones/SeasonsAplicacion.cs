@@ -1,6 +1,7 @@
 ﻿using lib_dominio.Entidades;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace lib_repositorios.Implementaciones
 {
@@ -21,12 +22,15 @@ namespace lib_repositorios.Implementaciones
         public Seasons? Borrar(Seasons? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("No se encontró la temporada ingresada");
 
             if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Debe especificar el ID de la temporada a eliminar");
 
             // Operaciones
+            var existente = this.IConexion!.Seasons!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("La reseña ingresada no existe");
 
             this.IConexion!.Seasons!.Remove(entidad);
             this.IConexion.SaveChanges();
@@ -36,12 +40,23 @@ namespace lib_repositorios.Implementaciones
         public Seasons? Guardar(Seasons? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("Ingrese toda la información");
 
             if (entidad.Id != 0)
-                throw new Exception("lbYaSeGuardo");
+                throw new Exception("Temporada guardada correctamente");
 
             // Operaciones
+            if (entidad.ReleasedAt == null || entidad.ReleasedAt > DateTime.Now)
+                throw new Exception("Debe ingresar una fecha válida (MM/DD/YYYY)");
+
+            //validar que el contenido existe
+            var contenido = this.IConexion!.Contents!.Find(entidad.Content);
+            if (contenido == null)
+                throw new Exception("El contenido no existe");
+
+            bool existe = this.IConexion.Seasons!.Any(a => a.Title == entidad.Title && a.Content == entidad.Content && a.Description == entidad.Description);
+            if (existe)
+                throw new Exception("Ya existe resgistro de la temporada");
 
             this.IConexion!.Seasons!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,18 +65,33 @@ namespace lib_repositorios.Implementaciones
 
         public List<Seasons> Listar()
         {
-            return this.IConexion!.Seasons!.Take(20).ToList();
+            var lista = this.IConexion!.Seasons!.Include(a => a._Content).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen temporadas registradas.");
+
+            return lista;
         }
 
         public Seasons? Modificar(Seasons? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
-
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            var existente = this.IConexion.Seasons!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("No se encontró la teamporada que intenta modificar.");
+
+            //validar que el contenido existe
+            var contenido = this.IConexion!.Contents!.Find(entidad.Content);
+            if (contenido == null)
+                throw new Exception("El contenido no existe");
+
+            //Validar reseña duplicada
+            bool existe = this.IConexion.Seasons!.Any(a => a.Title == entidad.Title && a.Content == entidad.Content && a.Description == entidad.Description);
+            if (existe)
+                throw new Exception("Ya existe resgistro de la temporada");
 
             var entry = this.IConexion!.Entry<Seasons>(entidad);
             entry.State = EntityState.Modified;

@@ -63,15 +63,6 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-
-                //Validar que la duración no esté nulo
-                //var entidadJson = JsonConversor.ConvertirAString(datos["Entidad"]);
-                //if (entidadJson.Contains("\"DurationTime\":\"\"") || !entidadJson.Contains("DurationTime"))
-                //{
-                //    respuesta["Error"] = "Debe ingresar la duración del episodio";
-                //    return JsonConversor.ConvertirAString(respuesta);
-                //}
-
                 var entidad = JsonConversor.ConvertirAObjeto<GenreTypes>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));

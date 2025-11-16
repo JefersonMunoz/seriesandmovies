@@ -31,9 +31,10 @@ namespace lib_repositorios.Implementaciones
             if (existente == null)
                 throw new Exception("La ciudad ingresada no existe");
 
+            this.IConexion!.Countries!.Attach(entidad);
             this.IConexion!.Countries!.Remove(entidad);
             this.IConexion.SaveChanges();
-            return entidad;
+            return existente;
         }
 
         public Countries? Guardar(Countries? entidad)

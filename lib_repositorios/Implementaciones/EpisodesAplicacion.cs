@@ -44,6 +44,9 @@ namespace lib_repositorios.Implementaciones
                 throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            //if (entidad.ReleasedAt == null || entidad.ReleasedAt > DateTime.Now)
+            //    throw new Exception("Debe ingresar una fecha de nacimiento válida (MMMM/DD/YY)");
+
             if (entidad.DurationTime == default(TimeOnly))
                 throw new Exception("Debe ingresar la duración del episodio");
 
@@ -71,7 +74,6 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("Ingrese toda la información");
 
-            // Operaciones
             var existente = this.IConexion.Episodes!.Find(entidad.Id);
             if (existente == null)
                 throw new Exception("No se encontró el episodio que intenta modificar.");

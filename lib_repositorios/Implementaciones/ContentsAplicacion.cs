@@ -42,13 +42,8 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("Ingrese toda la información");
 
-            if (entidad.Year == default(DateTime))
-            {
-                throw new Exception("Debe ingresar una fecha válida");
-            }
-
-            if (entidad.Year == DateTime.MinValue)
-                throw new Exception("Debe ingresar una fecha válida.");
+            if (entidad.Year == null || entidad.Year > DateTime.Now)
+                throw new Exception("Debe ingresar una fecha de nacimiento válida (MM/DD/YYYY)");
 
             if (entidad.Id != 0)
                 throw new Exception("Audio guardaddo correctamente");
@@ -88,6 +83,9 @@ namespace lib_repositorios.Implementaciones
                 throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            if (entidad.Year == null || entidad.Year > DateTime.Now)
+                throw new Exception("Debe ingresar una fecha de nacimiento válida (MM/DD/YYYY)");
+
             var existente = this.IConexion.Contents!.Find(entidad.Id);
             if (existente == null)
                 throw new Exception("No se encontró el contenido que intenta modificar.");

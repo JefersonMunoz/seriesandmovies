@@ -21,12 +21,15 @@ namespace lib_repositorios.Implementaciones
         public Plans? Borrar(Plans? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("No se encontró el plan ingresado");
 
             if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Debe especificar el ID del plan a eliminar");
 
             // Operaciones
+            var existente = this.IConexion!.Plans!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("El plan ingresado no existe");
 
             this.IConexion!.Plans!.Remove(entidad);
             this.IConexion.SaveChanges();
@@ -36,32 +39,46 @@ namespace lib_repositorios.Implementaciones
         public Plans? Guardar(Plans? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
+                throw new Exception("Ingrese toda la información");
 
             if (entidad.Id != 0)
-                throw new Exception("lbYaSeGuardo");
+                throw new Exception("Plan guardado correctamente");
 
             // Operaciones
+            bool existe = this.IConexion.Plans!.Any(a => a.Name == entidad.Name);
+            if (existe)
+                throw new Exception("Ya existe registro del plan");
+
+            //if (string.IsNullOrEmpty(entidad.Name))
+            //    throw new Exception("El nombre del plan es obligatorio");
+            if (entidad.Name == "" && entidad.Price == null && entidad.MaxPeople == null)
+                throw new Exception("Ingrese la información completa");
 
             this.IConexion!.Plans!.Add(entidad);
             this.IConexion.SaveChanges();
             return entidad;
+
         }
 
         public List<Plans> Listar()
         {
-            return this.IConexion!.Plans!.Take(20).ToList();
+            var lista = this.IConexion!.Plans!.ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen planes registrados.");
+
+            return lista;
         }
 
         public Plans? Modificar(Plans? entidad)
         {
             if (entidad == null)
-                throw new Exception("lbFaltaInformacion");
-
-            if (entidad!.Id == 0)
-                throw new Exception("lbNoSeGuardo");
+                throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            var existente = this.IConexion.Plans!.Find(entidad.Id);
+            if (existente == null)
+                throw new Exception("No se encontró el plan que intenta modificar.");
 
             var entry = this.IConexion!.Entry<Plans>(entidad);
             entry.State = EntityState.Modified;

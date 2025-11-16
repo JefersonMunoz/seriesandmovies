@@ -11,7 +11,7 @@ namespace lib_dominio.Entidades
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
     }
 }
 

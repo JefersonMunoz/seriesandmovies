@@ -1,19 +1,20 @@
 ﻿using asp_servicios.Nucleo;
-using lib_repositorios.Interfaces;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
+using lib_repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace asp_servicios.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class PersonsController : ControllerBase
+    public class UserAccountsController : ControllerBase
     {
-        private IPersonsAplicacion? iAplicacion = null;
+        private IUserAccountsAplicacion? iAplicacion = null;
         //private TokenController? tokenController = null;
 
-        public PersonsController(IPersonsAplicacion? iAplicacion /*, TokenController tokenController*/)
+        public UserAccountsController(IUserAccountsAplicacion? iAplicacion /*, TokenController tokenController*/)
         {
             this.iAplicacion = iAplicacion;
             //this.tokenController = tokenController;
@@ -63,12 +64,21 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+
+                // Validar que la fecha no esté nula
+                //var entidadJson = JsonConversor.ConvertirAString(datos["Entidad"]);
+                //if (!entidadJson.Contains("Birthday") || string.IsNullOrWhiteSpace(entidadJson))
+                //{
+                //    respuesta["Error"] = "Debe ingresar la fecha de nacimiento";
+                //    return JsonConversor.ConvertirAString(respuesta);
+                //}
+
+                var entidad = JsonConversor.ConvertirAObjeto<UserAccounts>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
-                respuesta["Respuesta"] = "Se guardó la persona correctamente";
+                respuesta["Respuesta"] = "Se guardardó el usuario correctamente";
             }
             catch (Exception ex)
             {
@@ -90,11 +100,11 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<UserAccounts>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
-                respuesta["Respuesta"] = "Se modificó la persona correctamente";
+                respuesta["Respuesta"] = "Se modificó el usuario correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -117,12 +127,12 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
 
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<UserAccounts>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
-                respuesta["Respuesta"] = "Persona eliminado correctamente";
+                respuesta["Respuesta"] = "Usuario eliminado correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

@@ -8,12 +8,12 @@ namespace asp_servicios.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class PersonsController : ControllerBase
+    public class ReviewsController : ControllerBase
     {
-        private IPersonsAplicacion? iAplicacion = null;
+        private IReviewsAplicacion? iAplicacion = null;
         //private TokenController? tokenController = null;
 
-        public PersonsController(IPersonsAplicacion? iAplicacion /*, TokenController tokenController*/)
+        public ReviewsController(IReviewsAplicacion? iAplicacion /*, TokenController tokenController*/)
         {
             this.iAplicacion = iAplicacion;
             //this.tokenController = tokenController;
@@ -63,12 +63,12 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<Reviews>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
-                respuesta["Respuesta"] = "Se guardó la persona correctamente";
+                respuesta["Respuesta"] = "Se guardardo la reseña correctamente";
             }
             catch (Exception ex)
             {
@@ -90,11 +90,11 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<Reviews>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
-                respuesta["Respuesta"] = "Se modificó la persona correctamente";
+                respuesta["Respuesta"] = "Se modificó la reseña correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -117,12 +117,12 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
 
-                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                var entidad = JsonConversor.ConvertirAObjeto<Reviews>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
-                respuesta["Respuesta"] = "Persona eliminado correctamente";
+                respuesta["Respuesta"] = "Reseña eliminada correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

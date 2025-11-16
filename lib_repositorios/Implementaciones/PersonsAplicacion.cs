@@ -40,22 +40,23 @@ namespace lib_repositorios.Implementaciones
         {
             if (entidad == null)
                 throw new Exception("Ingrese toda la información");
-            
-            // Operaciones
-            if (entidad.Birthday == default(DateTime))
-            {
-                throw new Exception("Debe ingresar una fecha válida");
-            }
 
-            if (entidad.Birthday == DateTime.MinValue)
-                throw new Exception("Debe ingresar una fecha válida.");
+            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Name))
+                throw new Exception("Debe ingresar el nombre");
+
+            if (entidad.Birthday == null || entidad.Birthday > DateTime.Now)
+                throw new Exception("Debe ingresar una fecha de nacimiento válida (MMMM/DD/YY)");
+
+            //if (entidad.Birthday == default(DateTime) || entidad.Birthday == DateTime.MinValue)
+            //    throw new Exception("Debe ingresar una fecha válida");
 
             if (entidad.Id != 0)
                 throw new Exception("Persona guardada correctamente");
 
 
             //Validar que la´persona ya exista
-            bool existe = this.IConexion.Persons!.Any(a => a.Name == entidad.Name && a.Lastame == entidad.Lastame);
+            bool existe = this.IConexion.Persons!.Any(a => a.Name == entidad.Name && a.Lastame == entidad.Lastame && a.Birthday == entidad.Birthday);
             if (existe)
                 throw new Exception("Ya existe una persona con la misma información");
 
@@ -80,6 +81,9 @@ namespace lib_repositorios.Implementaciones
                 throw new Exception("Ingrese toda la información");
 
             // Operaciones
+            if (entidad.Birthday == null || entidad.Birthday > DateTime.Now)
+                throw new Exception("Debe ingresar una fecha de nacimiento válida (MMMM/DD/YY)");
+
             var existente = this.IConexion!.Persons!.Find(entidad.Id);
             if (existente == null)
                 throw new Exception("La persona ingresada no existe");

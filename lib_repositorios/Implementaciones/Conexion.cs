@@ -17,6 +17,7 @@ namespace lib_repositorios.Implementaciones
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
+
         public DbSet<GenreTypes>? GenreTypes { get; set; }
         public DbSet<Countries>? Countries { get; set; }
         public DbSet<Languages>? Languages { get; set; }
