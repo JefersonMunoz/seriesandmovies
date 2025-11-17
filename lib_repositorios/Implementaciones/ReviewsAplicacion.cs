@@ -74,6 +74,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Reviews> PorContent(Reviews? entidad)
+        {
+            string name = entidad!._Content!.Name!;
+            var lista = this.IConexion!.Reviews!.Include(x => x._Content).Where(x => x._Content!.Name!.Contains(name)).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen reseñas que coincidan con la búsqueda.");
+
+            return lista;
+        }
+
         public Reviews? Modificar(Reviews? entidad)
         {
             if (entidad == null)

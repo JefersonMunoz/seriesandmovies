@@ -73,6 +73,16 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Seasons> PorTitle(Seasons? entidad)
+        {
+            var lista = this.IConexion!.Seasons!.Where(x => x.Title!.Contains(entidad.Title!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen planes que contengan la descripción.");
+            }
+            return lista;
+        }
         public Seasons? Modificar(Seasons? entidad)
         {
             if (entidad == null)

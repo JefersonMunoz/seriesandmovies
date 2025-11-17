@@ -70,6 +70,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Plans> PorPlan(Plans? entidad)
+        {
+            var lista = this.IConexion!.Plans!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen planes que contengan la descripción.");
+            }
+            return lista;
+        }
+
         public Plans? Modificar(Plans? entidad)
         {
             if (entidad == null)

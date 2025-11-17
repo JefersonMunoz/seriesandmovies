@@ -19,11 +19,11 @@ namespace lib_repositorios.Implementaciones
             this.IConexion!.StringConexion = StringConexion;
         }
 
-        public string Llave(Usuarios? entidad)
+        public string Llave(Users? entidad)
         {
-            var usuario = this.IConexion!.Usuarios!
-                .FirstOrDefault(x => x.Nombre == entidad!.Nombre &&
-                                x.Contraseña == entidad.Contraseña);
+            var usuario = this.IConexion!.Users!
+                .FirstOrDefault(x => x.Username == entidad!.Username &&
+                                x.Password == entidad.Password);
             if (usuario == null)
                 return string.Empty;
             return llave;

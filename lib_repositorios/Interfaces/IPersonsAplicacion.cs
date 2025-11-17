@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Persons> Listar();
+        List<Persons> PorDescription(Persons? entidad);
         Persons? Guardar(Persons? entidad);
         Persons? Modificar(Persons? entidad);
         Persons? Borrar(Persons? entidad);

@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Seasons> Listar();
+        List<Seasons> PorTitle(Seasons? entidad);
         Seasons? Guardar(Seasons? entidad);
         Seasons? Modificar(Seasons? entidad);
         Seasons? Borrar(Seasons? entidad);

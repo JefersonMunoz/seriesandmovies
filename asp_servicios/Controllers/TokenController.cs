@@ -35,7 +35,7 @@ namespace asp_servicios.Controllers
                 var datos = ObtenerDatos();
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
-                var entidad = JsonConversor.ConvertirAObjeto<Usuarios>(
+                var entidad = JsonConversor.ConvertirAObjeto<Users>(
                     JsonConversor.ConvertirAString(datos["Entidad"]));
                 respuesta["Llave"] = this.iAplicacion!.Llave(entidad);
                 respuesta["Respuesta"] = "OK";

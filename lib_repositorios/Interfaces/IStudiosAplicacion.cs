@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Studios> Listar();
+        List<Studios> PorDescripton(Studios? entidad);
         Studios? Guardar(Studios? entidad);
         Studios? Modificar(Studios? entidad);
         Studios? Borrar(Studios? entidad);

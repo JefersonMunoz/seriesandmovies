@@ -26,8 +26,8 @@ namespace asp_servicios
 
             // Repositorios
             services.AddScoped<IConexion, Conexion>();
-            services.AddScoped<IRoleTypesAplicacion, RoleTypesAplicacion>();
             services.AddScoped<TokenAplicacion, TokenAplicacion>();
+            
             // Controladores
             services.AddScoped<TokenController, TokenController>();
             services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyOrigin()));

@@ -75,6 +75,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<PersonTypeRoles> PorTypeRoles(PersonTypeRoles? entidad)
+        {
+            string name = entidad!._RoleType!.Name!;
+            var lista = this.IConexion!.PersonTypeRoles!.Include(x => x._RoleType).Where(x => x._RoleType!.Name!.Contains(name)).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen personas que coincidan con la búsqueda.");
+
+            return lista;
+        }
+
         public PersonTypeRoles? Modificar(PersonTypeRoles? entidad)
         {
             if (entidad == null)

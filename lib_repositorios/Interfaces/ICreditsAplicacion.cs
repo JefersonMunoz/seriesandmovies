@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Credits> Listar();
+        List<Credits> PorPersons(Credits? entidad);
         Credits? Guardar(Credits? entidad);
         Credits? Modificar(Credits? entidad);
         Credits? Borrar(Credits? entidad);

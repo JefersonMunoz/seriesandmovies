@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Episodes> Listar();
+        List<Episodes> PorEpisodes(Episodes? entidad);
         Episodes? Guardar(Episodes? entidad);
         Episodes? Modificar(Episodes? entidad);
         Episodes? Borrar(Episodes? entidad);

@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<PersonTypeRoles> Listar();
+        List<PersonTypeRoles> PorTypeRoles(PersonTypeRoles? entidad);
         PersonTypeRoles? Guardar(PersonTypeRoles? entidad);
         PersonTypeRoles? Modificar(PersonTypeRoles? entidad);
         PersonTypeRoles? Borrar(PersonTypeRoles? entidad);

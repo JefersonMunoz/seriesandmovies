@@ -51,6 +51,29 @@ namespace asp_servicios.Controllers
             }
         }
 
+        public ActionResult<string> PorTypeRoles([FromBody] PersonTypeRoles entidad)
+        {
+            var respuesta = new Dictionary<string, object>();
+            try
+            {
+                var datos = ObtenerDatos();
+                /*if (!tokenController!.Validate(datos))
+                {
+                    respuesta["Error"] = "lbNoAutenticacion";
+                    return JsonConversor.ConvertirAString(respuesta);
+                }*/
+                this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
+
+                respuesta["Entidades"] = this.iAplicacion!.PorTypeRoles(entidad);
+                return JsonConversor.ConvertirAString(respuesta);
+            }
+            catch (Exception ex)
+            {
+                respuesta["Error"] = ex.Message;
+                return JsonConversor.ConvertirAString(respuesta);
+            }
+        }
+
         [HttpPost]
         public string Guardar()
         {

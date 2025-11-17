@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Reviews> Listar();
+        List<Reviews> PorContent(Reviews? entidad);
         Reviews? Guardar(Reviews? entidad);
         Reviews? Modificar(Reviews? entidad);
         Reviews? Borrar(Reviews? entidad);

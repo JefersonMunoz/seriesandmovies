@@ -69,6 +69,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Episodes> PorEpisodes(Episodes? entidad)
+        {
+            var lista = this.IConexion!.Episodes!.Where(x => x.Title!.Contains(entidad.Title!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen episodios que contengan la descripción.");
+            }
+            return lista;
+        }
+
         public Episodes? Modificar(Episodes? entidad)
         {
             if (entidad == null)

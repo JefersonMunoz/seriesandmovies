@@ -31,8 +31,8 @@ namespace lib_repositorios.Interfaces
         public DbSet<Watchlists>? Watchlists { get; set; }
         public DbSet<PersonTypeRoles>? PersonTypeRoles { get; set; }
         public DbSet<Credits>? Credits { get; set; }
-
-        DbSet<Usuarios>? Usuarios { get; set; }
+        public DbSet<Users>? Users { get; set; }
+        public DbSet<Audits>? Audits { get; set; }
         EntityEntry<T> Entry<T>(T entity) where T : class;
         int SaveChanges();
     }

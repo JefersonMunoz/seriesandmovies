@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Subscriptions> Listar();
+        List<Subscriptions> PorPlan(Subscriptions? entidad);
         Subscriptions? Guardar(Subscriptions? entidad);
         Subscriptions? Modificar(Subscriptions? entidad);
         Subscriptions? Borrar(Subscriptions? entidad);

@@ -52,6 +52,30 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
+        public ActionResult<string> PorPlan([FromBody] Subscriptions entidad)
+        {
+            var respuesta = new Dictionary<string, object>();
+            try
+            {
+                var datos = ObtenerDatos();
+                /*if (!tokenController!.Validate(datos))
+                {
+                    respuesta["Error"] = "lbNoAutenticacion";
+                    return JsonConversor.ConvertirAString(respuesta);
+                }*/
+                this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
+
+                respuesta["Entidades"] = this.iAplicacion!.PorPlan(entidad);
+                return JsonConversor.ConvertirAString(respuesta);
+            }
+            catch (Exception ex)
+            {
+                respuesta["Error"] = ex.Message;
+                return JsonConversor.ConvertirAString(respuesta);
+            }
+        }
+
+        [HttpPost]
         public string Guardar()
         {
             var respuesta = new Dictionary<string, object>();

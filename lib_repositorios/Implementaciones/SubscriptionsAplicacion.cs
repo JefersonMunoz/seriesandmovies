@@ -84,6 +84,18 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Subscriptions> PorPlan(Subscriptions? entidad)
+        {
+            string name = entidad!._Plan!.Name!;
+            var lista = this.IConexion!.Subscriptions!.Include(x => x._Plan).Where(x => x._Plan!.Name!.Contains(name)).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen suscripciones que coincidan con la búsqueda.");
+
+            return lista;
+        }
+
+
         public Subscriptions? Modificar(Subscriptions? entidad)
         {
             if (entidad == null)

@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<ContentTypes> Listar();
+        List<ContentTypes> PorName(ContentTypes? entidad);
         ContentTypes? Guardar(ContentTypes? entidad);
         ContentTypes? Modificar(ContentTypes? entidad);
         ContentTypes? Borrar(ContentTypes? entidad);

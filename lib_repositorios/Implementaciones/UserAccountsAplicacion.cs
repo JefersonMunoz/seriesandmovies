@@ -64,6 +64,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<UserAccounts> PorName(UserAccounts? entidad)
+        {
+            var lista = this.IConexion!.UserAccounts!.Where(x => x.Name!.Contains(entidad.Name!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen usuarios.");
+            }
+            return lista;
+        }
+
         public UserAccounts? Modificar(UserAccounts? entidad)
         {
 

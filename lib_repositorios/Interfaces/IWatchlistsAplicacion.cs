@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Watchlists> Listar();
+        List<Watchlists> PorUser(Watchlists? entidad);
         Watchlists? Guardar(Watchlists? entidad);
         Watchlists? Modificar(Watchlists? entidad);
         Watchlists? Borrar(Watchlists? entidad);

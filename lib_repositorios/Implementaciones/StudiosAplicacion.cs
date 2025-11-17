@@ -70,6 +70,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Studios> PorDescripton(Studios? entidad)
+        {
+            var lista = this.IConexion!.Studios!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen planes que contengan la descripción.");
+            }
+            return lista;
+        }
+
         public Studios? Modificar(Studios? entidad)
         {
             if (entidad == null)

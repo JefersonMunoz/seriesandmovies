@@ -1,6 +1,7 @@
 ﻿using lib_dominio.Entidades;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace lib_repositorios.Implementaciones
 {
@@ -74,6 +75,16 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<AudioTracks> PorLanguage(AudioTracks? entidad)
+        {
+            string name = entidad!._Language!.Name!;
+            var lista = this.IConexion!.AudioTracks!.Include(x => x._Language).Where(x => x._Language!.Name!.Contains(name)).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen lenguajes que coincidan con la búsqueda.");
+
+            return lista;
+        }
 
         public AudioTracks? Modificar(AudioTracks? entidad)
         {

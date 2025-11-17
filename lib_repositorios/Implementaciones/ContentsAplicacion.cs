@@ -2,6 +2,7 @@
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Metrics;
 
 namespace lib_repositorios.Implementaciones
 {
@@ -74,6 +75,17 @@ namespace lib_repositorios.Implementaciones
             if (lista == null || lista.Count == 0)
                 throw new Exception("No existen Audios registrados.");
 
+            return lista;
+        }
+
+        public List<Contents> PorDescription(Contents? entidad)
+        {
+            var lista = this.IConexion!.Contents!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen contenidos que contengan la descripción.");
+            }
             return lista;
         }
 

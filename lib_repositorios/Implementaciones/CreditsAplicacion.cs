@@ -72,6 +72,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Credits> PorPersons(Credits? entidad)
+        {
+            string name = entidad!._Person!.Name!;
+            var lista = this.IConexion!.Credits!.Include(x => x._Person).Where(x => x._Person!.Name!.Contains(name)).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen creditos que coincidan con la búsqueda.");
+
+            return lista;
+        }
+
         public Credits? Modificar(Credits? entidad)
         {
             if (entidad == null)

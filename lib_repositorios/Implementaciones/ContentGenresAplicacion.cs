@@ -72,6 +72,16 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<ContentGenres> PorGenreType(ContentGenres? entidad)
+        {
+            string name = entidad!._GenreType!.Name!;
+            var lista = this.IConexion!.ContentGenres!.Include(x => x._GenreType).Where(x => x._GenreType!.Name!.Contains(name)).ToList();
+
+            if (lista == null || lista.Count == 0)
+                throw new Exception("No existen contenidos que coincidan con la búsqueda.");
+
+            return lista;
+        }
         public ContentGenres? Modificar(ContentGenres? entidad)
         {
             if (entidad == null)

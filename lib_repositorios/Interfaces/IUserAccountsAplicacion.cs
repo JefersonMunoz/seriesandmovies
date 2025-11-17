@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<UserAccounts> Listar();
+        List<UserAccounts> PorName(UserAccounts? entidad);
         UserAccounts? Guardar(UserAccounts? entidad);
         UserAccounts? Modificar(UserAccounts? entidad);
         UserAccounts? Borrar(UserAccounts? entidad);

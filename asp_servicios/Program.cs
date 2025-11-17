@@ -26,6 +26,7 @@ builder.Services.AddScoped<ISubscriptionsAplicacion, SubscriptionsAplicacion>();
 builder.Services.AddScoped<ISubtitlesAplicacion, SubtitlesAplicacion>();
 builder.Services.AddScoped<IUserAccountsAplicacion, UserAccountsAplicacion>();
 builder.Services.AddScoped<IWatchlistsAplicacion, WatchlistsAplicacion>();
+builder.Services.AddScoped<IUsersAplicacion, UsersAplicacion>();
 
 var app = builder.Build();
 startup.Configure(app, app.Environment);

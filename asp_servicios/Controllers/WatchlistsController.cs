@@ -8,12 +8,12 @@ namespace asp_servicios.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class ContentTypesController : ControllerBase
+    public class WatchlistsController : ControllerBase
     {
-        private IContentTypesAplicacion? iAplicacion = null;
+        private IWatchlistsAplicacion? iAplicacion = null;
         //private TokenController? tokenController = null;
 
-        public ContentTypesController(IContentTypesAplicacion? iAplicacion /*, TokenController tokenController*/)
+        public WatchlistsController(IWatchlistsAplicacion? iAplicacion /*, TokenController tokenController*/)
         {
             this.iAplicacion = iAplicacion;
             //this.tokenController = tokenController;
@@ -52,7 +52,7 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> PorName([FromBody] ContentTypes entidad)
+        public ActionResult<string> PorUser([FromBody] Watchlists entidad)
         {
             var respuesta = new Dictionary<string, object>();
             try
@@ -65,7 +65,7 @@ namespace asp_servicios.Controllers
                 }*/
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
-                respuesta["Entidades"] = this.iAplicacion!.PorName(entidad);
+                respuesta["Entidades"] = this.iAplicacion!.PorUser(entidad);
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -87,12 +87,12 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<ContentTypes>(
+                var entidad = JsonConversor.ConvertirAObjeto<Watchlists>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
-                respuesta["Respuesta"] = "Se guardó el contenido correctamente";
+                respuesta["Respuesta"] = "Se guardardo la lista de reproducción correctamente";
             }
             catch (Exception ex)
             {
@@ -114,11 +114,11 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<ContentTypes>(
+                var entidad = JsonConversor.ConvertirAObjeto<Watchlists>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
-                respuesta["Respuesta"] = "Se modificó el contenido correctamente";
+                respuesta["Respuesta"] = "Se modificó la lista de reproducción correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -141,12 +141,12 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
 
-                var entidad = JsonConversor.ConvertirAObjeto<ContentTypes>(
+                var entidad = JsonConversor.ConvertirAObjeto<Watchlists>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
-                respuesta["Respuesta"] = "Contenido eliminado correctamente";
+                respuesta["Respuesta"] = "Lista de reproducción eliminada correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

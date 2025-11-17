@@ -12,6 +12,7 @@ namespace lib_repositorios.Interfaces
         void Configurar(string StringConexion);
 
         List<Subtitles> Listar();
+        List<Subtitles> PorLanguage(Subtitles? entidad);
         Subtitles? Guardar(Subtitles? entidad);
         Subtitles? Modificar(Subtitles? entidad);
         Subtitles? Borrar(Subtitles? entidad);

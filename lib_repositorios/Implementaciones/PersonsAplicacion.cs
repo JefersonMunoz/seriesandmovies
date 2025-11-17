@@ -75,6 +75,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<Persons> PorDescription(Persons? entidad)
+        {
+            var lista = this.IConexion!.Persons!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen personas que contengan la descripción.");
+            }
+            return lista;
+        }
+
         public Persons? Modificar(Persons? entidad)
         {
             if (entidad == null)

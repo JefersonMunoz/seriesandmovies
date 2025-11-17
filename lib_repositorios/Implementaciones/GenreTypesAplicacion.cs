@@ -1,6 +1,9 @@
 ﻿using lib_dominio.Entidades;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace lib_repositorios.Implementaciones
 {
@@ -32,6 +35,13 @@ namespace lib_repositorios.Implementaciones
                 throw new Exception("El tipo de género ingresado no existe");
 
             this.IConexion!.GenreTypes!.Remove(entidad);
+            //this.IConexion!.Audits!.Add(new Audits()
+            //{
+            //    User = 1,
+            //    Action = "DELETE",
+            //    Table = "GENRETYPES",
+            //    Date = DateTime.Now
+            //});
             this.IConexion.SaveChanges();
             return entidad;
         }

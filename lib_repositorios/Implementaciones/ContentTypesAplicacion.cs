@@ -65,6 +65,17 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
+        public List<ContentTypes> PorName(ContentTypes? entidad)
+        {
+            var lista = this.IConexion!.ContentTypes!.Where(x => x.Name!.Contains(entidad.Name!)).ToList();
+
+            if (lista == null || lista.Count == 0)
+            {
+                throw new Exception("No existen contenidos que contengan la descripción.");
+            }
+            return lista;
+        }
+
         public ContentTypes? Modificar(ContentTypes? entidad)
         {
             if (entidad == null)

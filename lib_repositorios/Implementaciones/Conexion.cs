@@ -17,6 +17,49 @@ namespace lib_repositorios.Implementaciones
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
+        //---------------------------------------------------------------------------
+        //AUDITORIA GENÉRICA
+        public override int SaveChanges()
+        {
+            try { 
+            // Recorrer las entidades que se les hizo algna acción
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added ||
+                             e.State == EntityState.Modified ||
+                             e.State == EntityState.Deleted).ToList();
+
+            
+            foreach (var entry in entries)
+            {
+                string accion = entry.State switch
+                {
+                    EntityState.Added => "INSERT",
+                    EntityState.Modified => "UPDATE",
+                    EntityState.Deleted => "DELETE"
+                };
+
+                var audit = new Audits()
+                {
+                    User = 2, //Tomar usuario que realizó la acción
+                    Action = accion,
+                    Table = entry.Metadata.GetTableName(),
+                    Date = DateTime.Now
+                };
+                this.Audits.Add(audit);
+            }
+            return base.SaveChanges();
+            }
+                catch (DbUpdateException ex)
+            {
+                // Aquí puedes inspeccionar el InnerException si quieres más detalle
+                throw new Exception("No se pudo guardar los cambios. Verifique el ID o las relaciones.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrió un error inesperado al guardar los cambios.", ex);
+            }
+        }
+
 
         public DbSet<GenreTypes>? GenreTypes { get; set; }
         public DbSet<Countries>? Countries { get; set; }
@@ -38,6 +81,7 @@ namespace lib_repositorios.Implementaciones
         public DbSet<Watchlists>? Watchlists { get; set; }
         public DbSet<PersonTypeRoles>? PersonTypeRoles { get; set; }
         public DbSet<Credits>? Credits { get; set; }
-        public DbSet<Usuarios>? Usuarios { get; set; }
+        public DbSet<Users>? Users { get; set; }
+        public DbSet<Audits>? Audits { get; set; }
     }
 }

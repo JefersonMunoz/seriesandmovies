@@ -1,19 +1,21 @@
-﻿using asp_servicios.Nucleo;
-using lib_repositorios.Interfaces;
+﻿
+using asp_servicios.Nucleo;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
+using lib_repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace asp_servicios.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class ContentTypesController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private IContentTypesAplicacion? iAplicacion = null;
+        private IUsersAplicacion? iAplicacion = null;
         //private TokenController? tokenController = null;
 
-        public ContentTypesController(IContentTypesAplicacion? iAplicacion /*, TokenController tokenController*/)
+        public UsersController(IUsersAplicacion? iAplicacion /*, TokenController tokenController*/)
         {
             this.iAplicacion = iAplicacion;
             //this.tokenController = tokenController;
@@ -52,7 +54,7 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> PorName([FromBody] ContentTypes entidad)
+        public ActionResult<string> PorName([FromBody] Users entidad)
         {
             var respuesta = new Dictionary<string, object>();
             try
@@ -87,12 +89,13 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<ContentTypes>(
+
+                var entidad = JsonConversor.ConvertirAObjeto<Users>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
-                respuesta["Respuesta"] = "Se guardó el contenido correctamente";
+                respuesta["Respuesta"] = "Se guardardó el usuario correctamente";
             }
             catch (Exception ex)
             {
@@ -114,11 +117,11 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
-                var entidad = JsonConversor.ConvertirAObjeto<ContentTypes>(
+                var entidad = JsonConversor.ConvertirAObjeto<Users>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
-                respuesta["Respuesta"] = "Se modificó el contenido correctamente";
+                respuesta["Respuesta"] = "Se modificó el usuario correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -141,12 +144,12 @@ namespace asp_servicios.Controllers
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
 
-                var entidad = JsonConversor.ConvertirAObjeto<ContentTypes>(
+                var entidad = JsonConversor.ConvertirAObjeto<Users>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
-                respuesta["Respuesta"] = "Contenido eliminado correctamente";
+                respuesta["Respuesta"] = "Usuario eliminado correctamente";
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
