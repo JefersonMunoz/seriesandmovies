@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Implementaciones\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\lib_dominio\lib_dominio.csproj" />
   </ItemGroup>
 

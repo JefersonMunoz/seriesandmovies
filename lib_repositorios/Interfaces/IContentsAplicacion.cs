@@ -14,6 +14,7 @@ namespace lib_repositorios.Interfaces
 
         List<Contents> Listar();
         List<Contents> PorDescription(Contents? entidad);
+        //List<Contents> PorTipo(Contents? entidad);
         Contents? Guardar(Contents? entidad);
         Contents? Modificar(Contents? entidad);
         Contents? Borrar(Contents? entidad);

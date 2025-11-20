@@ -33,7 +33,30 @@ namespace lib_repositorios.Implementaciones
         {
             if (!datos.ContainsKey("Llave"))
                 return false;
+            if (string.IsNullOrEmpty(datos["Llave"].ToString()))
+                return false;
             return this.llave == datos["Llave"].ToString();
         }
     }
 }
+
+    //public bool Validar(Dictionary<string, object> datos)
+    //{
+    //    if (!datos.ContainsKey("Entidad") || datos["Entidad"] is null)
+    //        return false;
+
+    //    var entidad = datos["Entidad"] as Dictionary<string, object>;
+    //    if (entidad == null)
+    //        return false;
+
+    //    if (!entidad.ContainsKey("Llave"))
+    //        return false;
+
+    //    var llave = entidad["Llave"]?.ToString();
+    //    if (string.IsNullOrEmpty(llave))
+    //        return false;
+
+    //    return this.llave == llave;
+    //}
+
+

@@ -47,7 +47,7 @@ namespace lib_repositorios.Implementaciones
                 throw new Exception("Debe ingresar una fecha de nacimiento válida (MM/DD/YYYY)");
 
             if (entidad.Id != 0)
-                throw new Exception("Audio guardaddo correctamente");
+                throw new Exception("Contenido existente");
 
             // Operaciones
             //Validar que el tipoContenido y el lenguaje exista
@@ -80,7 +80,7 @@ namespace lib_repositorios.Implementaciones
 
         public List<Contents> PorDescription(Contents? entidad)
         {
-            var lista = this.IConexion!.Contents!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
+            var lista = this.IConexion!.Contents!.Include(a => a._ContentType).Include(a => a._Language).Include(a => a._Studio).Where(x => x.Description!.Contains(entidad!.Description!)).ToList();
 
             if (lista == null || lista.Count == 0)
             {
@@ -88,6 +88,14 @@ namespace lib_repositorios.Implementaciones
             }
             return lista;
         }
+
+        //public List<Contents> PorTipo(Contents? entidad)
+        //{
+        //    return this.IConexion!.Contents!
+        //        .Where(x => x.ContentType!.Contains(entidad!.ContentType!))
+        //        .Take(50)
+        //        .ToList();
+        //}
 
         public Contents? Modificar(Contents? entidad)
         {
@@ -109,7 +117,8 @@ namespace lib_repositorios.Implementaciones
                 throw new Exception("El tipoContenido, el idioma o el studio no existen");
 
             //Validar contenido duplicado
-            bool existe = this.IConexion.Contents!.Any(a => a.ContentType == entidad.ContentType && a.Language == entidad.Language && a.Studio == entidad.Studio);
+            bool existe = this.IConexion.Contents!.Any(a => a.Name == entidad.Name && a.Description == entidad.Description && a.ContentType == entidad.ContentType
+                                    && a.Year == entidad.Year && a.Language == entidad.Language && a.Studio == entidad.Studio);
             if (existe)
                 throw new Exception("Ya existe un contenido con la misma información");
 

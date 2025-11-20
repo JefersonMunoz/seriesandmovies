@@ -42,11 +42,14 @@ namespace asp_servicios.Controllers
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -68,14 +71,17 @@ namespace asp_servicios.Controllers
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
-                respuesta["Respuesta"] = "Se guardó la lenguaje correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
+                return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
-            return JsonConversor.ConvertirAString(respuesta);
         }
 
         [HttpPost]
@@ -93,13 +99,17 @@ namespace asp_servicios.Controllers
                 var entidad = JsonConversor.ConvertirAObjeto<Languages>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
+
                 entidad = this.iAplicacion!.Modificar(entidad);
-                respuesta["Respuesta"] = "Se modificó la lenguaje correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -121,13 +131,17 @@ namespace asp_servicios.Controllers
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
+
                 entidad = this.iAplicacion!.Borrar(entidad);
-                respuesta["Respuesta"] = "Lenguaje eliminado correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }

@@ -4,22 +4,18 @@ namespace lib_presentaciones
 {
     public class Comunicaciones
     {
-        private string? Protocolo = string.Empty,
-            Host = string.Empty,
-            Servicio = string.Empty,
+        private string? URL = string.Empty,
             llave = null;
 
-        public Comunicaciones(string servicio = "asp_servicios/", string protocolo = "http://", string host = "localhost")
+        public Comunicaciones(string url = "http://localhost:5123/")
         {
-            Protocolo = protocolo;
-            Host = host;
-            Servicio = servicio;
+            URL = url;
         }
 
         public Dictionary<string, object> ConstruirUrl(Dictionary<string, object> data, string Metodo)
         {
-            data["Url"] = Protocolo + Host + "/" + Servicio + Metodo;
-            data["UrlLlave"] = Protocolo + Host + "/" + Servicio + "Token/Llave";
+            data["Url"] = URL + Metodo;
+            data["UrlLlave"] = URL + "Token/Llave";
             return data;
         }
 
@@ -32,15 +28,22 @@ namespace lib_presentaciones
                 if (respuesta == null || respuesta.ContainsKey("Error"))
                     return respuesta!;
                 respuesta.Clear();
+
+                if (string.IsNullOrEmpty(llave))
+                {
+                    respuesta.Add("Error", "lbErrorComunicacion");
+                    return respuesta;
+                }
+
+
                 var url = datos["Url"].ToString();
                 datos.Remove("Url");
                 datos.Remove("UrlLlave");
                 datos["Llave"] = llave!;
-
                 var stringData = JsonConversor.ConvertirAString(datos);
+
                 var httpClient = new HttpClient();
                 httpClient.Timeout = new TimeSpan(0, 4, 0);
-
                 var message = await httpClient.PostAsync(url, new StringContent(stringData));
                 if (!message.IsSuccessStatusCode)
                 {
@@ -52,11 +55,11 @@ namespace lib_presentaciones
                 httpClient.Dispose(); httpClient = null;
                 if (string.IsNullOrEmpty(resp))
                 {
-                    respuesta.Add("Error", "lbErrorAutenticacion");
+                    respuesta.Add("Error", "lbErrorComunicacion");
                     return respuesta;
                 }
 
-                resp = Replace(resp);
+                //resp = Replace(resp);
                 respuesta = JsonConversor.ConvertirAObjeto(resp);
                 return respuesta;
             }
@@ -74,12 +77,15 @@ namespace lib_presentaciones
             {
                 var url = datos["UrlLlave"].ToString();
                 var temp = new Dictionary<string, object>();
-                temp["Username"] = "Pepito@email.com";
-                temp["Password"] = "JHGjkhtu6387456yssdf";
+                temp["Entidad"] = new Dictionary<string, object>()
+                {
+                    { "Username", "Pepito@email.com" },
+                    { "Password", "JHGjkhtu6387456yssdf" }
+                };
                 var stringData = JsonConversor.ConvertirAString(temp);
+
                 var httpClient = new HttpClient();
                 httpClient.Timeout = new TimeSpan(0, 1, 0);
-
                 var mensaje = await httpClient.PostAsync(url, new StringContent(stringData));
                 if (!mensaje.IsSuccessStatusCode)
                 {
@@ -91,13 +97,13 @@ namespace lib_presentaciones
                 httpClient.Dispose(); httpClient = null;
                 if (string.IsNullOrEmpty(resp))
                 {
-                    respuesta.Add("Error", "lbErrorAutenticacion");
+                    respuesta.Add("Error", "lbErrorComunicacion");
                     return respuesta;
                 }
 
                 resp = Replace(resp);
                 respuesta = JsonConversor.ConvertirAObjeto(resp);
-                llave = respuesta["Token"].ToString();
+                llave = respuesta["Llave"].ToString();
                 return respuesta;
             }
             catch (Exception ex)

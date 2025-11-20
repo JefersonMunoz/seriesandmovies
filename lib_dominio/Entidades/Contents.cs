@@ -10,7 +10,7 @@ namespace lib_dominio.Entidades
         [Key] public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public int ContentType { get; set; }
+        public int? ContentType { get; set; }
         [ForeignKey("ContentType")] public ContentTypes? _ContentType { get; set; }
         public DateTime? Year { get; set; }
         public int Language { get; set; }

@@ -40,7 +40,7 @@ namespace lib_repositorios.Implementaciones
 
                 var audit = new Audits()
                 {
-                    User = 2, //Tomar usuario que realizó la acción
+                    User = 1, //Tomar usuario que realizó la acción
                     Action = accion,
                     Table = entry.Metadata.GetTableName(),
                     Date = DateTime.Now
