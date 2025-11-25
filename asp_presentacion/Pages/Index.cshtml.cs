@@ -1,8 +1,8 @@
 using lib_dominio.Nucleo;
-using lib_presentaciones; // Added
+using lib_presentaciones; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks; // Added for async Task
+using System.Threading.Tasks; 
 
 namespace asp_presentacion.Pages
 {
@@ -33,26 +33,22 @@ namespace asp_presentacion.Pages
             }
         }
 
-        // MODIFIED: Method is now async Task and implements the key retrieval logic
         public async Task OnPostBtEnter()
         {
             try
             {
                 if (string.IsNullOrEmpty(Username) ||
-                string.IsNullOrEmpty(Password)) // Changed to OR logic for mandatory fields
+                string.IsNullOrEmpty(Password))
                 {
                     OnPostBtClean();
                     return;
                 }
 
-                // Removed the hardcoded login check: if ("admin.123" != Username + "." + Password)
 
                 var comunicaciones = new Comunicaciones();
 
-                // 1. Call the API to get the Llave (key)
                 var respuestaLlave = await comunicaciones.ObtenerLlave(Username!, Password!);
 
-                // 2. Check if the key and user ID were received
                 if (respuestaLlave != null &&
                     respuestaLlave.ContainsKey("Llave") &&
                     respuestaLlave.ContainsKey("UserId"))
@@ -62,7 +58,6 @@ namespace asp_presentacion.Pages
 
                     if (!string.IsNullOrEmpty(llave) && !string.IsNullOrEmpty(userId))
                     {
-                        // 3. Set session variables upon successful authentication
                         ViewData["Logged"] = true;
                         HttpContext.Session.SetString("Usuario", Username!);
                         HttpContext.Session.SetString("Id", userId);
@@ -74,7 +69,6 @@ namespace asp_presentacion.Pages
                     }
                 }
 
-                // If the flow reaches here, authentication failed or keys were missing
                 ViewData["LoginError"] = "Credenciales inválidas o error de comunicación.";
                 OnPostBtClean();
             }

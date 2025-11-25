@@ -58,7 +58,7 @@ namespace lib_repositorios.Implementaciones
             //Validar que el usuario exista
             var auditoria = this.IConexion!.Users!.Find(entidad.User);
             if (auditoria == null)
-                throw new Exception("El usuario existe");
+                throw new Exception("El no usuario existe");
 
             //Guardar cambios
             this.IConexion!.Audits!.Add(entidad);
