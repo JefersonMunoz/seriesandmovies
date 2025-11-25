@@ -80,14 +80,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Contents>> PorDescription(Contents? entidad, string llave)
+        public async Task<List<Contents>> Filtro(Contents? entidad, string llave)
         {
             var lista = new List<Contents>();
             var datos = new Dictionary<string, object>();
             datos["Entidad"] = entidad!;
             
             comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Contents/PorDescription");
+            datos = comunicaciones.ConstruirUrl(datos, "Contents/Filtro");
             var respuesta = await comunicaciones!.Ejecutar(datos, llave);
             
             if (respuesta.ContainsKey("Error"))

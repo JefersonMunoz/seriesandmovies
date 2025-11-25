@@ -177,6 +177,14 @@
                        placeholder="Description" />
                 <br />
 
+                <select id="flContentType"
+                        class="cts_forms form-control"
+                        asp-for="@Model.Filtro!.ContentType"
+                        asp-items="@(new SelectList(Model.ListaContentTypes, "Id", "Name"))">
+                    <option value="0">-- Seleccionar Tipo --</option>
+                </select>
+                <br />
+
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered tablehover">
                         <tr>

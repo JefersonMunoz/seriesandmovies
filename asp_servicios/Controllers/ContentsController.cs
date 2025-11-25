@@ -56,7 +56,7 @@ namespace asp_servicios.Aplicacions
 
 
         [HttpPost]
-        public string PorDescription()
+        public string Filtro()
         {
             var respuesta = new Dictionary<string, object>();
             try
@@ -71,7 +71,7 @@ namespace asp_servicios.Aplicacions
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
-                respuesta["Entidades"] = this.iAplicacion!.PorDescription(entidad);
+                respuesta["Entidades"] = this.iAplicacion!.Filtro(entidad);
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);

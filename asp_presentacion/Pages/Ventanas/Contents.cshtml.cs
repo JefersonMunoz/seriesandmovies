@@ -23,7 +23,7 @@ namespace asp_presentacion.Pages.Ventanas
         }
         public IFormFile? FormFile { get; set; }
         [BindProperty] public Enumerables.Ventanas Accion { get; set; }
-        public List<ContentTypes> ListaContentTypes { get; set; }
+        public List<ContentTypes> ListaContentTypes { get; set; } = new List<ContentTypes>();
         public List<Studios> ListaStudios { get; set; }
         public List<Languages> ListaLanguages { get; set; }
         [BindProperty] public Contents? Actual { get; set; }
@@ -41,9 +41,16 @@ namespace asp_presentacion.Pages.Ventanas
                     HttpContext.Response.Redirect("/");
                     return;
                 }
+
+                var task1 = this.iPresentacion!.ContentTypes(llave);
+                task1.Wait();
+                ListaContentTypes = task1.Result;
+
                 Filtro!.Description = Filtro!.Description ?? "";
+                Filtro!.ContentType = Filtro!.ContentType ?? 0;
+                //Filtro!.ContentType = Filtro!.ContentType == 0 ? 1 : Filtro!.ContentType;
                 Accion = Enumerables.Ventanas.Listas;
-                var task = this.iPresentacion!.PorDescription(Filtro!, llave);
+                var task = this.iPresentacion!.Filtro(Filtro!, llave);
                 task.Wait();
                 Lista = task.Result;
                 Actual = null;

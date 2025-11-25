@@ -78,14 +78,16 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
-        public List<Contents> PorDescription(Contents? entidad)
+        public List<Contents> Filtro(Contents? entidad)
         {
-            var lista = this.IConexion!.Contents!.Include(a => a._ContentType).Include(a => a._Language).Include(a => a._Studio).Where(x => x.Description!.Contains(entidad!.Description!)).ToList();
+            var lista = this.IConexion!.Contents!.Include(a => a._ContentType).Include(a => a._Language).Include(a => a._Studio).Where(x => x.Description!.Contains(entidad!.Description!) &&
+                            (entidad.ContentType! == 0 || x.ContentType! == entidad.ContentType!)).ToList();
 
-            if (lista == null || lista.Count == 0)
+            if (lista == null)
             {
-                throw new Exception("No existen contenidos que contengan la descripción.");
+                return new List<Contents>();
             }
+
             return lista;
         }
 
