@@ -1,11 +1,14 @@
 ﻿using lib_dominio.Nucleo;
+using System.Collections.Generic;
+using System.Net.Http; // Added for HttpClient
+using System.Threading.Tasks; // Added for async/await
 
 namespace lib_presentaciones
 {
     public class Comunicaciones
     {
-        private string? URL = string.Empty,
-            llave = null;
+        private string? URL = string.Empty;
+        // private string? llave = null; 
 
         public Comunicaciones(string url = "http://localhost:5123/")
         {
@@ -19,27 +22,21 @@ namespace lib_presentaciones
             return data;
         }
 
-        public async Task<Dictionary<string, object>> Ejecutar(Dictionary<string, object> datos)
+        public async Task<Dictionary<string, object>> Ejecutar(Dictionary<string, object> datos, string llave)
         {
             var respuesta = new Dictionary<string, object>();
             try
             {
-                respuesta = await Llave(datos);
-                if (respuesta == null || respuesta.ContainsKey("Error"))
-                    return respuesta!;
-                respuesta.Clear();
-
                 if (string.IsNullOrEmpty(llave))
                 {
-                    respuesta.Add("Error", "lbErrorComunicacion");
+                    respuesta.Add("Error", "lbErrorComunicacion: Llave no proporcionada");
                     return respuesta;
                 }
-
 
                 var url = datos["Url"].ToString();
                 datos.Remove("Url");
                 datos.Remove("UrlLlave");
-                datos["Llave"] = llave!;
+                datos["Llave"] = llave;
                 var stringData = JsonConversor.ConvertirAString(datos);
 
                 var httpClient = new HttpClient();
@@ -70,17 +67,17 @@ namespace lib_presentaciones
             }
         }
 
-        private async Task<Dictionary<string, object>> Llave(Dictionary<string, object> datos)
+        public async Task<Dictionary<string, object>> ObtenerLlave(string username, string password)
         {
             var respuesta = new Dictionary<string, object>();
             try
             {
-                var url = datos["UrlLlave"].ToString();
+                var url = URL + "Token/Llave";
                 var temp = new Dictionary<string, object>();
                 temp["Entidad"] = new Dictionary<string, object>()
                 {
-                    { "Username", "Pepito@email.com" },
-                    { "Password", "JHGjkhtu6387456yssdf" }
+                    { "Username", username },
+                    { "Password", password }
                 };
                 var stringData = JsonConversor.ConvertirAString(temp);
 
@@ -103,7 +100,7 @@ namespace lib_presentaciones
 
                 resp = Replace(resp);
                 respuesta = JsonConversor.ConvertirAObjeto(resp);
-                llave = respuesta["Llave"].ToString();
+
                 return respuesta;
             }
             catch (Exception ex)

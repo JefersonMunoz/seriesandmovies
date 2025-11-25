@@ -35,6 +35,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var variable_session = HttpContext.Session.GetString("Usuario");
+                var llave = HttpContext.Session.GetString("Llave");
                 if (String.IsNullOrEmpty(variable_session))
                 {
                     HttpContext.Response.Redirect("/");
@@ -42,7 +43,7 @@ namespace asp_presentacion.Pages.Ventanas
                 }
                 Filtro!.Description = Filtro!.Description ?? "";
                 Accion = Enumerables.Ventanas.Listas;
-                var task = this.iPresentacion!.PorDescription(Filtro!);
+                var task = this.iPresentacion!.PorDescription(Filtro!, llave);
                 task.Wait();
                 Lista = task.Result;
                 Actual = null;
@@ -56,15 +57,16 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
+                var llave = HttpContext.Session.GetString("Llave");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Contents();
-                var task = this.iPresentacion!.ContentTypes();
+                var task = this.iPresentacion!.ContentTypes(llave);
                 task.Wait();
                 ListaContentTypes = task.Result;
-                var task1 = this.iPresentacion!.Studios();
+                var task1 = this.iPresentacion!.Studios(llave);
                 task1.Wait();
                 ListaStudios = task1.Result;
-                var task2 = this.iPresentacion!.Languages();
+                var task2 = this.iPresentacion!.Languages(llave);
                 task2.Wait();
                 ListaLanguages = task2.Result;
             }
@@ -78,15 +80,16 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 OnPostBtRefrescar();
+                var llave = HttpContext.Session.GetString("Llave");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
-                var task = this.iPresentacion!.ContentTypes();
+                var task = this.iPresentacion!.ContentTypes(llave);
                 task.Wait();
                 ListaContentTypes = task.Result;
-                var task1 = this.iPresentacion!.Studios();
+                var task1 = this.iPresentacion!.Studios(llave);
                 task1.Wait();
                 ListaStudios = task1.Result;
-                var task2 = this.iPresentacion!.Languages();
+                var task2 = this.iPresentacion!.Languages(llave);
                 task2.Wait();
                 ListaLanguages = task2.Result;
 
@@ -100,12 +103,13 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
+                var llave = HttpContext.Session.GetString("Llave");
                 Accion = Enumerables.Ventanas.Editar;
                 Task<Contents>? task = null;
                 if (Actual!.Id == 0)
-                    task = this.iPresentacion!.Guardar(Actual!)!;
+                    task = this.iPresentacion!.Guardar(Actual!,llave)!;
                 else
-                    task = this.iPresentacion!.Modificar(Actual!)!;
+                    task = this.iPresentacion!.Modificar(Actual!, llave)!;
                 task.Wait();
                 Actual = task.Result;
                 Accion = Enumerables.Ventanas.Listas;
@@ -133,7 +137,8 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                var task = this.iPresentacion!.Borrar(Actual!);
+                var llave = HttpContext.Session.GetString("Llave");
+                var task = this.iPresentacion!.Borrar(Actual!, llave);
                 Actual = task.Result;
                 OnPostBtRefrescar();
             }

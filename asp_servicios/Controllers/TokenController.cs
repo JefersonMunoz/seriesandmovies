@@ -38,6 +38,7 @@ namespace asp_servicios.Controllers
                 var entidad = JsonConversor.ConvertirAObjeto<Users>(
                     JsonConversor.ConvertirAString(datos["Entidad"]));
                 respuesta["Llave"] = this.iAplicacion!.Llave(entidad);
+                respuesta["UserId"] = this.iAplicacion!.UserId(entidad);
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);

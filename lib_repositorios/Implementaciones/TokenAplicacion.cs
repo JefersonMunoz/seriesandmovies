@@ -29,6 +29,16 @@ namespace lib_repositorios.Implementaciones
             return llave;
         }
 
+        public int UserId(Users? entidad)
+        {
+            var usuario = this.IConexion!.Users!
+                .FirstOrDefault(x => x.Username == entidad!.Username &&
+                                x.Password == entidad.Password);
+            if (usuario == null)
+                return 0;
+            return usuario.Id;
+        }
+
         public bool Validar(Dictionary<string, object> datos)
         {
             if (!datos.ContainsKey("Llave"))

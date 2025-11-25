@@ -8,14 +8,14 @@ namespace lib_presentaciones.Implementaciones
     {
         private Comunicaciones? comunicaciones = null;
 
-        public async Task<List<Contents>> Listar()
+        public async Task<List<Contents>> Listar(string llave)
         {
             var lista = new List<Contents>();
             var datos = new Dictionary<string, object>();
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Contents/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -26,14 +26,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<ContentTypes>> ContentTypes()
+        public async Task<List<ContentTypes>> ContentTypes(string llave)
         {
             var lista = new List<ContentTypes>();
             var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "ContentTypes/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -44,14 +44,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Studios>> Studios()
+        public async Task<List<Studios>> Studios(string llave)
         {
             var lista = new List<Studios>();
             var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Studios/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -62,14 +62,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Languages>> Languages()
+        public async Task<List<Languages>> Languages(string llave)
         {
             var lista = new List<Languages>();
             var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Languages/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -80,7 +80,7 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Contents>> PorDescription(Contents? entidad)
+        public async Task<List<Contents>> PorDescription(Contents? entidad, string llave)
         {
             var lista = new List<Contents>();
             var datos = new Dictionary<string, object>();
@@ -88,7 +88,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Contents/PorDescription");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -99,7 +99,7 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<Contents?> Guardar(Contents? entidad)
+        public async Task<Contents?> Guardar(Contents? entidad, string llave)
         {
             if (entidad!.Id != 0)
             {
@@ -110,7 +110,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Contents/Guardar");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -121,7 +121,7 @@ namespace lib_presentaciones.Implementaciones
             return entidad;
         }
 
-        public async Task<Contents?> Modificar(Contents? entidad)
+        public async Task<Contents?> Modificar(Contents? entidad, string llave)
         {
             if (entidad!.Id == 0)
             {
@@ -133,7 +133,7 @@ namespace lib_presentaciones.Implementaciones
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Contents/Modificar");
             
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
@@ -143,7 +143,7 @@ namespace lib_presentaciones.Implementaciones
             return entidad;
         }
 
-        public async Task<Contents?> Borrar(Contents? entidad)
+        public async Task<Contents?> Borrar(Contents? entidad, string llave)
         {
             if (entidad!.Id == 0)
             {
@@ -154,7 +154,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Contents/Borrar");
-            var respuesta = await comunicaciones!.Ejecutar(datos);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
             
             if (respuesta.ContainsKey("Error"))
             {
