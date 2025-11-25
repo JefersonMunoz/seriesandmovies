@@ -39,6 +39,16 @@ namespace lib_repositorios.Implementaciones
             return usuario.Id;
         }
 
+        public string UserRol(Users? entidad)
+        {
+            var usuario = this.IConexion!.Users!
+                .FirstOrDefault(x => x.Username == entidad!.Username &&
+                                x.Password == entidad.Password);
+            if (usuario == null)
+                return "";
+            return usuario.Rol;
+        }
+
         public bool Validar(Dictionary<string, object> datos)
         {
             if (!datos.ContainsKey("Llave"))

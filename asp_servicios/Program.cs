@@ -24,7 +24,7 @@ builder.Services.AddScoped<ISeasonsAplicacion, SeasonsAplicacion>();
 builder.Services.AddScoped<IStudiosAplicacion, StudiosAplicacion>();
 builder.Services.AddScoped<ISubscriptionsAplicacion, SubscriptionsAplicacion>();
 builder.Services.AddScoped<ISubtitlesAplicacion, SubtitlesAplicacion>();
-builder.Services.AddScoped<IUserAccountsAplicacion, UserAccountsAplicacion>();
+builder.Services.AddScoped<IUsersAplicacion, UsersAplicacion>();
 builder.Services.AddScoped<IWatchlistsAplicacion, WatchlistsAplicacion>();
 builder.Services.AddScoped<IUsersAplicacion, UsersAplicacion>();
 

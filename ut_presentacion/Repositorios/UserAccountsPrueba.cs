@@ -10,8 +10,8 @@ namespace ut_presentacion.Repositorios
     public class UserAccountsPrueba
     {
         private readonly IConexion? iConexion;
-        private List<UserAccounts>? lista;
-        private UserAccounts? entidad;
+        private List<Users>? lista;
+        private Users? entidad;
 
         public UserAccountsPrueba()
         {
@@ -45,7 +45,7 @@ namespace ut_presentacion.Repositorios
         public bool Modificar()
         {
             this.entidad!.Name = "Juan";
-            var entry = this.iConexion!.Entry<UserAccounts>(this.entidad);
+            var entry = this.iConexion!.Entry<Users>(this.entidad);
             entry.State = EntityState.Modified;
             this.iConexion!.SaveChanges();
             return true;

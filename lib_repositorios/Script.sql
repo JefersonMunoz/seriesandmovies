@@ -40,11 +40,12 @@ CREATE TABLE [Plans] (
 	[MaxPeople] INT NOT NULL
 );
 
-CREATE TABLE [UserAccounts] (
+CREATE TABLE [Users] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] NVARCHAR(100) NOT NULL,
 	[Lastname] NVARCHAR(100) NOT NULL,
 	[Username] NVARCHAR(50) NOT NULL,
+	[Rol] NVARCHAR(50) NOT NULL,
 	[PhoneNumber] NVARCHAR(15) NOT NULL,
 	[Email] NVARCHAR(50) NOT NULL,
 	[Password] NVARCHAR(255) NOT NULL,
@@ -79,14 +80,14 @@ CREATE TABLE [Contents] (
 CREATE TABLE [ContentGenres] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[GenreType] INT NOT NULL FOREIGN KEY REFERENCES [GenreTypes]([Id]),
-	[Content] INT NOT NULL FOREIGN KEY REFERENCES [Contents]([Id])
+	[Content] INT NOT NULL FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE
 );
 
 CREATE TABLE [Seasons] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[NumberSeason] NVARCHAR(3) NOT NULL,
 	[Title] NVARCHAR(100) NOT NULL,
-	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE,
 	[Description] NVARCHAR(200) NULL,
 	[ReleasedAt] DATETIME NULL
 );
@@ -103,16 +104,16 @@ CREATE TABLE [Episodes] (
 
 CREATE TABLE [Reviews] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[User] INT FOREIGN KEY REFERENCES [UserAccounts]([Id]),
+	[User] INT FOREIGN KEY REFERENCES [Users]([Id]),
 	[Comment] NVARCHAR(150) NULL,
 	[Rating] INT NULL,
 	[CreatedAt] DATETIME NOT NULL,
-	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE
 );
 
 CREATE TABLE [Subscriptions] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[User] INT FOREIGN KEY REFERENCES [UserAccounts]([Id]),
+	[User] INT FOREIGN KEY REFERENCES [Users]([Id]),
 	[Plan] INT FOREIGN KEY REFERENCES [Plans]([Id]),
 	[StartedAt] DATETIME NOT NULL,
 	[FinishedAt] DATETIME NOT NULL,
@@ -123,20 +124,20 @@ CREATE TABLE [Subscriptions] (
 
 CREATE TABLE [AudioTracks] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE,
 	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id])
 );
 
 CREATE TABLE [Subtitles] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE,
 	[Language] INT FOREIGN KEY REFERENCES [Languages]([Id])
 );
 
 CREATE TABLE [Watchlists] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-	[User] INT FOREIGN KEY REFERENCES [UserAccounts]([Id]),
-	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id])
+	[User] INT FOREIGN KEY REFERENCES [Users]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE
 );
 
 CREATE TABLE [PersonTypeRoles] (
@@ -148,17 +149,9 @@ CREATE TABLE [PersonTypeRoles] (
 CREATE TABLE [Credits] (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Person] INT FOREIGN KEY REFERENCES [Persons]([Id]),
-	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]),
+	[Content] INT FOREIGN KEY REFERENCES [Contents]([Id]) ON DELETE CASCADE,
 	[RoleType] INT NOT NULL FOREIGN KEY REFERENCES [RoleTypes]([Id])
 );
-
-CREATE TABLE [Users] (
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-	[Name] NVARCHAR(100) NOT NULL,
-	[Lastname] NVARCHAR(100) NOT NULL,
-	[Username] NVARCHAR(100) NOT NULL,
-	[Password] NVARCHAR(100) NOT NULL,
-); 
 
 CREATE TABLE [Audits] (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1, 1),
@@ -200,23 +193,23 @@ INSERT INTO [Plans] ([Name], [Description], [Price], [MaxPeople]) VALUES
 ('Familiar plus', 'Plan familiar con hasta seis pantallas', 60000, 6),
 ('Premium', 'Plan con calidad 4K y hasta nueve pantallas', 100000, 9);
 
-INSERT INTO [UserAccounts] ([Name], [Lastname], [Username], [PhoneNumber], [Email], [Password], [Birthday]) VALUES
-('Juan', 'P�rez', 'juanp', '3001234567', 'juanp@gmail.com', 'clave123', '1997-05-12'),
-('Mar�a', 'Gonz�lez', 'mariag', '3017654321', 'maria.g@hotmail.com', 'colombia1', '1999-09-23'),
-('Andr�s', 'Ram�rez', 'andresrz', '3024567890', 'andresr@yahoo.com', '12345678', '2003-02-14'),
-('Luisa', 'Mart�nez', 'luismrtnz', '3009988776', 'luisa.m@gmail.com', 'lulu2024', '2005-11-30'),
-('Karolina', 'Suarez', 'Karosuarez', '3009988776', 'Karolinasuare.10@gmail.com', 'Karo100s', '2006-05-07'),
-('Camilo', 'Torres', 'camilotrrs', '3045556666', 'camilot@outlook.com', 'torresC9', '2010-07-07'),
-('Sof�a', 'L�pez', 'sofial', '3112233445', 'sofia.lopez@gmail.com', 'sofia2023', '1992-03-11'),
-('Mateo', 'Fern�ndez', 'mateof', '5491122334455', 'mateo.fernandez@outlook.com', 'mateoarg', '1987-07-18'),
-('Isabella', 'Hernandez', 'isah', '525512345678', 'isabella.h@gmail.com', 'isa_mex', '1999-12-01'),
-('Oliver', 'Smith', 'olivers', '442012345678', 'oliver.smith@yahoo.com', 'passUK22', '2003-08-25'),
-('Emma', 'Johnson', 'emmaj', '12125551234', 'emma.johnson@outlook.com', 'emmaUSAu', '1994-05-14'),
-('Lucas', 'Martins', 'lucasm', '5511987654321', 'lucas.martins@gmail.com', 'brasil2022', '1990-11-30'),
-('Hiroshi', 'Tanaka', 'hiroshit', '81312345678', 'hiroshi.t@gmail.jp', 'japan777', '1985-04-09'),
-('Chlo�', 'Dubois', 'chloed', '33112345678', 'chloe.dubois@gmail.com', 'france22', '1996-02-21'),
-('Hans', 'Miller', 'hansm', '4915123456789', 'hans.mueller@outlook.com', 'germany99', '1982-06-17'),
-('Giulia', 'Rossi', 'giuliar', '393331234567', 'giulia.rossi@gmail.com', 'italia88', '2001-10-05');
+INSERT INTO [Users] ([Name], [Lastname], [Username], [Rol], [PhoneNumber], [Email], [Password], [Birthday]) VALUES
+('Juan', 'P�rez', 'juanp', 'Admin', '3001234567', 'juanp@gmail.com', 'clave123', '1997-05-12'),
+('Mar�a', 'Gonz�lez', 'mariag', 'User', '3017654321', 'maria.g@hotmail.com', 'colombia1', '1999-09-23'),
+('Andr�s', 'Ram�rez', 'andresrz', 'User', '3024567890', 'andresr@yahoo.com', '12345678', '2003-02-14'),
+('Luisa', 'Mart�nez', 'luismrtnz', 'User', '3009988776', 'luisa.m@gmail.com', 'lulu2024', '2005-11-30'),
+('Karolina', 'Suarez', 'Karosuarez', 'User', '3009988776', 'Karolinasuare.10@gmail.com', 'Karo100s', '2006-05-07'),
+('Camilo', 'Torres', 'camilotrrs', 'User', '3045556666', 'camilot@outlook.com', 'torresC9', '2010-07-07'),
+('Sof�a', 'L�pez', 'sofial', 'User', '3112233445', 'sofia.lopez@gmail.com', 'sofia2023', '1992-03-11'),
+('Mateo', 'Fern�ndez', 'mateof', 'User', '5491122334455', 'mateo.fernandez@outlook.com', 'mateoarg', '1987-07-18'),
+('Isabella', 'Hernandez', 'isah', 'User', '525512345678', 'isabella.h@gmail.com', 'isa_mex', '1999-12-01'),
+('Oliver', 'Smith', 'olivers', 'User', '442012345678', 'oliver.smith@yahoo.com', 'passUK22', '2003-08-25'),
+('Emma', 'Johnson', 'emmaj', 'User', '12125551234', 'emma.johnson@outlook.com', 'emmaUSAu', '1994-05-14'),
+('Lucas', 'Martins', 'lucasm', 'User', '5511987654321', 'lucas.martins@gmail.com', 'brasil2022', '1990-11-30'),
+('Hiroshi', 'Tanaka', 'hiroshit', 'User', '81312345678', 'hiroshi.t@gmail.jp', 'japan777', '1985-04-09'),
+('Chlo�', 'Dubois', 'chloed', 'User', '33112345678', 'chloe.dubois@gmail.com', 'france22', '1996-02-21'),
+('Hans', 'Miller', 'hansm', 'User', '4915123456789', 'hans.mueller@outlook.com', 'germany99', '1982-06-17'),
+('Giulia', 'Rossi', 'giuliar', 'User', '393331234567', 'giulia.rossi@gmail.com', 'italia88', '2001-10-05');
 
 INSERT INTO [Studios] ([Name], [Country], [Description]) VALUES
 ('Caracol Televisi�n', 1, 'Estudio colombiano de televisión y cine'),
@@ -394,6 +387,4 @@ INSERT INTO [Credits] ([Person], [Content], [RoleType]) VALUES
 (10,10,1), (11,11,2), (12,13,2), (13,13,3), (14,14,1), (15,15,3), (16,16,1), 
 (18,7,2), (19,9,2), (20,11,2), (21,12,2), (22,16,1), (5,9,6), (6,10,4), (7,11,5);
 
-INSERT INTO [Users] ([Name], [Lastname],[Username],[Password]) VALUES 
-('Pepito', 'Perez', 'Pepito@email.com', 'JHGjkhtu6387456yssdf');
 GO

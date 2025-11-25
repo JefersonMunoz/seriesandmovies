@@ -1,5 +1,4 @@
-﻿
-using lib_dominio.Entidades;
+﻿using lib_dominio.Entidades;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,9 +29,27 @@ namespace lib_repositorios.Implementaciones
             // Operaciones
             var existente = this.IConexion!.Users!.Find(entidad.Id);
             if (existente == null)
-                throw new Exception("El usuario ingresada no existe");
+                throw new Exception("El usuario ingresado no existe");
 
             this.IConexion!.Users!.Remove(entidad);
+            this.IConexion.SaveChanges();
+            return entidad;
+        }
+
+        public Users? Guardar(Users? entidad)
+        {
+            if (entidad == null)
+                throw new Exception("Ingrese toda la información");
+
+            // Operaciones
+            if (entidad.Birthday == null)
+                throw new Exception("Debe ingresar la fecha de nacimiento (MM/DD/YYYY)");
+
+            bool existe = this.IConexion.Users!.Any(a => a.Username == entidad.Username);
+            if (existe)
+                throw new Exception("Ya existe una cuenta con el nombre de usuario");
+
+            this.IConexion!.Users!.Add(entidad);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -42,7 +59,7 @@ namespace lib_repositorios.Implementaciones
             var lista = this.IConexion!.Users!.ToList();
 
             if (lista == null || lista.Count == 0)
-                throw new Exception("No existen usuarios registrados.");
+                throw new Exception("No existen episodios registrados.");
 
             return lista;
         }
@@ -58,28 +75,10 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
-        public Users? Guardar(Users? entidad)
-        {
-            if (entidad == null)
-                throw new Exception("Ingrese toda la información");
-
-            if (entidad.Id != 0)
-                throw new Exception("Usuario guardado correctamente");
-
-            //Validar usuario duplicado
-            bool existe = this.IConexion.Users!.Any(a => a.Username == entidad.Username);
-            if (existe)
-                throw new Exception("Ya existe un usuario con la misma información");
-            
-            //Guardar cambios
-            this.IConexion!.Users!.Add(entidad);
-            this.IConexion.SaveChanges();
-            return entidad;
-        }
-
         public Users? Modificar(Users? entidad)
         {
-            if (entidad == null)
+
+            if(entidad == null)
                 throw new Exception("Ingrese toda la información");
 
             // Operaciones
@@ -87,16 +86,17 @@ namespace lib_repositorios.Implementaciones
             if (existente == null)
                 throw new Exception("No se encontró el usuario que intenta modificar.");
 
-            //Validar usuario duplicado
+            //Validar que el registro existe
             bool existe = this.IConexion.Users!.Any(a => a.Username == entidad.Username);
             if (existe)
-                throw new Exception("Ya existe un usuario con la misma información");
+                throw new Exception("Ya existe una cuenta con el nombre de usuario");
 
             var entry = this.IConexion!.Entry<Users>(entidad);
             entry.State = EntityState.Modified;
+            entry.Property(e => e.Birthday).IsModified = false; //evitar que modifiique la fecha
+            entry.Property(e => e.Username).IsModified = false; //evitar que modifiique el usuario
             this.IConexion.SaveChanges();
             return entidad;
         }
-
     }
 }

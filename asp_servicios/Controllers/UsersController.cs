@@ -1,5 +1,4 @@
-﻿
-using asp_servicios.Nucleo;
+﻿using asp_servicios.Nucleo;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
 using lib_repositorios.Interfaces;
@@ -89,6 +88,14 @@ namespace asp_servicios.Controllers
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
                 }*/
+
+                // Validar que la fecha no esté nula
+                //var entidadJson = JsonConversor.ConvertirAString(datos["Entidad"]);
+                //if (!entidadJson.Contains("Birthday") || string.IsNullOrWhiteSpace(entidadJson))
+                //{
+                //    respuesta["Error"] = "Debe ingresar la fecha de nacimiento";
+                //    return JsonConversor.ConvertirAString(respuesta);
+                //}
 
                 var entidad = JsonConversor.ConvertirAObjeto<Users>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));

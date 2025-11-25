@@ -67,7 +67,7 @@ namespace lib_repositorios.Implementaciones
         public DbSet<ContentTypes>? ContentTypes { get; set; }
         public DbSet<RoleTypes>? RoleTypes { get; set; }
         public DbSet<Plans>? Plans { get; set; }
-        public DbSet<UserAccounts>? UserAccounts { get; set; }
+        public DbSet<Users>? UserAccounts { get; set; }
         public DbSet<Studios>? Studios { get; set; }
         public DbSet<Persons>? Persons { get; set; }
         public DbSet<Contents>? Contents { get; set; }

@@ -7,7 +7,7 @@ namespace lib_dominio.Entidades
     {
         [Key] public int Id { get; set; }
         public int User { get; set; }
-        [ForeignKey("User")] public UserAccounts? _User { get; set; }
+        [ForeignKey("User")] public Users? _User { get; set; }
         public int Content { get; set; }
         [ForeignKey("Content")] public Contents? _Content { get; set; }
     }

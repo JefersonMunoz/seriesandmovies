@@ -51,16 +51,19 @@ namespace asp_presentacion.Pages
 
                 if (respuestaLlave != null &&
                     respuestaLlave.ContainsKey("Llave") &&
-                    respuestaLlave.ContainsKey("UserId"))
+                    respuestaLlave.ContainsKey("UserId") &&
+                    respuestaLlave.ContainsKey("UserRol"))
                 {
                     var llave = respuestaLlave["Llave"]?.ToString();
                     var userId = respuestaLlave["UserId"]?.ToString();
+                    var userRol = respuestaLlave["UserRol"]?.ToString();
 
                     if (!string.IsNullOrEmpty(llave) && !string.IsNullOrEmpty(userId))
                     {
                         ViewData["Logged"] = true;
                         HttpContext.Session.SetString("Usuario", Username!);
                         HttpContext.Session.SetString("Id", userId);
+                        HttpContext.Session.SetString("Rol", userRol);
                         HttpContext.Session.SetString("Llave", llave); // Store the key
 
                         EstaLogueado = true;

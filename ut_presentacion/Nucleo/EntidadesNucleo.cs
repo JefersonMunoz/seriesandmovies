@@ -131,9 +131,9 @@ namespace ut_presentacion.Nucleo
             return entidad;
         }
 
-        public static UserAccounts? UserAccounts()
+        public static Users? UserAccounts()
         {
-            var entidad = new UserAccounts();
+            var entidad = new Users();
             entidad.Name = "Pruebas-" + DateTime.Now.ToString("yyyyMMddhhmmss");
             entidad.Lastname = "Cordoba Perez";
             entidad.Username = "Sandritacordoba";

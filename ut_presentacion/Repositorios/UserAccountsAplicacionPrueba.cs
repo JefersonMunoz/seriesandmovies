@@ -10,15 +10,15 @@ namespace ut_presentacion.Repositorios
     public class UserAccountsAplicacionPrueba
     {
         private readonly IConexion? iConexion;
-        private readonly UserAccountsAplicacion? UserAccountsAplicacion;
-        private UserAccounts? entidad;
+        private readonly UsersAplicacion? UserAccountsAplicacion;
+        private Users? entidad;
 
         public UserAccountsAplicacionPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
 
-            UserAccountsAplicacion = new UserAccountsAplicacion(iConexion);
+            UserAccountsAplicacion = new UsersAplicacion(iConexion);
             UserAccountsAplicacion.Configurar(iConexion.StringConexion!);
         }
 
