@@ -13,10 +13,12 @@ namespace asp_servicios.Controllers
     {
         private IWatchlistsAplicacion? iAplicacion = null;
         private TokenAplicacion? iAplicacionToken = null;
-        public WatchlistsController(IWatchlistsAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
+        private IAuditsAplicacion? iAplicacionAudits = null;
+        public WatchlistsController(IWatchlistsAplicacion? iAplicacion, TokenAplicacion iAplicacionToken, IAuditsAplicacion? iAplicacionAudits)
         {
             this.iAplicacion = iAplicacion;
             this.iAplicacionToken = iAplicacionToken;
+            this.iAplicacionAudits = iAplicacionAudits;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -44,6 +46,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Watchlists";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -73,6 +82,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.PorUser(entidad);
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Watchlists";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -103,6 +119,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se guardardo la lista de reproducción correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Watchlists";
+                    datos["Action"] = "Insert";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -132,6 +155,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se modificó la lista de reproducción correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Watchlists";
+                    datos["Action"] = "Update";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -158,6 +188,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Lista de reproducción eliminada correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Watchlists";
+                    datos["Action"] = "Delete";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

@@ -79,7 +79,7 @@ namespace asp_servicios.Controllers
                 //Create audits
                 if (datos.ContainsKey("UserId"))
                 {
-                    datos["Table"] = "Contents";
+                    datos["Table"] = "Languages";
                     datos["Action"] = "Insert";
                     iAplicacionAudits!.Guardar(datos);
                 }
@@ -116,7 +116,7 @@ namespace asp_servicios.Controllers
                 //Create audits
                 if (datos.ContainsKey("UserId"))
                 {
-                    datos["Table"] = "Contents";
+                    datos["Table"] = "Languages";
                     datos["Action"] = "Update";
                     iAplicacionAudits!.Guardar(datos);
                 }
@@ -150,7 +150,7 @@ namespace asp_servicios.Controllers
                 //Create audits
                 if (datos.ContainsKey("UserId"))
                 {
-                    datos["Table"] = "Contents";
+                    datos["Table"] = "Languages";
                     datos["Action"] = "Delete";
                     iAplicacionAudits!.Guardar(datos);
                 }

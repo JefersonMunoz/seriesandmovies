@@ -14,10 +14,12 @@ namespace asp_servicios.Controllers
     {
         private IUsersAplicacion? iAplicacion = null;
         private TokenAplicacion? iAplicacionToken = null;
-        public UsersController(IUsersAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
+        private IAuditsAplicacion? iAplicacionAudits = null;
+        public UsersController(IUsersAplicacion? iAplicacion, TokenAplicacion iAplicacionToken, IAuditsAplicacion? iAplicacionAudits)
         {
             this.iAplicacion = iAplicacion;
             this.iAplicacionToken = iAplicacionToken;
+            this.iAplicacionAudits = iAplicacionAudits;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -45,6 +47,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Users";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -73,6 +82,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.PorName(entidad);
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Users";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -104,6 +120,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se guardardó el usuario correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Users";
+                    datos["Action"] = "Insert";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -134,6 +157,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se modificó el usuario correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Users";
+                    datos["Action"] = "Update";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -160,6 +190,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Usuario eliminado correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Users";
+                    datos["Action"] = "Delete";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
