@@ -133,10 +133,7 @@ namespace lib_presentaciones.Implementaciones
                 throw new Exception("lbFaltaInformacion");
             }
             var datos = new Dictionary<string, object>();
-            //datos["Entidad"] = entidad;
-            //datos["Entidad"] = new { Id = entidad!.Id };
-            datos["Entidad"] = entidad!;
-
+            datos["Entidad"] = new { Id = entidad!.Id };
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "ContentGenres/Borrar");
             var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);

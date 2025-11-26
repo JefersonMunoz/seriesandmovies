@@ -25,7 +25,7 @@ namespace asp_presentacion
             services.AddScoped<IGenreTypesPresentacion, GenreTypesPresentacion>();
             services.AddScoped<ILanguagesPresentacion, LanguagesPresentacion>();
             services.AddScoped<IPersonsPresentacion, PersonsPresentacion>();
-            //services.AddScoped<IPersonTypeRolesPresentacion, PersonTypeRolesPresentacion>();
+            services.AddScoped<IPersonTypeRolesPresentacion, PersonTypeRolesPresentacion>();
             //services.AddScoped<IPlansPresentacion, PlansPresentacion>();
             //services.AddScoped<IReviewsPresentacion, ReviewsPresentacion>();
             //services.AddScoped<IRoleTypesPresentacion, RoleTypesPresentacion>();
