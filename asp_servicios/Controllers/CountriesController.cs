@@ -13,11 +13,13 @@ namespace asp_servicios.Controllers
     {
         private ICountriesAplicacion? iAplicacion = null;
         private TokenAplicacion? iAplicacionToken = null;
+        private IAuditsAplicacion? iAplicacionAudits = null;
 
-        public CountriesController(ICountriesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
+        public CountriesController(ICountriesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken, IAuditsAplicacion iAplicacionAudits)
         {
             this.iAplicacion = iAplicacion;
             this.iAplicacionToken = iAplicacionToken;
+            this.iAplicacionAudits = iAplicacionAudits;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -45,6 +47,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -74,6 +83,14 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se guardó la ciudad correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Insert";
+                    iAplicacionAudits!.Guardar(datos);
+                }
+                return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
@@ -81,7 +98,7 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
-            return JsonConversor.ConvertirAString(respuesta);
+            
         }
 
         [HttpPost]
@@ -103,6 +120,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se modificó la ciudad correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Update";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -129,6 +153,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Ciudad eliminada correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Delete";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

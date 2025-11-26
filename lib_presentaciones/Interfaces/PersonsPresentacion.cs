@@ -4,10 +4,10 @@ namespace lib_presentaciones.Interfaces
 {
     public interface IPersonsPresentacion
     {
-        Task<List<Persons>> Listar(string llave);
-        Task<List<Persons>> PorDescription(Persons? entidad, string llave);
-        Task<Persons?> Guardar(Persons? entidad, string llave);
-        Task<Persons?> Modificar(Persons? entidad, string llave);
-        Task<Persons?> Borrar(Persons? entidad, string llave);
+        Task<List<Persons>> Listar(string llave, int UserId);
+        Task<List<Persons>> PorDescription(Persons? entidad, string llave, int UserId);
+        Task<Persons?> Guardar(Persons? entidad, string llave, int UserId);
+        Task<Persons?> Modificar(Persons? entidad, string llave, int UserId);
+        Task<Persons?> Borrar(Persons? entidad, string llave, int UserId);
     }
 }

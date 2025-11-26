@@ -80,8 +80,8 @@ namespace asp_servicios.Controllers
                 if (datos.ContainsKey("UserId"))
                 {
                     datos["Table"] = "Contents";
-                    datos["Action"] = "Insert";
-                    iAplicacionAudits!.Read(datos);
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
                 }
                 return JsonConversor.ConvertirAString(respuesta);
             }

@@ -4,12 +4,12 @@ namespace lib_presentaciones.Interfaces
 {
     public interface IAudioTracksPresentacion
     {
-        Task<List<AudioTracks>> Listar();
-        Task<List<Contents>> Contents();
-        Task<List<Languages>> Languages();
-        Task<List<AudioTracks>> PorLanguage(string name);
-        Task<AudioTracks?> Guardar(AudioTracks? entidad);
-        Task<AudioTracks?> Modificar(AudioTracks? entidad);
-        Task<AudioTracks?> Borrar(AudioTracks? entidad);
+        Task<List<AudioTracks>> Listar(string llave, int UserId);
+        Task<List<Contents>> Contents(string llave, int UserId);
+        Task<List<Languages>> Languages(string llave, int UserId);
+        Task<List<AudioTracks>> PorLanguage(AudioTracks? entidad, string llave, int UserId);
+        Task<AudioTracks?> Guardar(AudioTracks? entidad, string llave, int UserId);
+        Task<AudioTracks?> Modificar(AudioTracks? entidad, string llave, int UserId);
+        Task<AudioTracks?> Borrar(AudioTracks? entidad, string llave, int UserId);
     }
 }

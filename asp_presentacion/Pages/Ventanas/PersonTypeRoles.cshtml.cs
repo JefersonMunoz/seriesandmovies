@@ -38,6 +38,7 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 var variable_session = HttpContext.Session.GetString("Usuario");
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 if (String.IsNullOrEmpty(variable_session))
                 {
                     HttpContext.Response.Redirect("/");
@@ -50,7 +51,7 @@ namespace asp_presentacion.Pages.Ventanas
                 Filtro._RoleType.Name = Filtro._RoleType.Name ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
-                var task = this.iPresentacion!.PorTypeRoles(Filtro!, llave);
+                var task = this.iPresentacion!.PorTypeRoles(Filtro!, llave, Convert.ToInt32(UserId));
                 task.Wait();
                 Lista = task.Result;
                 Actual = null;
@@ -65,12 +66,13 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new PersonTypeRoles();
-                var task = this.iPresentacion!.Persons(llave);
+                var task = this.iPresentacion!.Persons(llave, Convert.ToInt32(UserId));
                 task.Wait();
                 ListaPersons = task.Result;
-                var task2 = this.iPresentacion!.RoleTypes(llave);
+                var task2 = this.iPresentacion!.RoleTypes(llave, Convert.ToInt32(UserId));
                 task2.Wait();
                 ListaRoleTypes = task2.Result;
             }
@@ -85,12 +87,13 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 OnPostBtRefrescar();
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
-                var task = this.iPresentacion!.Persons(llave);
+                var task = this.iPresentacion!.Persons(llave, Convert.ToInt32(UserId));
                 task.Wait();
                 ListaPersons = task.Result;
-                var task2 = this.iPresentacion!.RoleTypes(llave);
+                var task2 = this.iPresentacion!.RoleTypes(llave, Convert.ToInt32(UserId));
                 task2.Wait();
                 ListaRoleTypes = task2.Result;
 
@@ -105,12 +108,13 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Task<PersonTypeRoles>? task = null;
                 if (Actual!.Id == 0)
-                    task = this.iPresentacion!.Guardar(Actual!,llave)!;
+                    task = this.iPresentacion!.Guardar(Actual!,llave, Convert.ToInt32(UserId))!;
                 else
-                    task = this.iPresentacion!.Modificar(Actual!, llave)!;
+                    task = this.iPresentacion!.Modificar(Actual!, llave, Convert.ToInt32(UserId))!;
                 task.Wait();
                 Actual = task.Result;
                 Accion = Enumerables.Ventanas.Listas;
@@ -139,7 +143,8 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var llave = HttpContext.Session.GetString("Llave");
-                var task = this.iPresentacion!.Borrar(Actual!, llave);
+                var UserId = HttpContext.Session.GetString("Id");
+                var task = this.iPresentacion!.Borrar(Actual!, llave, Convert.ToInt32(UserId));
                 Actual = task.Result;
                 OnPostBtRefrescar();
             }
@@ -164,8 +169,8 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                if (Accion == Enumerables.Ventanas.Listas)
-                    OnPostBtRefrescar();
+                Accion = Enumerables.Ventanas.Listas;
+                OnPostBtRefrescar();
             }
             catch (Exception ex)
             {

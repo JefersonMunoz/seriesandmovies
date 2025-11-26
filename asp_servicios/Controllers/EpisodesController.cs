@@ -13,10 +13,12 @@ namespace asp_servicios.Controllers
     {
         private IEpisodesAplicacion? iAplicacion = null;
         private TokenAplicacion? iAplicacionToken = null;
-        public EpisodesController(IEpisodesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
+        private IAuditsAplicacion? iAplicacionAudits = null;
+        public EpisodesController(IEpisodesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken, IAuditsAplicacion iAplicacionAudits)
         {
             this.iAplicacion = iAplicacion;
             this.iAplicacionToken = iAplicacionToken;
+            this.iAplicacionAudits = iAplicacionAudits;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -72,6 +74,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.PorEpisodes(entidad);
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -111,6 +120,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se guardaron los creditos correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Insert";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -141,6 +157,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se modificaron los créditos correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Update";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -167,6 +190,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Créditos eliminados correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "Contents";
+                    datos["Action"] = "Delete";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

@@ -8,14 +8,14 @@ namespace lib_presentaciones.Implementaciones
     {
         private Comunicaciones? comunicaciones = null;
 
-        public async Task<List<Episodes>> Listar(string llave)
+        public async Task<List<Episodes>> Listar(string llave, int UserId)
         {
             var lista = new List<Episodes>();
             var datos = new Dictionary<string, object>();
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Episodes/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -26,7 +26,7 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Episodes>> PorEpisodes(Episodes? entidad, string llave)
+        public async Task<List<Episodes>> PorEpisodes(Episodes? entidad, string llave, int UserId)
         {
             var lista = new List<Episodes>();
             var datos = new Dictionary<string, object>();
@@ -34,7 +34,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Episodes/PorEpisodes");
-            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -45,7 +45,7 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<Episodes?> Guardar(Episodes? entidad, string llave)
+        public async Task<Episodes?> Guardar(Episodes? entidad, string llave, int UserId)
         {
             if (entidad!.Id != 0)
             {
@@ -56,7 +56,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Episodes/Guardar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -67,7 +67,7 @@ namespace lib_presentaciones.Implementaciones
             return entidad;
         }
 
-        public async Task<Episodes?> Modificar(Episodes? entidad, string llave)
+        public async Task<Episodes?> Modificar(Episodes? entidad, string llave, int UserId)
         {
             if (entidad!.Id == 0)
             {
@@ -79,7 +79,7 @@ namespace lib_presentaciones.Implementaciones
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Episodes/Modificar");
             
-            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
@@ -89,19 +89,18 @@ namespace lib_presentaciones.Implementaciones
             return entidad;
         }
 
-        public async Task<Episodes?> Borrar(Episodes? entidad, string llave)
+        public async Task<Episodes?> Borrar(Episodes? entidad, string llave, int UserId)
         {
             if (entidad!.Id == 0)
             {
                 throw new Exception("lbFaltaInformacion");
             }
             var datos = new Dictionary<string, object>();
-            //datos["Entidad"] = entidad;
-            datos["Entidad"] = new { Id = entidad!.Id };
+            datos["Entidad"] = entidad;
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Episodes/Borrar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, llave);
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {

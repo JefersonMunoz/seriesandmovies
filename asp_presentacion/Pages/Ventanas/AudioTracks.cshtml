@@ -53,39 +53,18 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
-                    <h3>Instrumento</h3>
+                    <h3>Audios</h3>
                     <div>
-                        @* <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Nombre
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmName"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Name" />
-                            </div>
-                        </div> *@
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Languaje
-                            </label>
-                            <div class="col-lg-6">
-                                <input value="@Model.Actual!._Language?.Name" class="cts_forms form-control" />
-                                @* <input id="nmLanguaje"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!._Languaje?.Name" /> *@
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Tipo
+                                Contenido
                             </label>
                             <div class="col-lg-6">
                                 <select id="nmContent"
                                         class="cts_forms form-control"
                                         asp-for="Actual.Content"
                                         asp-items="@(new SelectList(Model.ListaContents, "Id", "Name"))">
-                                    <option value="">-- Seleccionar Tipo --</option>
+                                    <option value="">-- Seleccionar Contenido --</option>
                                 </select>
                             </div>
                         </div>
@@ -102,29 +81,6 @@
                                 </select>
                             </div>
                         </div>
-                       @*  <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Studio
-                            </label>
-                            <div class="col-lg-6">
-                                <select id="nmStudio"
-                                        class="cts_forms form-control"
-                                        asp-for="Actual.Studio"
-                                        asp-items="@(new SelectList(Model.ListaStudios, "Id", "Name"))">
-                                    <option value="">-- Seleccionar Studio --</option>
-                                </select>
-                            </div>
-                        </div> *@
-                       @*  <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Año
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmYear"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Year" />
-                            </div>
-                        </div> *@
                     </div>
                 </div>
             }
@@ -168,27 +124,21 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
                         Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
-                @* <input id="flLanguaje"
+                <input id="flLanguaje"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Languaje"
+                       asp-for="@Model.Filtro!._Language.Name"
                        placeholder="Languaje" />
-                <br /> *@
+                <br />
 
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered tablehover">
                         <tr>
-                            @* <th>
-                                Nombre
+                            <th>
+                                Contenido
                             </th>
                             <th>
-                                Descripcion
+                                Lenguaje
                             </th>
-                            <th class="cl_hidden">
-                                Tipo
-                            </th>
-                            <th class="cl_hidden">
-                                Año
-                            </th> *@
                             <th class="cl_actions">
                                 Accion
                             </th>
@@ -198,18 +148,12 @@
                             @foreach (var elemento in Model.Lista)
                             {
                                 <tr>
-                                    @* <td>
-                                        @elemento.Name
-                                    </td> *@
-                                    @* <td>
-                                        @elemento._Languaje.Name
-                                    </td> *@
-                                    <td class="cl_hidden">
-                                        @elemento._Content.Name
+                                    <td>
+                                        @elemento._Content?.Name
                                     </td>
-                                    @* <td>
-                                        @elemento.Year
-                                    </td> *@
+                                     <td>
+                                        @elemento._Language?.Name
+                                    </td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <button type="submit"

@@ -1,6 +1,7 @@
 ﻿using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
 using lib_presentaciones.Interfaces;
+using System.Collections.Generic;
 
 namespace lib_presentaciones.Implementaciones
 {
@@ -8,14 +9,14 @@ namespace lib_presentaciones.Implementaciones
     {
         private Comunicaciones? comunicaciones = null;
 
-        public async Task<List<AudioTracks>> Listar()
+        public async Task<List<AudioTracks>> Listar(string llave, int UserId)
         {
             var lista = new List<AudioTracks>();
             var datos = new Dictionary<string, object>();
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "AudioTracks/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "AudioTracks/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -26,14 +27,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<AudioTracks>> AudioTracks()
+        public async Task<List<AudioTracks>> AudioTracks(string llave, int UserId)
         {
             var lista = new List<AudioTracks>();
             var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "AudioTracks/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "AudioTracks/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -44,14 +45,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Contents>> Contents()
+        public async Task<List<Contents>> Contents(string llave, int UserId)
         {
             var lista = new List<Contents>();
             var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Contents/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "Contents/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -62,14 +63,14 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<Languages>> Languages()
+        public async Task<List<Languages>> Languages(string llave, int UserId)
         {
             var lista = new List<Languages>();
             var datos = new Dictionary<string, object>();
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "Languages/Listar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "Languages/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -80,15 +81,15 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<List<AudioTracks>> PorLanguage(string name)
+        public async Task<List<AudioTracks>> PorLanguage(AudioTracks? entidad, string llave, int UserId)
         {
             var lista = new List<AudioTracks>();
             var datos = new Dictionary<string, object>();
-            datos["name"] = name;
+            datos["Entidad"] = entidad;
 
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "AudioTracks/PorLanguage");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "AudioTracks/PorLanguage");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
 
             if (respuesta.ContainsKey("Error"))
             {
@@ -99,7 +100,7 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
-        public async Task<AudioTracks?> Guardar(AudioTracks? entidad)
+        public async Task<AudioTracks?> Guardar(AudioTracks? entidad, string llave, int UserId)
         {
             if (entidad!.Id != 0)
             {
@@ -110,7 +111,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "AudioTracks/Guardar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "AudioTracks/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -121,7 +122,7 @@ namespace lib_presentaciones.Implementaciones
             return entidad;
         }
 
-        public async Task<AudioTracks?> Modificar(AudioTracks? entidad)
+        public async Task<AudioTracks?> Modificar(AudioTracks? entidad, string llave, int UserId)
         {
             if (entidad!.Id == 0)
             {
@@ -133,7 +134,7 @@ namespace lib_presentaciones.Implementaciones
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "AudioTracks/Modificar");
             
-            var respuesta = await comunicaciones!.Ejecutar(datos, "AudioTracks/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
@@ -143,7 +144,7 @@ namespace lib_presentaciones.Implementaciones
             return entidad;
         }
 
-        public async Task<AudioTracks?> Borrar(AudioTracks? entidad)
+        public async Task<AudioTracks?> Borrar(AudioTracks? entidad, string llave, int UserId)
         {
             if (entidad!.Id == 0)
             {
@@ -154,7 +155,7 @@ namespace lib_presentaciones.Implementaciones
             
             comunicaciones = new Comunicaciones();
             datos = comunicaciones.ConstruirUrl(datos, "AudioTracks/Borrar");
-            var respuesta = await comunicaciones!.Ejecutar(datos, "AudioTracks/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
@@ -166,3 +167,6 @@ namespace lib_presentaciones.Implementaciones
         }
     }
 }
+
+
+

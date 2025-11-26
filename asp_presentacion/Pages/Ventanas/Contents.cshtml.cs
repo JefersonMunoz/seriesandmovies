@@ -175,8 +175,8 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                if (Accion == Enumerables.Ventanas.Listas)
-                    OnPostBtRefrescar();
+                Accion = Enumerables.Ventanas.Listas;
+                OnPostBtRefrescar();
             }
             catch (Exception ex)
             {

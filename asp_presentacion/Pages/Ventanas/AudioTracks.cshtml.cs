@@ -1,9 +1,11 @@
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
 using lib_presentaciones.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Numerics;
 namespace asp_presentacion.Pages.Ventanas
 {
     public class AudioTracksModel : PageModel
@@ -15,6 +17,8 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 this.iPresentacion = iPresentacion;
                 Filtro = new AudioTracks();
+                ListaContents = new List<Contents>();
+                ListaLanguages = new List<Languages>();
             }
             catch (Exception ex)
             {
@@ -28,39 +32,47 @@ namespace asp_presentacion.Pages.Ventanas
         [BindProperty] public AudioTracks? Actual { get; set; }
         [BindProperty] public AudioTracks? Filtro { get; set; }
         [BindProperty] public List<AudioTracks>? Lista { get; set; }
-        //public virtual void OnGet() { OnPostBtRefrescar(); }
-        //public void OnPostBtRefrescar()
-        //{
-        //    try
-        //    {
-        //        var variable_session = HttpContext.Session.GetString("Usuario");
-        //        if (String.IsNullOrEmpty(variable_session))
-        //        {
-        //            HttpContext.Response.Redirect("/");
-        //            return;
-        //        }
-        //        Filtro!.Language = Filtro!._Language.Name ?? "";
-        //        Accion = Enumerables.Ventanas.Listas;
-        //        //var task = this.iPresentacion!.PorLanguage(Filtro!);
-        //        task.Wait();
-        //        Lista = task.Result;
-        //        Actual = null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogConversor.Log(ex, ViewData!);
-        //    }
-        //}
+        public virtual void OnGet() { OnPostBtRefrescar(); }
+        public void OnPostBtRefrescar()
+        {
+            try
+            {
+                var variable_session = HttpContext.Session.GetString("Usuario");
+                var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
+                if (String.IsNullOrEmpty(variable_session))
+                {
+                    HttpContext.Response.Redirect("/");
+                    return;
+                }
+                Filtro = new AudioTracks();
+                Filtro._Language ??= new Languages();
+                Filtro._Language.Name = Filtro._Language.Name ?? "";
+                Filtro._Content ??= new Contents();
+                Filtro._Content.Name = Filtro._Content.Name ?? "";
+                Accion = Enumerables.Ventanas.Listas;
+                var task = this.iPresentacion!.PorLanguage(Filtro!, llave, Convert.ToInt32(UserId));
+                task.Wait();
+                Lista = task.Result;
+                Actual = null;
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
         public virtual void OnPostBtNuevo()
         {
             try
             {
+                var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new AudioTracks();
-                var task = this.iPresentacion!.Contents();
+                var task = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
                 task.Wait();
                 ListaContents = task.Result;
-                var task2 = this.iPresentacion!.Languages();
+                var task2 = this.iPresentacion!.Languages(llave, Convert.ToInt32(UserId));
                 task2.Wait();
                 ListaLanguages = task2.Result;
             }
@@ -73,13 +85,15 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                //OnPostBtRefrescar();
+                OnPostBtRefrescar();
+                var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
-                var task = this.iPresentacion!.Contents();
+                var task = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
                 task.Wait();
                 ListaContents = task.Result;
-                var task2 = this.iPresentacion!.Languages();
+                var task2 = this.iPresentacion!.Languages(llave, Convert.ToInt32(UserId));
                 task2.Wait();
                 ListaLanguages = task2.Result;
 
@@ -93,16 +107,18 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
+                var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Task<AudioTracks>? task = null;
                 if (Actual!.Id == 0)
-                    task = this.iPresentacion!.Guardar(Actual!)!;
+                    task = this.iPresentacion!.Guardar(Actual!, llave, Convert.ToInt32(UserId))!;
                 else
-                    task = this.iPresentacion!.Modificar(Actual!)!;
+                    task = this.iPresentacion!.Modificar(Actual!, llave, Convert.ToInt32(UserId))!;
                 task.Wait();
                 Actual = task.Result;
                 Accion = Enumerables.Ventanas.Listas;
-                //OnPostBtRefrescar();
+                OnPostBtRefrescar();
             }
             catch (Exception ex)
             {
@@ -113,7 +129,7 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                //OnPostBtRefrescar();
+                OnPostBtRefrescar();
                 Accion = Enumerables.Ventanas.Borrar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
             }
@@ -126,9 +142,11 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                var task = this.iPresentacion!.Borrar(Actual!);
+                var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
+                var task = this.iPresentacion!.Borrar(Actual!, llave, Convert.ToInt32(UserId));
                 Actual = task.Result;
-                //OnPostBtRefrescar();
+                OnPostBtRefrescar();
             }
             catch (Exception ex)
             {
@@ -140,7 +158,7 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 Accion = Enumerables.Ventanas.Listas;
-                //OnPostBtRefrescar();
+                OnPostBtRefrescar();
             }
             catch (Exception ex)
             {
@@ -151,8 +169,8 @@ namespace asp_presentacion.Pages.Ventanas
         {
             try
             {
-                if (Accion == Enumerables.Ventanas.Listas) ;
-                    //OnPostBtRefrescar();
+                Accion = Enumerables.Ventanas.Listas;
+                OnPostBtRefrescar();
             }
             catch (Exception ex)
             {
