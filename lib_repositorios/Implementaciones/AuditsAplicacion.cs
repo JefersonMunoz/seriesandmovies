@@ -2,6 +2,8 @@
 using lib_dominio.Entidades;
 using lib_repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 
 namespace lib_repositorios.Implementaciones
 {
@@ -46,24 +48,30 @@ namespace lib_repositorios.Implementaciones
             return lista;
         }
 
-        public Audits? Guardar(Audits? entidad)
+        public Audits? Guardar(Dictionary<string, object> datos)
         {
-            if (entidad == null)
-                throw new Exception("Ingrese toda la información");
-
-            if (entidad.Id != 0)
-                throw new Exception("Auditoria guardadda correctamente");
+            if (datos["UserId"] == null)
+                throw new Exception("Id requerido para la auditoria");
 
             // Operaciones
             //Validar que el usuario exista
-            var auditoria = this.IConexion!.Users!.Find(entidad.User);
-            if (auditoria == null)
-                throw new Exception("El no usuario existe");
+            var auditoria = this.IConexion!.Users!.Find(Convert.ToInt32(datos["UserId"]));
+            if (auditoria != null)
+            {
 
-            //Guardar cambios
-            this.IConexion!.Audits!.Add(entidad);
-            this.IConexion.SaveChanges();
-            return entidad;
+                var audit = new Audits()
+                {
+                    User = Convert.ToInt32(datos["UserId"]), //Tomar usuario que realizó la acción
+                    Action = datos["Action"].ToString(),
+                    Table = datos["Table"].ToString(),
+                    Date = DateTime.Now
+                };
+                //Guardar cambios
+                this.IConexion!.Audits!.Add(audit);
+                this.IConexion.SaveChanges();
+                return audit;
+            }
+            return new Audits();
         }
 
         public List<Audits> porAction(Audits? entidad)

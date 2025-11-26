@@ -22,7 +22,7 @@ namespace lib_presentaciones
             return data;
         }
 
-        public async Task<Dictionary<string, object>> Ejecutar(Dictionary<string, object> datos, string llave)
+        public async Task<Dictionary<string, object>> Ejecutar(Dictionary<string, object> datos, string llave, int UserId)
         {
             var respuesta = new Dictionary<string, object>();
             try
@@ -37,6 +37,7 @@ namespace lib_presentaciones
                 datos.Remove("Url");
                 datos.Remove("UrlLlave");
                 datos["Llave"] = llave;
+                datos["UserId"] = UserId;
                 var stringData = JsonConversor.ConvertirAString(datos);
 
                 var httpClient = new HttpClient();

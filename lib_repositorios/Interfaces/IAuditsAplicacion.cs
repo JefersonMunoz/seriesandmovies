@@ -7,7 +7,7 @@ namespace lib_repositorios.Interfaces
     {
         void Configurar(string StringConexion);
         List<Audits> Listar();
-        Audits? Guardar(Audits? entidad);
+        Audits? Guardar(Dictionary<string, object> datos);
         List<Audits> porAction(Audits? entidad);
         //Audits? Modificar(Audits? entidad);
         //Audits? Borrar(Audits? entidad);

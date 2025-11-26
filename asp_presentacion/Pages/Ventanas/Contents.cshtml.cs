@@ -36,13 +36,14 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 var variable_session = HttpContext.Session.GetString("Usuario");
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 if (String.IsNullOrEmpty(variable_session))
                 {
                     HttpContext.Response.Redirect("/");
                     return;
                 }
 
-                var task1 = this.iPresentacion!.ContentTypes(llave);
+                var task1 = this.iPresentacion!.ContentTypes(llave, Convert.ToInt32(UserId));
                 task1.Wait();
                 ListaContentTypes = task1.Result;
 
@@ -50,7 +51,7 @@ namespace asp_presentacion.Pages.Ventanas
                 Filtro!.ContentType = Filtro!.ContentType ?? 0;
                 //Filtro!.ContentType = Filtro!.ContentType == 0 ? 1 : Filtro!.ContentType;
                 Accion = Enumerables.Ventanas.Listas;
-                var task = this.iPresentacion!.Filtro(Filtro!, llave);
+                var task = this.iPresentacion!.Filtro(Filtro!, llave, Convert.ToInt32(UserId));
                 task.Wait();
                 Lista = task.Result;
                 Actual = null;
@@ -65,15 +66,16 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = new Contents();
-                var task = this.iPresentacion!.ContentTypes(llave);
+                var task = this.iPresentacion!.ContentTypes(llave, Convert.ToInt32(UserId));
                 task.Wait();
                 ListaContentTypes = task.Result;
-                var task1 = this.iPresentacion!.Studios(llave);
+                var task1 = this.iPresentacion!.Studios(llave, Convert.ToInt32(UserId));
                 task1.Wait();
                 ListaStudios = task1.Result;
-                var task2 = this.iPresentacion!.Languages(llave);
+                var task2 = this.iPresentacion!.Languages(llave, Convert.ToInt32(UserId));
                 task2.Wait();
                 ListaLanguages = task2.Result;
             }
@@ -88,15 +90,16 @@ namespace asp_presentacion.Pages.Ventanas
             {
                 OnPostBtRefrescar();
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
-                var task = this.iPresentacion!.ContentTypes(llave);
+                var task = this.iPresentacion!.ContentTypes(llave, Convert.ToInt32(UserId));
                 task.Wait();
                 ListaContentTypes = task.Result;
-                var task1 = this.iPresentacion!.Studios(llave);
+                var task1 = this.iPresentacion!.Studios(llave, Convert.ToInt32(UserId));
                 task1.Wait();
                 ListaStudios = task1.Result;
-                var task2 = this.iPresentacion!.Languages(llave);
+                var task2 = this.iPresentacion!.Languages(llave, Convert.ToInt32(UserId));
                 task2.Wait();
                 ListaLanguages = task2.Result;
 
@@ -111,12 +114,13 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var llave = HttpContext.Session.GetString("Llave");
+                var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Task<Contents>? task = null;
                 if (Actual!.Id == 0)
-                    task = this.iPresentacion!.Guardar(Actual!,llave)!;
+                    task = this.iPresentacion!.Guardar(Actual!,llave, Convert.ToInt32(UserId))!;
                 else
-                    task = this.iPresentacion!.Modificar(Actual!, llave)!;
+                    task = this.iPresentacion!.Modificar(Actual!, llave, Convert.ToInt32(UserId))!;
                 task.Wait();
                 Actual = task.Result;
                 Accion = Enumerables.Ventanas.Listas;
@@ -145,7 +149,8 @@ namespace asp_presentacion.Pages.Ventanas
             try
             {
                 var llave = HttpContext.Session.GetString("Llave");
-                var task = this.iPresentacion!.Borrar(Actual!, llave);
+                var UserId = HttpContext.Session.GetString("Id");
+                var task = this.iPresentacion!.Borrar(Actual!, llave, Convert.ToInt32(UserId));
                 Actual = task.Result;
                 OnPostBtRefrescar();
             }

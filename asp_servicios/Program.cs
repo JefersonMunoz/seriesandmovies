@@ -9,6 +9,7 @@ startup.ConfigureServices(builder, builder.Services);
 builder.Services.AddScoped<IAudioTracksAplicacion, AudioTracksAplicacion>();
 builder.Services.AddScoped<IContentGenresAplicacion, ContentGenresAplicacion>();
 builder.Services.AddScoped<IContentsAplicacion, ContentsAplicacion>();
+builder.Services.AddScoped<IAuditsAplicacion, AuditsAplicacion>();
 builder.Services.AddScoped<IContentTypesAplicacion, ContentTypesAplicacion>();
 builder.Services.AddScoped<ICountriesAplicacion, CountriesAplicacion>();
 builder.Services.AddScoped<ICreditsAplicacion, CreditsAplicacion>();

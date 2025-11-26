@@ -19,46 +19,46 @@ namespace lib_repositorios.Implementaciones
 
         //---------------------------------------------------------------------------
         //AUDITORIA GENÉRICA
-        public override int SaveChanges()
-        {
-            try { 
-            // Recorrer las entidades que se les hizo algna acción
-            var entries = ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added ||
-                             e.State == EntityState.Modified ||
-                             e.State == EntityState.Deleted).ToList();
+        //public override int SaveChanges()
+        //{
+        //    try { 
+        //    // Recorrer las entidades que se les hizo algna acción
+        //    var entries = ChangeTracker.Entries()
+        //        .Where(e => e.State == EntityState.Added ||
+        //                     e.State == EntityState.Modified ||
+        //                     e.State == EntityState.Deleted).ToList();
 
             
-            foreach (var entry in entries)
-            {
-                string accion = entry.State switch
-                {
-                    EntityState.Added => "INSERT",
-                    EntityState.Modified => "UPDATE",
-                    EntityState.Deleted => "DELETE"
-                };
+        //    foreach (var entry in entries)
+        //    {
+        //        string accion = entry.State switch
+        //        {
+        //            EntityState.Added => "INSERT",
+        //            EntityState.Modified => "UPDATE",
+        //            EntityState.Deleted => "DELETE"
+        //        };
 
-                var audit = new Audits()
-                {
-                    User = 1, //Tomar usuario que realizó la acción
-                    Action = accion,
-                    Table = entry.Metadata.GetTableName(),
-                    Date = DateTime.Now
-                };
-                this.Audits.Add(audit);
-            }
-            return base.SaveChanges();
-            }
-                catch (DbUpdateException ex)
-            {
-                // Aquí puedes inspeccionar el InnerException si quieres más detalle
-                throw new Exception("No se pudo guardar los cambios. Verifique el ID o las relaciones.", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error inesperado al guardar los cambios.", ex);
-            }
-        }
+        //        var audit = new Audits()
+        //        {
+        //            User = 1, //Tomar usuario que realizó la acción
+        //            Action = accion,
+        //            Table = entry.Metadata.GetTableName(),
+        //            Date = DateTime.Now
+        //        };
+        //        this.Audits.Add(audit);
+        //    }
+        //    return base.SaveChanges();
+        //    }
+        //        catch (DbUpdateException ex)
+        //    {
+        //        // Aquí puedes inspeccionar el InnerException si quieres más detalle
+        //        throw new Exception("No se pudo guardar los cambios. Verifique el ID o las relaciones.", ex);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Ocurrió un error inesperado al guardar los cambios.", ex);
+        //    }
+        //}
 
 
         public DbSet<GenreTypes>? GenreTypes { get; set; }
