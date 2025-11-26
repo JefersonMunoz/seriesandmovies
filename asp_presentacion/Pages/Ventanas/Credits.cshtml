@@ -2,6 +2,7 @@
 @model asp_presentacion.Pages.Ventanas.CreditsModel
 @{
     ViewData["Titulo"] = "";
+    var userRole = HttpContext.Session.GetString("Rol");
 }
 <center>
     <div>
@@ -20,21 +21,24 @@
                        asp-page-handler="BtRefrescar"
                        class="btn btn-secondary"
                        disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
-                 <input type="submit"
-                       value="Nuevo"
-                       asp-page-handler="BtNuevo"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" /> 
-                <input type="submit"
-                       value="Guardar"
-                       asp-page-handler="BtGuardar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
-                <input type="submit"
-                       value="Cancelar"
-                       asp-page-handler="BtCancelar"
-                       class="btn btn-secondary"
-                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                @if (userRole == "Admin")
+                {
+                    <input type="submit"
+                           value="Nuevo"
+                           asp-page-handler="BtNuevo"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                    <input type="submit"
+                           value="Guardar"
+                           asp-page-handler="BtGuardar"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                    <input type="submit"
+                           value="Cancelar"
+                           asp-page-handler="BtCancelar"
+                           class="btn btn-secondary"
+                           disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                }
             </div>
 
             @if (Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
@@ -155,10 +159,13 @@
                             <th>
                                 Rol
                             </th>
-                            
-                            <th class="cl_actions">
-                                Accion
-                            </th>
+
+                            @if (userRole == "Admin")
+                            {
+                                <th class="cl_actions">
+                                    Accion
+                                </th>
+                            }
                         </tr>
                         @if (Model != null && Model.Lista != null)
                         {
@@ -175,29 +182,32 @@
                                         @elemento._RoleType.Name
                                     </td>
 
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <button type="submit"
-                                                    asp-page-handler="BtModificar"
-                                                    asp-route-data="@elemento.Id"
-                                                    name="bt"
-                                                    value="Editar"
-                                                    class="btn btn-link p-0"
-                                                    title="Editar">
-                                                <i class="material-icons text-primary">&#xE254;</i> 
-                                            </button>
+                                    @if (userRole == "Admin")
+                                    {
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <button type="submit"
+                                                        asp-page-handler="BtModificar"
+                                                        asp-route-data="@elemento.Id"
+                                                        name="bt"
+                                                        value="Editar"
+                                                        class="btn btn-link p-0"
+                                                        title="Editar">
+                                                    <i class="material-icons text-primary">&#xE254;</i>
+                                                </button>
 
-                                            <button type="submit"
-                                                    asp-page-handler="BtBorrarVal"
-                                                    asp-route-data="@elemento.Id"
-                                                    name="bt"
-                                                    value="Borrar"
-                                                    class="btn btn-link p-0"
-                                                    title="Eliminar">
-                                                <i class="material-icons text-danger">&#xE872;</i> 
-                                            </button>
-                                        </div>
-                                    </td>
+                                                <button type="submit"
+                                                        asp-page-handler="BtBorrarVal"
+                                                        asp-route-data="@elemento.Id"
+                                                        name="bt"
+                                                        value="Borrar"
+                                                        class="btn btn-link p-0"
+                                                        title="Eliminar">
+                                                    <i class="material-icons text-danger">&#xE872;</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    }
                                 </tr>
                             }
                         }

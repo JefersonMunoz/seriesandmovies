@@ -1,6 +1,5 @@
-﻿
-@page
-@model asp_presentacion.Pages.Ventanas.ContentTypesModel
+﻿@page
+@model asp_presentacion.Pages.Ventanas.ReviewsModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +11,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>ContentTypes</h3>
+                <h3>Reseñas</h3>
             </div>
 
             <div align="left"
@@ -51,33 +50,77 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Name" />
+                       asp-for="@Model.Actual!._User.Name" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Description" />
+                       asp-for="@Model.Actual!.Comment" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Rating" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.CreatedAt" />
+                <input type="hidden"
+                        asp -for= "@Model.Actual!._Content.Name" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
-                    <h3>Tipos de contenido</h3>
+
+                    <h3>Reseñas</h3>
+
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Nombre
+                                Usuario
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmName"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Name" />
+                                <select id="nmContentType"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.User"
+                                        asp-items="@(new SelectList(Model.ListaUsers, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Usuario --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Descripcion
+                                Comentario
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmDescription"
+                                <input id="nmComment"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Description" />
+                                       asp-for="@Model.Actual!.Comment" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Puntaje
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmRating"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Rating" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Fecha creación
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmRating"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.CreatedAt" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Tipo
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmContentType"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Content"
+                                        asp-items="@(new SelectList(Model.ListaContents, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Contenido --</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -102,9 +145,6 @@
                             <h4 align="left">
                                 Desea borrar la entidad?
                             </h4>
-                            <h6 align="left">
-                                @Model.Actual!.Name
-                            </h6>
                             <br />
                             <br />
                             <input type="submit"
@@ -125,24 +165,33 @@
             {
                 <input id="flDescription"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Name"
-                       placeholder="Name" />
+                       asp-for="@Model.Filtro!.Comment"
+                       placeholder="Description" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered tablehover">
                         <tr>
                             <th>
-                                Nombre
+                                Usuario
                             </th>
                             <th>
-                                Descripcion
+                                Comentario
+                            </th>
+                            <th>
+                                Puntaje
+                            </th>
+                            <th>
+                                Fecha creación
+                            </th>
+                            <th>
+                                Contenido
                             </th>
                             @if (userRole == "Admin")
                             {
-                                <th class="cl_actions">
-                                    Accion
-                                </th>
+                                                    <th class="cl_actions">
+                                                        Accion
+                                                    </th>
                             }
                         </tr>
                         @if (Model != null && Model.Lista != null)
@@ -151,11 +200,21 @@
                             {
                                 <tr>
                                     <td>
-                                        @elemento.Name
+                                        @elemento._User.Name
                                     </td>
                                     <td>
-                                        @elemento.Description
+                                        @elemento.Comment
                                     </td>
+                                    <td>
+                                        @elemento.Rating
+                                    </td>
+                                    <td>
+                                        @elemento.CreatedAt
+                                    </td>
+                                    <td>
+                                        @elemento._Content.Name
+                                    </td>
+
                                     @if (userRole == "Admin")
                                     {
                                         <td>
@@ -182,6 +241,7 @@
                                             </div>
                                         </td>
                                     }
+
                                 </tr>
                             }
                         }

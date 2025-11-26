@@ -77,7 +77,7 @@ namespace lib_repositorios.Implementaciones
         public List<Reviews> PorContent(Reviews? entidad)
         {
             string name = entidad!._Content!.Name!;
-            var lista = this.IConexion!.Reviews!.Include(x => x._Content).Where(x => x._Content!.Name!.Contains(name)).ToList();
+            var lista = this.IConexion!.Reviews!.Include(x => x._Content).Include(a => a._User).Where(x => x._Content!.Name!.Contains(name)).ToList();
 
             if (lista == null || lista.Count == 0)
                 throw new Exception("No existen reseñas que coincidan con la búsqueda.");
