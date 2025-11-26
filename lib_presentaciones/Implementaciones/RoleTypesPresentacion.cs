@@ -5,49 +5,29 @@ using lib_presentaciones.Interfaces;
 
 namespace lib_presentaciones.Implementaciones
 {
-    public class PlansPresentacion : IPlansPresentacion
+    public class RoleTypesPresentacion : IRoleTypesPresentacion
     {
         private Comunicaciones? comunicaciones = null;
 
-        public async Task<List<Plans>> Listar(string llave, int UserId)
+        public async Task<List<RoleTypes>> Listar(string llave, int UserId)
         {
-            var lista = new List<Plans>();
+            var lista = new List<RoleTypes>();
             var datos = new Dictionary<string, object>();
             
             comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Plans/Listar");
+            datos = comunicaciones.ConstruirUrl(datos, "RoleTypes/Listar");
             var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
             }
-            lista = JsonConversor.ConvertirAObjeto<List<Plans>>(
+            lista = JsonConversor.ConvertirAObjeto<List<RoleTypes>>(
                 JsonConversor.ConvertirAString(respuesta["Entidades"]));
             return lista;
         }
 
-
-        public async Task<List<Plans>> PorPlan(Plans? entidad, string llave, int UserId)
-        {
-            var lista = new List<Plans>();
-            var datos = new Dictionary<string, object>();
-            datos["Entidad"] = entidad!;
-            
-            comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Plans/PorPlan");
-            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
-            
-            if (respuesta.ContainsKey("Error"))
-            {
-                throw new Exception(respuesta["Error"].ToString()!);
-            }
-            lista = JsonConversor.ConvertirAObjeto<List<Plans>>(
-                JsonConversor.ConvertirAString(respuesta["Entidades"]));
-            return lista;
-        }
-
-        public async Task<Plans?> Guardar(Plans? entidad, string llave, int UserId)
+        public async Task<RoleTypes?> Guardar(RoleTypes? entidad, string llave, int UserId)
         {
             if (entidad!.Id != 0)
             {
@@ -57,19 +37,19 @@ namespace lib_presentaciones.Implementaciones
             datos["Entidad"] = entidad;
             
             comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Plans/Guardar");
+            datos = comunicaciones.ConstruirUrl(datos, "RoleTypes/Guardar");
             var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
             }
-            entidad = JsonConversor.ConvertirAObjeto<Plans>(
+            entidad = JsonConversor.ConvertirAObjeto<RoleTypes>(
                 JsonConversor.ConvertirAString(respuesta["Entidad"]));
             return entidad;
         }
 
-        public async Task<Plans?> Modificar(Plans? entidad, string llave, int UserId)
+        public async Task<RoleTypes?> Modificar(RoleTypes? entidad, string llave, int UserId)
         {
             if (entidad!.Id == 0)
             {
@@ -79,19 +59,19 @@ namespace lib_presentaciones.Implementaciones
             datos["Entidad"] = entidad;
 
             comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Plans/Modificar");
+            datos = comunicaciones.ConstruirUrl(datos, "RoleTypes/Modificar");
             
             var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
             }
-            entidad = JsonConversor.ConvertirAObjeto<Plans>(
+            entidad = JsonConversor.ConvertirAObjeto<RoleTypes>(
                 JsonConversor.ConvertirAString(respuesta["Entidad"]));
             return entidad;
         }
 
-        public async Task<Plans?> Borrar(Plans? entidad, string llave, int UserId)
+        public async Task<RoleTypes?> Borrar(RoleTypes? entidad, string llave, int UserId)
         {
             if (entidad!.Id == 0)
             {
@@ -100,14 +80,14 @@ namespace lib_presentaciones.Implementaciones
             var datos = new Dictionary<string, object>();
             datos["Entidad"] = new { Id = entidad!.Id };
             comunicaciones = new Comunicaciones();
-            datos = comunicaciones.ConstruirUrl(datos, "Plans/Borrar");
+            datos = comunicaciones.ConstruirUrl(datos, "RoleTypes/Borrar");
             var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
             
             if (respuesta.ContainsKey("Error"))
             {
                 throw new Exception(respuesta["Error"].ToString()!);
             }
-            entidad = JsonConversor.ConvertirAObjeto<Plans>(
+            entidad = JsonConversor.ConvertirAObjeto<RoleTypes>(
                 JsonConversor.ConvertirAString(respuesta["Entidad"]));
             return entidad;
         }

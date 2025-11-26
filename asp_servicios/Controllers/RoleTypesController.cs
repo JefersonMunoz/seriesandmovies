@@ -13,12 +13,14 @@ namespace asp_servicios.Controllers
     public class RoleTypesController : ControllerBase
     {
         private IRoleTypesAplicacion? iAplicacion = null;
-        private TokenAplicacion? iAplicacionToken = null;     
+        private TokenAplicacion? iAplicacionToken = null;
+        private IAuditsAplicacion? iAplicacionAudits = null;
 
-        public RoleTypesController(IRoleTypesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
+        public RoleTypesController(IRoleTypesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken, IAuditsAplicacion iAplicacionAudits)
         {
             this.iAplicacion = iAplicacion;
             this.iAplicacionToken = iAplicacionToken;
+            this.iAplicacionAudits = iAplicacionAudits;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -46,6 +48,13 @@ namespace asp_servicios.Controllers
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
                 respuesta["Respuesta"] = "OK";
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "RoleTypes";
+                    datos["Action"] = "Read";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -105,6 +114,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se guardó el tipo de rol correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "RoleTypes";
+                    datos["Action"] = "Insert";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -134,6 +150,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Se modificó el el tipo rol correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "RoleTypes";
+                    datos["Action"] = "Update";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -159,6 +182,13 @@ namespace asp_servicios.Controllers
                 respuesta["Respuesta"] = "Tipo rol eliminado correctamente";
                 respuesta["Entidad"] = entidad!;
                 respuesta["Fecha"] = DateTime.Now.ToString();
+                //Create audits
+                if (datos.ContainsKey("UserId"))
+                {
+                    datos["Table"] = "RoleTypes";
+                    datos["Action"] = "Delete";
+                    iAplicacionAudits!.Guardar(datos);
+                }
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)

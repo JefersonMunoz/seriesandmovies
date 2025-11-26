@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var userRole = @Context.Session.GetString("Rol");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -34,6 +37,8 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownContenido">
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Contents">Contenido</a> </li>
+                                    @if (userRole == "Admin")
+                                {
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/AudioTracks">Audios*</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/ContentGenres">Contenido de generos</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/ContentTypes">Tipo de contenido</a> </li>
@@ -44,11 +49,15 @@
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Languages">Lenguajes</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Persons">Personas</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/PersonTypeRoles">Rol por persona</a> </li>
-                                    <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Plans">Planes</a> </li>
+                                }
+                                <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Plans">Planes</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Reviews">Reseñas</a> </li>
+                                    @if (userRole == "Admin")
+                                        {
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/RoleTypes">Tipo de rol</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Seasons">Capítulos</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Studios">Estudios</a> </li>
+                                        }
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Subscriptions">Suscripciones</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Subtitles">Subtítlos</a> </li>
                                     <li><a class="dropdown-item" asp-area="" asp-page="/Ventanas/Watchlists">Lista de reproducción</a> </li>
