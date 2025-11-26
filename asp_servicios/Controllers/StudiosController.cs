@@ -1,7 +1,8 @@
 ﻿using asp_servicios.Nucleo;
-using lib_repositorios.Interfaces;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
+using lib_repositorios.Implementaciones;
+using lib_repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace asp_servicios.Controllers
@@ -11,12 +12,11 @@ namespace asp_servicios.Controllers
     public class StudiosController : ControllerBase
     {
         private IStudiosAplicacion? iAplicacion = null;
-        //private TokenController? tokenController = null;
-
-        public StudiosController(IStudiosAplicacion? iAplicacion /*, TokenController tokenController*/)
+        private TokenAplicacion? iAplicacionToken = null;
+        public StudiosController(IStudiosAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
         {
             this.iAplicacion = iAplicacion;
-            //this.tokenController = tokenController;
+            this.iAplicacionToken = iAplicacionToken;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -34,11 +34,11 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
@@ -55,25 +55,30 @@ namespace asp_servicios.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> PorDescripton([FromBody] Studios entidad)
+        public string PorDescripton()
         {
             var respuesta = new Dictionary<string, object>();
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
+                var entidad = JsonConversor.ConvertirAObjeto<Studios>(
+                JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 respuesta["Entidades"] = this.iAplicacion!.PorDescripton(entidad);
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
-                respuesta["Error"] = ex.Message;
+                respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -85,11 +90,11 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 var entidad = JsonConversor.ConvertirAObjeto<Studios>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
@@ -115,11 +120,11 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 var entidad = JsonConversor.ConvertirAObjeto<Studios>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
@@ -145,12 +150,6 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
-                {
-                    respuesta["Error"] = "lbNoAutenticacion";
-                    return JsonConversor.ConvertirAString(respuesta);
-                }*/
-
                 var entidad = JsonConversor.ConvertirAObjeto<Studios>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
 

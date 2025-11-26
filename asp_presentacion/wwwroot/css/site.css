@@ -2,6 +2,9 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    color: #0d6efd;
+    font-weight: bold;
+    font-size: 22px
 }
 
 a {
@@ -143,3 +146,39 @@ body {
     margin: auto;
     background: white;
 }
+
+.btn-link.p-0 {
+    border: none;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/*Botones elimiar-editar*/
+.btn-link:disabled i {
+    opacity: 0.1;
+    cursor: not-allowed;
+}
+
+.btn-link i {
+    transition: 0.1s;
+}
+
+.btn-link:hover i {
+    transform: scale(1.2);
+}
+
+
+/*Cierre de sesión*/
+.bienvenido {
+    position: fixed;
+    top: -5px;
+    right: 20px;
+    padding: 15px 20px;
+    z-index: 2000;
+    text-align: right;
+}
+
+    .bienvenido button {
+        border-radius: 20px;
+    }

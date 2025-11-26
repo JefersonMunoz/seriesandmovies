@@ -71,7 +71,7 @@ namespace lib_repositorios.Implementaciones
 
         public List<Episodes> PorEpisodes(Episodes? entidad)
         {
-            var lista = this.IConexion!.Episodes!.Where(x => x.Title!.Contains(entidad.Title!)).ToList();
+            var lista = this.IConexion!.Episodes!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
 
             if (lista == null || lista.Count == 0)
             {

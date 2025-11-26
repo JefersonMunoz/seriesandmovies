@@ -1,7 +1,8 @@
 ﻿using asp_servicios.Nucleo;
-using lib_repositorios.Interfaces;
 using lib_dominio.Entidades;
 using lib_dominio.Nucleo;
+using lib_repositorios.Implementaciones;
+using lib_repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace asp_servicios.Controllers
@@ -11,12 +12,11 @@ namespace asp_servicios.Controllers
     public class PersonsController : ControllerBase
     {
         private IPersonsAplicacion? iAplicacion = null;
-        //private TokenController? tokenController = null;
-
-        public PersonsController(IPersonsAplicacion? iAplicacion /*, TokenController tokenController*/)
+        private TokenAplicacion? iAplicacionToken = null;
+        public PersonsController(IPersonsAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
         {
             this.iAplicacion = iAplicacion;
-            //this.tokenController = tokenController;
+            this.iAplicacionToken = iAplicacionToken;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -34,43 +34,51 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
 
         [HttpPost]
-        public ActionResult<string> PorDescription([FromBody] Persons entidad)
+        public string PorDescription()
         {
             var respuesta = new Dictionary<string, object>();
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
+                var entidad = JsonConversor.ConvertirAObjeto<Persons>(
+                JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 respuesta["Entidades"] = this.iAplicacion!.PorDescription(entidad);
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
-                respuesta["Error"] = ex.Message;
+                respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -82,24 +90,28 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 var entidad = JsonConversor.ConvertirAObjeto<Persons>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
 
                 entidad = this.iAplicacion!.Guardar(entidad);
                 respuesta["Respuesta"] = "Se guardó la persona correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Fecha"] = DateTime.Now.ToString();
+                return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
-            return JsonConversor.ConvertirAString(respuesta);
+           
         }
 
         [HttpPost]
@@ -109,21 +121,24 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 var entidad = JsonConversor.ConvertirAObjeto<Persons>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
                 respuesta["Respuesta"] = "Se modificó la persona correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -135,11 +150,6 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
-                {
-                    respuesta["Error"] = "lbNoAutenticacion";
-                    return JsonConversor.ConvertirAString(respuesta);
-                }*/
 
                 var entidad = JsonConversor.ConvertirAObjeto<Persons>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
@@ -147,11 +157,14 @@ namespace asp_servicios.Controllers
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
                 respuesta["Respuesta"] = "Persona eliminado correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }

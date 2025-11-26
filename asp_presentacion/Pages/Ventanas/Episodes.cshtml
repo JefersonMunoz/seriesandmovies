@@ -1,0 +1,256 @@
+﻿
+@page
+@model asp_presentacion.Pages.Ventanas.EpisodesModel
+@{
+    ViewData["Titulo"] = "";
+}
+<center>
+    <div>
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+            <div align="left">
+                <h3>Episodios</h3>
+            </div>
+
+            <div align="left"
+                 class="bt_panel_buttons">
+                <input type="submit"
+                       value="Refrescar"
+                       asp-page-handler="BtRefrescar"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                <input type="submit"
+                       value="Nuevo"
+                       asp-page-handler="BtNuevo"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                <input type="submit"
+                       value="Guardar"
+                       asp-page-handler="BtGuardar"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+                <input type="submit"
+                       value="Cancelar"
+                       asp-page-handler="BtCancelar"
+                       class="btn btn-secondary"
+                       disabled="@(Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas)" />
+            </div>
+
+            @if (Model.Accion != lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
+                        Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Id" />
+            }
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Season" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Title" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.NumberEpisode" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.DurationTime" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Description" />
+                       <input type="hidden"
+                       asp-for="@Model.Actual!.ReleasedAt" />
+            }
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
+            {
+                <div class="containers_vn panel panel-default">
+                    <h3>Episodios</h3>
+                    <div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Capítulos
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmSeason"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Season" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Título
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmTitle"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Title" />
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Número episodios
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmNumberEpisode"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.NumberEpisode" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Duración
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmDurationTime"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.DurationTime" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Descripción
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmDescription"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Description" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Fecha publicidad
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmReleasedAt"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.ReleasedAt" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (ViewData.ContainsKey("Mensaje"))
+            {
+                <input type="hidden"
+                       asp-for="@Model.Accion" />
+                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+            }
+
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <div class='popup'>
+                    <div class='pp_del_inner'>
+                        <div style='width:95%'>
+                            <h2 align="left">
+                                Mensaje
+                            </h2>
+                            <h4 align="left">
+                                Desea borrar la entidad?
+                            </h4>
+                            <h6 align="left">
+                                @Model.Actual!.Title
+                            </h6>
+                            <br />
+                            <br />
+                            <input type="submit"
+                                   value="Borrar"
+                                   asp-page-handler="BtBorrar"
+                                   class="btn btn-secondary" />
+                            <input type="submit"
+                                   value="Cerrar"
+                                   asp-page-handler="BtCancelar"
+                                   class="btn btn-secondary" />
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
+                        Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
+            {
+                <input id="flDescription"
+                       class="cts_forms form-control"
+                       asp-for="@Model.Filtro!.Description"
+                       placeholder="Description" />
+                <br />
+
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered tablehover">
+                        <tr>
+                            <th>
+                                Capítulos
+                            </th>
+                            <th>
+                                Título
+                            </th>
+                            <th>
+                                Numero episodios
+                            </th>
+                            <th>
+                                Duración
+                            </th>
+                            <th>
+                                Descripción
+                            </th>
+                            
+                            <th>
+                                Fecha publicidad
+                            </th>
+                            <th class="cl_actions">
+                                Accion
+                            </th>
+                        </tr>
+                        @if (Model != null && Model.Lista != null)
+                        {
+                            @foreach (var elemento in Model.Lista)
+                            {
+                                <tr>
+                                    <td>
+                                        @elemento.Season
+                                    </td>
+                                    <td>
+                                        @elemento.Title
+                                    </td>
+                                    <td>
+                                        @elemento.NumberEpisode
+                                    </td>
+                                    <td>
+                                        @elemento.DurationTime
+                                    </td>
+                                    <td>
+                                        @elemento.Description
+                                    </td>
+                                    <td>
+                                        @elemento.ReleasedAt
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <button type="submit"
+                                                    asp-page-handler="BtModificar"
+                                                    asp-route-data="@elemento.Id"
+                                                    name="bt"
+                                                    value="Editar"
+                                                    class="btn btn-link p-0"
+                                                    title="Editar">
+                                                <i class="material-icons text-primary">&#xE254;</i>
+                                            </button>
+
+                                            <button type="submit"
+                                                    asp-page-handler="BtBorrarVal"
+                                                    asp-route-data="@elemento.Id"
+                                                    name="bt"
+                                                    value="Borrar"
+                                                    class="btn btn-link p-0"
+                                                    title="Eliminar">
+                                                <i class="material-icons text-danger">&#xE872;</i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            }
+        </form>
+    </div>
+</center>

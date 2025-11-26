@@ -18,6 +18,7 @@ namespace lib_repositorios.Implementaciones
         public void Configurar(string StringConexion)
         {
             this.IConexion!.StringConexion = StringConexion;
+            this.IConexion!.StringConexion = StringConexion;
         }
 
         public Contents? Borrar(Contents? entidad)

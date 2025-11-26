@@ -4,6 +4,7 @@ using lib_dominio.Nucleo;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace asp_servicios.Controllers
 {
@@ -12,14 +13,12 @@ namespace asp_servicios.Controllers
     public class RoleTypesController : ControllerBase
     {
         private IRoleTypesAplicacion? iAplicacion = null;
-        //private TokenController? tokenController = null;
-        //private TokenAplicacion? iAplicacionToken = null;
+        private TokenAplicacion? iAplicacionToken = null;     
 
-        public RoleTypesController(IRoleTypesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken /*TokenController tokenController*/)
+        public RoleTypesController(IRoleTypesAplicacion? iAplicacion, TokenAplicacion iAplicacionToken)
         {
             this.iAplicacion = iAplicacion;
-            //this.tokenController = tokenController;
-            //this.iAplicacionToken = iAplicacionToken;
+            this.iAplicacionToken = iAplicacionToken;
         }
 
         private Dictionary<string, object> ObtenerDatos()
@@ -36,15 +35,17 @@ namespace asp_servicios.Controllers
             var respuesta = new Dictionary<string, object>();
             try
             {
-                //var datos = ObtenerDatos();
-                //if (!iAplicacionToken!.Validar(datos))
-                //{
-                //    respuesta["Error"] = "lbNoAutenticacion";
-                //    return JsonConversor.ConvertirAString(respuesta);
-                //}
+                var datos = ObtenerDatos();
+                if (!iAplicacionToken!.Validar(datos))
+                {
+                    respuesta["Error"] = "lbNoAutenticacion";
+                    return JsonConversor.ConvertirAString(respuesta);
+                }
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 
                 respuesta["Entidades"] = this.iAplicacion!.Listar();
+                respuesta["Respuesta"] = "OK";
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
@@ -89,12 +90,12 @@ namespace asp_servicios.Controllers
             var respuesta = new Dictionary<string, object>();
             try
             {
-                var datos = ObtenerDatos();                
-                /*if (!tokenController!.Validate(datos))
+                var datos = ObtenerDatos();
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 var entidad = JsonConversor.ConvertirAObjeto<RoleTypes>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
@@ -102,11 +103,14 @@ namespace asp_servicios.Controllers
                 entidad = this.iAplicacion!.Guardar(entidad);
                 //------------------------------------------------------------
                 respuesta["Respuesta"] = "Se guardó el tipo de rol correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -118,21 +122,24 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
+                if (!iAplicacionToken!.Validar(datos))
                 {
                     respuesta["Error"] = "lbNoAutenticacion";
                     return JsonConversor.ConvertirAString(respuesta);
-                }*/
+                }
                 var entidad = JsonConversor.ConvertirAObjeto<RoleTypes>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Modificar(entidad);
                 respuesta["Respuesta"] = "Se modificó el el tipo rol correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }
@@ -144,23 +151,20 @@ namespace asp_servicios.Controllers
             try
             {
                 var datos = ObtenerDatos();
-                /*if (!tokenController!.Validate(datos))
-                {
-                    respuesta["Error"] = "lbNoAutenticacion";
-                    return JsonConversor.ConvertirAString(respuesta);
-                }*/
-
                 var entidad = JsonConversor.ConvertirAObjeto<RoleTypes>(
                 JsonConversor.ConvertirAString(datos["Entidad"]));
                 
                 this.iAplicacion!.Configurar(Configuracion.ObtenerValor("StringConexion"));
                 entidad = this.iAplicacion!.Borrar(entidad);
                 respuesta["Respuesta"] = "Tipo rol eliminado correctamente";
+                respuesta["Entidad"] = entidad!;
+                respuesta["Fecha"] = DateTime.Now.ToString();
                 return JsonConversor.ConvertirAString(respuesta);
             }
             catch (Exception ex)
             {
                 respuesta["Error"] = ex.Message.ToString();
+                respuesta["Respuesta"] = "Error";
                 return JsonConversor.ConvertirAString(respuesta);
             }
         }

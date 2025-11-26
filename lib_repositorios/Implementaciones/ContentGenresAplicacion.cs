@@ -31,7 +31,7 @@ namespace lib_repositorios.Implementaciones
             if (existente == null)
                 throw new Exception("El contenido ingresado no existe");
 
-            this.IConexion!.ContentGenres!.Remove(entidad);
+            this.IConexion!.ContentGenres!.Remove(existente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -75,7 +75,7 @@ namespace lib_repositorios.Implementaciones
         public List<ContentGenres> PorGenreType(ContentGenres? entidad)
         {
             string name = entidad!._GenreType!.Name!;
-            var lista = this.IConexion!.ContentGenres!.Include(x => x._GenreType).Where(x => x._GenreType!.Name!.Contains(name)).ToList();
+            var lista = this.IConexion!.ContentGenres!.Include(x => x._GenreType).Include(x => x._Content).Where(x => x._GenreType!.Name!.Contains(name)).ToList();
 
             if (lista == null || lista.Count == 0)
                 throw new Exception("No existen contenidos que coincidan con la búsqueda.");

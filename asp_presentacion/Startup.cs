@@ -16,6 +16,26 @@ namespace asp_presentacion
         {
             // Presentaciones
             services.AddScoped<IContentsPresentacion, ContentsPresentacion>();
+            services.AddScoped<IAudioTracksPresentacion, AudioTracksPresentacion>();
+            services.AddScoped<IContentGenresPresentacion, ContentGenresPresentacion>();
+            services.AddScoped<IContentTypesPresentacion, ContentTypesPresentacion>();
+            services.AddScoped<ICountriesPresentacion, CountriesPresentacion>();
+            services.AddScoped<ICreditsPresentacion, CreditsPresentacion>();
+            services.AddScoped<IEpisodesPresentacion, EpisodesPresentacion>();
+            services.AddScoped<IGenreTypesPresentacion, GenreTypesPresentacion>();
+            services.AddScoped<ILanguagesPresentacion, LanguagesPresentacion>();
+            services.AddScoped<IPersonsPresentacion, PersonsPresentacion>();
+            //services.AddScoped<IPersonTypeRolesPresentacion, PersonTypeRolesPresentacion>();
+            //services.AddScoped<IPlansPresentacion, PlansPresentacion>();
+            //services.AddScoped<IReviewsPresentacion, ReviewsPresentacion>();
+            //services.AddScoped<IRoleTypesPresentacion, RoleTypesPresentacion>();
+            //services.AddScoped<ISeasonsPresentacion, SeasonsPresentacion>();
+            //services.AddScoped<IStudiosPresentacion, StudiosPresentacion>();
+            //services.AddScoped<ISubscriptionsPresentacion, SubscriptionsPresentacion>();
+            //services.AddScoped<ISubtitlesPresentacion, SubtitlesPresentacion>();
+            //services.AddScoped<IUsersPresentacion, UsersPresentacion>();
+            //services.AddScoped<IWatchlistsPresentacion, WatchlistsPresentacion>();
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddRazorPages();

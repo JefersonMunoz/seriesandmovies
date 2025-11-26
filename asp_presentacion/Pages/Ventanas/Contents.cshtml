@@ -61,7 +61,11 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
+
                     <h3>Contenidos</h3>
+
+                    <h3>Contenido</h3>
+
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
@@ -228,6 +232,7 @@
                                     <td>
                                         @elemento.Year
                                     </td>
+
             @if (userRole == "Admin")
                                     {
                                         <td>                                        
@@ -244,6 +249,31 @@
 
                                         </td>
                                     }
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <button type="submit"
+                                                    asp-page-handler="BtModificar"
+                                                    asp-route-data="@elemento.Id"
+                                                    name="bt"
+                                                    value="Editar"
+                                                    class="btn btn-link p-0"
+                                                    title="Editar">
+                                                <i class="material-icons text-primary">&#xE254;</i>
+                                            </button>
+
+                                            <button type="submit"
+                                                    asp-page-handler="BtBorrarVal"
+                                                    asp-route-data="@elemento.Id"
+                                                    name="bt"
+                                                    value="Borrar"
+                                                    class="btn btn-link p-0"
+                                                    title="Eliminar">
+                                                <i class="material-icons text-danger">&#xE872;</i>
+                                            </button>
+                                        </div>
+                                    </td>
+
                                 </tr>
                             }
                         }

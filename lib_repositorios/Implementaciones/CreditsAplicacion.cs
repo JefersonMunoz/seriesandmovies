@@ -75,7 +75,7 @@ namespace lib_repositorios.Implementaciones
         public List<Credits> PorPersons(Credits? entidad)
         {
             string name = entidad!._Person!.Name!;
-            var lista = this.IConexion!.Credits!.Include(x => x._Person).Where(x => x._Person!.Name!.Contains(name)).ToList();
+            var lista = this.IConexion!.Credits!.Include(x => x._Person).Include(a => a._Content).Include(a => a._RoleType).Where(x => x._Person!.Name!.Contains(name)).ToList();
 
             if (lista == null || lista.Count == 0)
                 throw new Exception("No existen creditos que coincidan con la búsqueda.");
