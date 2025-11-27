@@ -236,31 +236,6 @@
             @if (userRole == "Admin")
                                     {
 
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <button type="submit"
-                                                    asp-page-handler="BtModificar"
-                                                    asp-route-data="@elemento.Id"
-                                                    name="bt"
-                                                    value="Editar"
-                                                    class="btn btn-link p-0"
-                                                    title="Editar">
-                                                <i class="material-icons text-primary">&#xE254;</i>
-                                            </button>
-
-                                            <button type="submit"
-                                                    asp-page-handler="BtBorrarVal"
-                                                    asp-route-data="@elemento.Id"
-                                                    name="bt"
-                                                    value="Borrar"
-                                                    class="btn btn-link p-0"
-                                                    title="Eliminar">
-                                                <i class="material-icons text-danger">&#xE872;</i>
-                                            </button>
-                                        </div>
-                                    </td>
-
-
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <button type="submit"

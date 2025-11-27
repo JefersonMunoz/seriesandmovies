@@ -195,8 +195,8 @@ INSERT INTO [Plans] ([Name], [Description], [Price], [MaxPeople]) VALUES
 
 INSERT INTO [Users] ([Name], [Lastname], [Username], [Rol], [PhoneNumber], [Email], [Password], [Birthday]) VALUES
 ('Juan', 'P�rez', 'juanp', 'Admin', '3001234567', 'juanp@gmail.com', 'clave123', '1997-05-12'),
-('Mar�a', 'Gonz�lez', 'mariag', 'User', '3017654321', 'maria.g@hotmail.com', 'colombia1', '1999-09-23'),
-('Andr�s', 'Ram�rez', 'andresrz', 'User', '3024567890', 'andresr@yahoo.com', '12345678', '2003-02-14'),
+('María', 'Gonz�lez', 'mariag', 'User', '3017654321', 'maria.g@hotmail.com', 'colombia1', '1999-09-23'),
+('Andrés', 'Ram�rez', 'andresrz', 'User', '3024567890', 'andresr@yahoo.com', '12345678', '2003-02-14'),
 ('Luisa', 'Mart�nez', 'luismrtnz', 'User', '3009988776', 'luisa.m@gmail.com', 'lulu2024', '2005-11-30'),
 ('Karolina', 'Suarez', 'Karosuarez', 'User', '3009988776', 'Karolinasuare.10@gmail.com', 'Karo100s', '2006-05-07'),
 ('Camilo', 'Torres', 'camilotrrs', 'User', '3045556666', 'camilot@outlook.com', 'torresC9', '2010-07-07'),

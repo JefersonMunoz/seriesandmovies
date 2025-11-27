@@ -47,8 +47,10 @@
 }
 else
 {
+    var UserName = HttpContext.Session.GetString("Usuario");
+
     <div class="bienvenido">
-        <span class="text-primary fw-bold me-3">Bienvenido</span>
+        <span class="text-primary fw-bold me-3">Bienvenido @UserName</span>
 
         <form method="POST" class="d-inline">
             <button type="submit"
@@ -59,6 +61,10 @@ else
                 Cerrar
             </button>
         </form>
+    </div>
+
+    <div class="firstMessage">
+        <span class="text-primary fw-bold me-3">Bienvenido a tu plataforma de series y películas favorita</span>
     </div>
 
 }

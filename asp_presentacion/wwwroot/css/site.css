@@ -179,6 +179,17 @@ body {
     text-align: right;
 }
 
+.firstMessage {
+    position: fixed;
+    font-size: 50px;
+    font-weight: bold;
+    width: 50%;
+    top: 200px;
+    left: 450px;
+    z-index: 2000;
+    text-align: center;
+}
+
     .bienvenido button {
         border-radius: 20px;
     }

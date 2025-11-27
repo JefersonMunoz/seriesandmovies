@@ -191,7 +191,7 @@
                             {
                                 <th class="cl_actions">
                                     Accion
-                                </th>
+                                </th> 
                             }
                         </tr>
                         @if (Model != null && Model.Lista != null)
@@ -228,7 +228,7 @@
                                                     <i class="material-icons text-primary">&#xE254;</i>
                                                 </button>
 
-                                                <button type="submit"
+                                                @* <button type="submit"
                                                         asp-page-handler="BtBorrarVal"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
@@ -236,7 +236,7 @@
                                                         class="btn btn-link p-0"
                                                         title="Eliminar">
                                                     <i class="material-icons text-danger">&#xE872;</i>
-                                                </button>
+                                                </button> *@
                                             </div>
                                         </td>
                                     }
