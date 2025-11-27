@@ -1,6 +1,5 @@
-﻿
-@page
-@model asp_presentacion.Pages.Ventanas.PlansModel
+﻿@page
+@model asp_presentacion.Pages.Ventanas.SubscriptionsModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +11,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>Planes</h3>
+                <h3>Suscripciones</h3>
             </div>
 
             <div align="left"
@@ -51,20 +50,26 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Name" />
+                       asp-for="@Model.Actual!._User.Name" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Description" />
+                       asp-for="@Model.Actual!._Plan.Name" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.StartedAt" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.FinishedAt" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Price" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.MaxPeople" />
+                       asp-for="@Model.Actual!.Months" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Status" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
                     <h3>Episodios</h3>
                     <div>
-                        <div class="form-group">
+                        @* <div class="form-group">
                             <label class="col-lg-4 control-label">
                                 Nombre
                             </label>
@@ -73,35 +78,85 @@
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Name" />
                             </div>
+                        </div> *@
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Usuario
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmContentType"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.User"
+                                        asp-items="@(new SelectList(Model.ListaUsers, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Usuario --</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Descripción
+                                Plan
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmDescription"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Description" />
+                                <select id="nmContentType"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Plan"
+                                        asp-items="@(new SelectList(Model.ListaPlans, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Plan --</option>
+                                </select>
                             </div>
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Precio
+                                Fecha inicio
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmPrice"
+                                <input id="nmStartedAt"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.StartedAt" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Fecha fin
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmFinishedAt"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.FinishedAt" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                               Precio
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmFinishedAt"
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Price" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Máximo de personas
+                                Meses
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmMaxPeople"
+                                <input id="nmFinishedAt"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.MaxPeople" />
+                                       asp-for="@Model.Actual!.Months" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Estado
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmStatus"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Status">
+                                    <option value="">-- Seleccionar Estado --</option>
+                                    <option value="1">Inactivo</option>
+                                    <option value="0">Activo</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -112,7 +167,8 @@
             {
                 <input type="hidden"
                        asp-for="@Model.Accion" />
-                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml")
+                ;
             }
 
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
@@ -126,9 +182,6 @@
                             <h4 align="left">
                                 Desea borrar la entidad?
                             </h4>
-                            <h6 align="left">
-                                @Model.Actual!.Name
-                            </h6>
                             <br />
                             <br />
                             <input type="submit"
@@ -149,24 +202,33 @@
             {
                 <input id="flDescription"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Description"
-                       placeholder="Description" />
+                       asp-for="@Model.Filtro!._Plan.Name"
+                       placeholder="Plan" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered tablehover">
                         <tr>
                             <th>
-                                Nombre
+                                Usuario
                             </th>
                             <th>
-                                Descripción
+                                Plan
+                            </th>
+                            <th>
+                                Fecha inicio
+                            </th>
+                            <th>
+                                Fecha fin
                             </th>
                             <th>
                                 Precio
                             </th>
                             <th>
-                                Máximo de personas
+                                Meses
+                            </th>
+                            <th>
+                                Estado
                             </th>
 
                             @if (userRole == "Admin")
@@ -183,16 +245,25 @@
                             {
                                 <tr>
                                     <td>
-                                        @elemento.Name
+                                        @elemento._User?.Name
                                     </td>
                                     <td>
-                                        @elemento.Description
+                                        @elemento._Plan?.Name
+                                    </td>
+                                    <td>
+                                        @elemento.StartedAt
+                                    </td>
+                                    <td>
+                                        @elemento.FinishedAt
                                     </td>
                                     <td>
                                         @elemento.Price
                                     </td>
                                     <td>
-                                        @elemento.MaxPeople
+                                        @elemento.Months
+                                    </td>
+                                    <td>
+                                        @(elemento.Status ? "Activo" : "Inactivo")
                                     </td>
                                     @if (userRole == "Admin")
                                     {
@@ -202,7 +273,7 @@
                                                         asp-page-handler="BtModificar"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
-                                                        value="Editar" Studios
+                                                        value="Editar"
                                                         class="btn btn-link p-0"
                                                         title="Editar">
                                                     <i class="material-icons text-primary">&#xE254;</i>

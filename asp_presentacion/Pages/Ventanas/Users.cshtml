@@ -1,6 +1,6 @@
 ﻿
 @page
-@model asp_presentacion.Pages.Ventanas.PlansModel
+@model asp_presentacion.Pages.Ventanas.UsersModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +12,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>Planes</h3>
+                <h3>Usuarios</h3>
             </div>
 
             <div align="left"
@@ -53,11 +53,20 @@
                 <input type="hidden"
                        asp-for="@Model.Actual!.Name" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Description" />
+                       asp-for="@Model.Actual!.Lastname" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Price" />
+                       asp-for="@Model.Actual!.Username" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.MaxPeople" />
+                       asp-for="@Model.Actual!.Rol" />
+                       <input type="hidden"
+					   asp-for="@Model.Actual!.PhoneNumber" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Email" />
+                <input type="password"
+                       asp-for="@Model.Actual!.Password" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Birthday" />
+                
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
@@ -76,32 +85,77 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Descripción
+                                Apellido
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmDescription"
+                                <input id="nmLastame"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Description" />
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Precio
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmPrice"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Price" />
+                                       asp-for="@Model.Actual!.Lastname" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Máximo de personas
+                                Nombre usuario
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmMaxPeople"
+                                <input id="nmLastame"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.MaxPeople" />
+                                       asp-for="@Model.Actual!.Username" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Rol
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmStatus"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Rol">
+                                    <option value="">-- Seleccionar Rol --</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="User">User</option>
+                                    <option value="Invitado">Invitado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Celular
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmLastame"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.PhoneNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Email
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmLastame"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Email" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Clave
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmLastame"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Password" />
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                               Fecha nacimiento
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmBirthday"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Birthday" />
                             </div>
                         </div>
                     </div>
@@ -149,7 +203,7 @@
             {
                 <input id="flDescription"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Description"
+                       asp-for="@Model.Filtro!.Name"
                        placeholder="Description" />
                 <br />
 
@@ -160,22 +214,32 @@
                                 Nombre
                             </th>
                             <th>
-                                Descripción
+                                Apellido
                             </th>
                             <th>
-                                Precio
+                                Nombre usuario
                             </th>
                             <th>
-                                Máximo de personas
+                                Rol
                             </th>
-
+                            <th>
+                                Celular
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th class="cl_hidden">
+                                Clave
+                            </th>
+                            <th>
+                                Fecha nacimiento
+                            </th>
                             @if (userRole == "Admin")
                             {
                                 <th class="cl_actions">
                                     Accion
                                 </th>
                             }
-
                         </tr>
                         @if (Model != null && Model.Lista != null)
                         {
@@ -186,13 +250,25 @@
                                         @elemento.Name
                                     </td>
                                     <td>
-                                        @elemento.Description
+                                        @elemento.Lastname
                                     </td>
                                     <td>
-                                        @elemento.Price
+                                        @elemento.Username
                                     </td>
                                     <td>
-                                        @elemento.MaxPeople
+                                        @elemento.Rol
+                                    </td>
+                                    <td>
+                                        @elemento.PhoneNumber
+                                    </td>
+                                    <td>
+                                        @elemento.Email
+                                    </td>
+                                    <td class="cl_hidden">
+                                        @elemento.Password
+                                    </td>
+                                    <td>
+                                        @elemento.Birthday
                                     </td>
                                     @if (userRole == "Admin")
                                     {
@@ -202,7 +278,7 @@
                                                         asp-page-handler="BtModificar"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
-                                                        value="Editar" Studios
+                                                        value="Editar"
                                                         class="btn btn-link p-0"
                                                         title="Editar">
                                                     <i class="material-icons text-primary">&#xE254;</i>

@@ -74,7 +74,7 @@ namespace lib_repositorios.Implementaciones
         public List<Watchlists> PorUser(Watchlists? entidad)
         {
             string name = entidad!._User!.Name!;
-            var lista = this.IConexion!.Watchlists!.Include(x => x._User).Where(x => x._User!.Name!.Contains(name)).ToList();
+            var lista = this.IConexion!.Watchlists!.Include(x => x._User).Include(a => a._Content).Where(x => x._User!.Name!.Contains(name)).ToList();
 
             if (lista == null || lista.Count == 0)
                 throw new Exception("No existen lista de reproducción que coincidan con la búsqueda.");

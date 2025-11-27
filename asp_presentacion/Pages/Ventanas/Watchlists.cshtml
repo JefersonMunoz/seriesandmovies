@@ -1,6 +1,5 @@
-﻿
-@page
-@model asp_presentacion.Pages.Ventanas.PlansModel
+﻿@page
+@model asp_presentacion.Pages.Ventanas.WatchlistsModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +11,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>Planes</h3>
+                <h3>Lista de reproducción</h3>
             </div>
 
             <div align="left"
@@ -50,58 +49,44 @@
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
-                <input type="hidden"
+                @* <input type="hidden"
                        asp-for="@Model.Actual!.Name" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Description" />
+                       asp-for="@Model.Actual!.Description" /> *@
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Price" />
+                       asp-for="@Model.Actual!._User.Name" />
                 <input type="hidden"
-                       asp-for="@Model.Actual!.MaxPeople" />
+                       asp-for="@Model.Actual!._Content.Name" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
-                    <h3>Episodios</h3>
+                    <h3>ContentGenres</h3>
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Nombre
+                                Usuario
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmName"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Name" />
+                                <select id="nmContentGenre"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.User"
+                                        asp-items="@(new SelectList(Model.ListaUsers, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Usuario --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Descripción
+                                Contenido
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmDescription"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Description" />
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Precio
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmPrice"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Price" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Máximo de personas
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmMaxPeople"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.MaxPeople" />
+                                <select id="nmContent"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Content"
+                                        asp-items="@(new SelectList(Model.ListaContents, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Contenido --</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -126,9 +111,6 @@
                             <h4 align="left">
                                 Desea borrar la entidad?
                             </h4>
-                            <h6 align="left">
-                                @Model.Actual!.Name
-                            </h6>
                             <br />
                             <br />
                             <input type="submit"
@@ -149,33 +131,25 @@
             {
                 <input id="flDescription"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Description"
-                       placeholder="Description" />
+                       asp-for="@Model.Filtro!._User!.Name"
+                       placeholder="Uset" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered tablehover">
                         <tr>
                             <th>
-                                Nombre
+                                Usuario
                             </th>
                             <th>
-                                Descripción
+                                Contenido
                             </th>
-                            <th>
-                                Precio
-                            </th>
-                            <th>
-                                Máximo de personas
-                            </th>
-
                             @if (userRole == "Admin")
                             {
                                 <th class="cl_actions">
                                     Accion
                                 </th>
                             }
-
                         </tr>
                         @if (Model != null && Model.Lista != null)
                         {
@@ -183,16 +157,10 @@
                             {
                                 <tr>
                                     <td>
-                                        @elemento.Name
+                                        @elemento._User?.Name
                                     </td>
                                     <td>
-                                        @elemento.Description
-                                    </td>
-                                    <td>
-                                        @elemento.Price
-                                    </td>
-                                    <td>
-                                        @elemento.MaxPeople
+                                        @elemento._Content?.Name
                                     </td>
                                     @if (userRole == "Admin")
                                     {
@@ -202,7 +170,7 @@
                                                         asp-page-handler="BtModificar"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
-                                                        value="Editar" Studios
+                                                        value="Editar"
                                                         class="btn btn-link p-0"
                                                         title="Editar">
                                                     <i class="material-icons text-primary">&#xE254;</i>

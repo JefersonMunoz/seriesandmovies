@@ -77,7 +77,7 @@ namespace lib_repositorios.Implementaciones
         public List<Subtitles> PorLanguage(Subtitles? entidad)
         {
             string name = entidad!._Language!.Name!;
-            var lista = this.IConexion!.Subtitles!.Include(x => x._Language).Where(x => x._Language!.Name!.Contains(name)).ToList();
+            var lista = this.IConexion!.Subtitles!.Include(x => x._Language).Include(a => a._Content).Where(x => x._Language!.Name!.Contains(name)).ToList();
 
             if (lista == null || lista.Count == 0)
                 throw new Exception("No existen lenguajes que coincidan con la búsqueda.");

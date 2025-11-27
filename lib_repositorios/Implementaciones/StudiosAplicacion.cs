@@ -72,7 +72,7 @@ namespace lib_repositorios.Implementaciones
 
         public List<Studios> PorDescripton(Studios? entidad)
         {
-            var lista = this.IConexion!.Studios!.Where(x => x.Description!.Contains(entidad.Description!)).ToList();
+            var lista = this.IConexion!.Studios!.Include(a => a._Country).Where(x => x.Description!.Contains(entidad.Description!)).ToList();
 
             if (lista == null || lista.Count == 0)
             {

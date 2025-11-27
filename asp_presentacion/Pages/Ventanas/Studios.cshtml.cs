@@ -6,15 +6,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace asp_presentacion.Pages.Ventanas
 {
-    public class ReviewsModel : PageModel
+    public class StudiosModel : PageModel
     {
-        private IReviewsPresentacion? iPresentacion = null;
-        public ReviewsModel(IReviewsPresentacion iPresentacion)
+        private IStudiosPresentacion? iPresentacion = null;
+        public StudiosModel(IStudiosPresentacion iPresentacion)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
-                Filtro = new Reviews();
+                Filtro = new Studios();
+                Lista = new List<Studios>();
+                ListaCountries = new List<Countries>();
             }
             catch (Exception ex)
             {
@@ -23,11 +25,10 @@ namespace asp_presentacion.Pages.Ventanas
         }
         public IFormFile? FormFile { get; set; }
         [BindProperty] public Enumerables.Ventanas Accion { get; set; }
-        public List<Contents> ListaContents { get; set; } = new List<Contents>();
-        public List<Users> ListaUsers { get; set; } = new List<Users>();
-        [BindProperty] public Reviews? Actual { get; set; }
-        [BindProperty] public Reviews? Filtro { get; set; }
-        [BindProperty] public List<Reviews>? Lista { get; set; }
+        public List<Countries> ListaCountries { get; set; }
+        [BindProperty] public Studios? Actual { get; set; }
+        [BindProperty] public Studios? Filtro { get; set; }
+        [BindProperty] public List<Studios>? Lista { get; set; }
         public virtual void OnGet() { OnPostBtRefrescar(); }
         public void OnPostBtRefrescar()
         {
@@ -41,14 +42,13 @@ namespace asp_presentacion.Pages.Ventanas
                     HttpContext.Response.Redirect("/");
                     return;
                 }
-
-                Filtro._Content ??= new Contents();
-                Filtro._User ??= new Users();
-                Filtro._Content.Name = Filtro._Content.Name ?? "";
-                Filtro._User.Name = Filtro._User.Name ?? "";
+                Filtro.Description = Filtro.Description ?? "";
+                Filtro ??= new Studios();
+                Filtro._Country ??= new Countries();
+                Filtro._Country.Name = Filtro._Country.Name ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
-                var task = this.iPresentacion!.PorContent(Filtro!, llave, Convert.ToInt32(UserId));
+                var task = this.iPresentacion!.PorDescription(Filtro!, llave, Convert.ToInt32(UserId));
                 task.Wait();
                 Lista = task.Result;
                 Actual = null;
@@ -65,16 +65,11 @@ namespace asp_presentacion.Pages.Ventanas
                 var llave = HttpContext.Session.GetString("Llave");
                 var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
-                Actual = new Reviews();
-                var task = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
+                Actual = new Studios();
+                Lista = new List<Studios>();
+                var task = this.iPresentacion!.Countries(llave, Convert.ToInt32(UserId));
                 task.Wait();
-                ListaContents = task.Result;
-                var task1 = this.iPresentacion!.Users(llave, Convert.ToInt32(UserId));
-                task1.Wait();
-                ListaUsers = task1.Result;
-                var task2 = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
-                task2.Wait();
-                ListaContents = task2.Result;
+                ListaCountries = task.Result;
             }
             catch (Exception ex)
             {
@@ -90,13 +85,9 @@ namespace asp_presentacion.Pages.Ventanas
                 var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
-                var task = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
+                var task = this.iPresentacion!.Countries(llave, Convert.ToInt32(UserId));
                 task.Wait();
-                ListaContents = task.Result;
-                var task1 = this.iPresentacion!.Users(llave, Convert.ToInt32(UserId));
-                task1.Wait();
-                ListaUsers = task1.Result;
-
+                ListaCountries = task.Result;
             }
             catch (Exception ex)
             {
@@ -110,9 +101,9 @@ namespace asp_presentacion.Pages.Ventanas
                 var llave = HttpContext.Session.GetString("Llave");
                 var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
-                Task<Reviews>? task = null;
+                Task<Studios>? task = null;
                 if (Actual!.Id == 0)
-                    task = this.iPresentacion!.Guardar(Actual!,llave, Convert.ToInt32(UserId))!;
+                    task = this.iPresentacion!.Guardar(Actual!, llave, Convert.ToInt32(UserId))!;
                 else
                     task = this.iPresentacion!.Modificar(Actual!, llave, Convert.ToInt32(UserId))!;
                 task.Wait();

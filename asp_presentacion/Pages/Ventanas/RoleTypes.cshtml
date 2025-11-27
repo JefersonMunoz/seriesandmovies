@@ -1,6 +1,5 @@
-﻿
-@page
-@model asp_presentacion.Pages.Ventanas.PlansModel
+﻿@page
+@model asp_presentacion.Pages.Ventanas.RoleTypesModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +11,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>Planes</h3>
+                <h3>Tipo de roles</h3>
             </div>
 
             <div align="left"
@@ -52,17 +51,11 @@
             {
                 <input type="hidden"
                        asp-for="@Model.Actual!.Name" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.Description" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.Price" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.MaxPeople" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
                 <div class="containers_vn panel panel-default">
-                    <h3>Episodios</h3>
+                    <h3>Tipos de contenido</h3>
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
@@ -76,33 +69,8 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Descripción
+                                Código
                             </label>
-                            <div class="col-lg-6">
-                                <input id="nmDescription"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Description" />
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Precio
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmPrice"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Price" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Máximo de personas
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmMaxPeople"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.MaxPeople" />
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,10 +115,6 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Listas ||
                         Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
-                <input id="flDescription"
-                       class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Description"
-                       placeholder="Description" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
@@ -159,23 +123,12 @@
                             <th>
                                 Nombre
                             </th>
-                            <th>
-                                Descripción
-                            </th>
-                            <th>
-                                Precio
-                            </th>
-                            <th>
-                                Máximo de personas
-                            </th>
-
                             @if (userRole == "Admin")
                             {
                                 <th class="cl_actions">
                                     Accion
                                 </th>
                             }
-
                         </tr>
                         @if (Model != null && Model.Lista != null)
                         {
@@ -185,15 +138,6 @@
                                     <td>
                                         @elemento.Name
                                     </td>
-                                    <td>
-                                        @elemento.Description
-                                    </td>
-                                    <td>
-                                        @elemento.Price
-                                    </td>
-                                    <td>
-                                        @elemento.MaxPeople
-                                    </td>
                                     @if (userRole == "Admin")
                                     {
                                         <td>
@@ -202,7 +146,7 @@
                                                         asp-page-handler="BtModificar"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
-                                                        value="Editar" Studios
+                                                        value="Editar"
                                                         class="btn btn-link p-0"
                                                         title="Editar">
                                                     <i class="material-icons text-primary">&#xE254;</i>

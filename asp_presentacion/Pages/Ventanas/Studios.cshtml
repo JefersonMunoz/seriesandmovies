@@ -1,6 +1,5 @@
-﻿
-@page
-@model asp_presentacion.Pages.Ventanas.PlansModel
+﻿@page
+@model asp_presentacion.Pages.Ventanas.StudiosModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +11,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>Planes</h3>
+                <h3>Estudios</h3>
             </div>
 
             <div align="left"
@@ -53,11 +52,9 @@
                 <input type="hidden"
                        asp-for="@Model.Actual!.Name" />
                 <input type="hidden"
+                       asp-for="@Model.Actual!._Country.Name" />
+                <input type="hidden"
                        asp-for="@Model.Actual!.Description" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.Price" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.MaxPeople" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
@@ -76,32 +73,25 @@
                         </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
+                                Ciudad
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmContentType"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Country"
+                                        asp-items="@(new SelectList(Model.ListaCountries, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Ciudad --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
                                 Descripción
                             </label>
                             <div class="col-lg-6">
                                 <input id="nmDescription"
                                        class="cts_forms form-control"
                                        asp-for="@Model.Actual!.Description" />
-                            </div>
-                        </div>
-                         <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Precio
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmPrice"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Price" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Máximo de personas
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmMaxPeople"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.MaxPeople" />
                             </div>
                         </div>
                     </div>
@@ -112,7 +102,8 @@
             {
                 <input type="hidden"
                        asp-for="@Model.Accion" />
-                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+                @await Html.PartialAsync("../Emergentes/Mensajes.cshtml")
+                ;
             }
 
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
@@ -160,13 +151,10 @@
                                 Nombre
                             </th>
                             <th>
+                                Ciudad
+                            </th>
+                            <th>
                                 Descripción
-                            </th>
-                            <th>
-                                Precio
-                            </th>
-                            <th>
-                                Máximo de personas
                             </th>
 
                             @if (userRole == "Admin")
@@ -186,13 +174,10 @@
                                         @elemento.Name
                                     </td>
                                     <td>
+                                        @elemento._Country?.Name
+                                    </td>
+                                    <td>
                                         @elemento.Description
-                                    </td>
-                                    <td>
-                                        @elemento.Price
-                                    </td>
-                                    <td>
-                                        @elemento.MaxPeople
                                     </td>
                                     @if (userRole == "Admin")
                                     {
@@ -202,7 +187,7 @@
                                                         asp-page-handler="BtModificar"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
-                                                        value="Editar" Studios
+                                                        value="Editar"
                                                         class="btn btn-link p-0"
                                                         title="Editar">
                                                     <i class="material-icons text-primary">&#xE254;</i>

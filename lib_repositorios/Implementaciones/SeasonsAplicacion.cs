@@ -75,7 +75,7 @@ namespace lib_repositorios.Implementaciones
 
         public List<Seasons> PorTitle(Seasons? entidad)
         {
-            var lista = this.IConexion!.Seasons!.Where(x => x.Title!.Contains(entidad.Title!)).ToList();
+            var lista = this.IConexion!.Seasons!.Include(a => a._Content).Where(x => x.Title!.Contains(entidad.Title!)).ToList();
 
             if (lista == null || lista.Count == 0)
             {

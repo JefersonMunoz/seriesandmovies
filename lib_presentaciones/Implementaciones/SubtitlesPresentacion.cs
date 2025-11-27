@@ -27,6 +27,41 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
+        public async Task<List<Contents>> Contents(string llave, int UserId)
+        {
+            var lista = new List<Contents>();
+            var datos = new Dictionary<string, object>();
+
+            comunicaciones = new Comunicaciones();
+            datos = comunicaciones.ConstruirUrl(datos, "Contents/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
+
+            if (respuesta.ContainsKey("Error"))
+            {
+                throw new Exception(respuesta["Error"].ToString()!);
+            }
+            lista = JsonConversor.ConvertirAObjeto<List<Contents>>(
+                JsonConversor.ConvertirAString(respuesta["Entidades"]));
+            return lista;
+        }
+
+        public async Task<List<Languages>> Languages(string llave, int UserId)
+        {
+            var lista = new List<Languages>();
+            var datos = new Dictionary<string, object>();
+
+            comunicaciones = new Comunicaciones();
+            datos = comunicaciones.ConstruirUrl(datos, "Languages/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
+
+            if (respuesta.ContainsKey("Error"))
+            {
+                throw new Exception(respuesta["Error"].ToString()!);
+            }
+            lista = JsonConversor.ConvertirAObjeto<List<Languages>>(
+                JsonConversor.ConvertirAString(respuesta["Entidades"]));
+            return lista;
+        }
 
         public async Task<List<Subtitles>> PorLanguage(Subtitles? entidad, string llave, int UserId)
         {

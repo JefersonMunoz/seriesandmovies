@@ -1,6 +1,6 @@
 ﻿
 @page
-@model asp_presentacion.Pages.Ventanas.PlansModel
+@model asp_presentacion.Pages.Ventanas.SeasonsModel
 @{
     ViewData["Titulo"] = "";
     var userRole = HttpContext.Session.GetString("Rol");
@@ -12,7 +12,7 @@
 
             @Html.AntiForgeryToken()
             <div align="left">
-                <h3>Planes</h3>
+                <h3>Episodios</h3>
             </div>
 
             <div align="left"
@@ -51,13 +51,15 @@
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Borrar)
             {
                 <input type="hidden"
-                       asp-for="@Model.Actual!.Name" />
+                       asp-for="@Model.Actual!.NumberSeason" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!.Title" />
+                <input type="hidden"
+                       asp-for="@Model.Actual!._Content.Name" />
                 <input type="hidden"
                        asp-for="@Model.Actual!.Description" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.Price" />
-                <input type="hidden"
-                       asp-for="@Model.Actual!.MaxPeople" />
+                       <input type="hidden"
+                       asp-for="@Model.Actual!.ReleasedAt" />
             }
             @if (Model.Accion == lib_dominio.Nucleo.Enumerables.Ventanas.Editar)
             {
@@ -66,12 +68,35 @@
                     <div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Nombre
+                                Capítulos
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmName"
+                                <input id="nmSeason"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Name" />
+                                       asp-for="@Model.Actual!.NumberSeason" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Título
+                            </label>
+                            <div class="col-lg-6">
+                                <input id="nmTitle"
+                                       class="cts_forms form-control"
+                                       asp-for="@Model.Actual!.Title" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label">
+                                Contenido
+                            </label>
+                            <div class="col-lg-6">
+                                <select id="nmContent"
+                                        class="cts_forms form-control"
+                                        asp-for="Actual.Content"
+                                        asp-items="@(new SelectList(Model.ListaContents, "Id", "Name"))">
+                                    <option value="">-- Seleccionar Contenido --</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -84,24 +109,14 @@
                                        asp-for="@Model.Actual!.Description" />
                             </div>
                         </div>
-                         <div class="form-group">
-                            <label class="col-lg-4 control-label">
-                                Precio
-                            </label>
-                            <div class="col-lg-6">
-                                <input id="nmPrice"
-                                       class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.Price" />
-                            </div>
-                        </div>
                         <div class="form-group">
                             <label class="col-lg-4 control-label">
-                                Máximo de personas
+                                Fecha publicidad
                             </label>
                             <div class="col-lg-6">
-                                <input id="nmMaxPeople"
+                                <input id="nmReleasedAt"
                                        class="cts_forms form-control"
-                                       asp-for="@Model.Actual!.MaxPeople" />
+                                       asp-for="@Model.Actual!.ReleasedAt" />
                             </div>
                         </div>
                     </div>
@@ -127,7 +142,7 @@
                                 Desea borrar la entidad?
                             </h4>
                             <h6 align="left">
-                                @Model.Actual!.Name
+                                @Model.Actual!.Title
                             </h6>
                             <br />
                             <br />
@@ -149,33 +164,35 @@
             {
                 <input id="flDescription"
                        class="cts_forms form-control"
-                       asp-for="@Model.Filtro!.Description"
-                       placeholder="Description" />
+                       asp-for="@Model.Filtro!.Title"
+                       placeholder="Title" />
                 <br />
 
                 <div class="containers_vn panel panel-default">
                     <table class="tb_data table table-striped table-bordered tablehover">
                         <tr>
                             <th>
-                                Nombre
+                                Capítulos
+                            </th>
+                            <th>
+                                Título
+                            </th>
+                            <th>
+                                Contenido
                             </th>
                             <th>
                                 Descripción
                             </th>
+                            
                             <th>
-                                Precio
+                                Fecha publicidad
                             </th>
-                            <th>
-                                Máximo de personas
-                            </th>
-
                             @if (userRole == "Admin")
                             {
                                 <th class="cl_actions">
                                     Accion
                                 </th>
                             }
-
                         </tr>
                         @if (Model != null && Model.Lista != null)
                         {
@@ -183,16 +200,19 @@
                             {
                                 <tr>
                                     <td>
-                                        @elemento.Name
+                                        @elemento.NumberSeason
+                                    </td>
+                                    <td>
+                                        @elemento.Title
+                                    </td>
+                                    <td>
+                                        @elemento._Content?.Name
                                     </td>
                                     <td>
                                         @elemento.Description
                                     </td>
                                     <td>
-                                        @elemento.Price
-                                    </td>
-                                    <td>
-                                        @elemento.MaxPeople
+                                        @elemento.ReleasedAt
                                     </td>
                                     @if (userRole == "Admin")
                                     {
@@ -202,7 +222,7 @@
                                                         asp-page-handler="BtModificar"
                                                         asp-route-data="@elemento.Id"
                                                         name="bt"
-                                                        value="Editar" Studios
+                                                        value="Editar"
                                                         class="btn btn-link p-0"
                                                         title="Editar">
                                                     <i class="material-icons text-primary">&#xE254;</i>

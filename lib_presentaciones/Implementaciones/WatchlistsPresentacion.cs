@@ -27,6 +27,41 @@ namespace lib_presentaciones.Implementaciones
             return lista;
         }
 
+        public async Task<List<Users>> Users(string llave, int UserId)
+        {
+            var lista = new List<Users>();
+            var datos = new Dictionary<string, object>();
+
+            comunicaciones = new Comunicaciones();
+            datos = comunicaciones.ConstruirUrl(datos, "Users/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
+
+            if (respuesta.ContainsKey("Error"))
+            {
+                throw new Exception(respuesta["Error"].ToString()!);
+            }
+            lista = JsonConversor.ConvertirAObjeto<List<Users>>(
+                JsonConversor.ConvertirAString(respuesta["Entidades"]));
+            return lista;
+        }
+
+        public async Task<List<Contents>> Contents(string llave, int UserId)
+        {
+            var lista = new List<Contents>();
+            var datos = new Dictionary<string, object>();
+
+            comunicaciones = new Comunicaciones();
+            datos = comunicaciones.ConstruirUrl(datos, "Contents/Listar");
+            var respuesta = await comunicaciones!.Ejecutar(datos, llave, UserId);
+
+            if (respuesta.ContainsKey("Error"))
+            {
+                throw new Exception(respuesta["Error"].ToString()!);
+            }
+            lista = JsonConversor.ConvertirAObjeto<List<Contents>>(
+                JsonConversor.ConvertirAString(respuesta["Entidades"]));
+            return lista;
+        }
 
         public async Task<List<Watchlists>> PorUser(Watchlists? entidad, string llave, int UserId)
         {

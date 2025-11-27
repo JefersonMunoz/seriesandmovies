@@ -20,6 +20,7 @@ namespace asp_servicios.Controllers
             this.iAplicacion = iAplicacion;
             this.iAplicacionToken = iAplicacionToken;
             this.iAplicacionAudits = iAplicacionAudits;
+            //this.iAplicacionAudits = iAplicacionAudits;
         }
 
         private Dictionary<string, object> ObtenerDatos()

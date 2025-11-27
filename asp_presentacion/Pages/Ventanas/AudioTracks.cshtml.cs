@@ -46,10 +46,13 @@ namespace asp_presentacion.Pages.Ventanas
                     return;
                 }
                 Filtro = new AudioTracks();
+
                 Filtro._Language ??= new Languages();
-                Filtro._Language.Name = Filtro._Language.Name ?? "";
-                Filtro._Content ??= new Contents();
-                Filtro._Content.Name = Filtro._Content.Name ?? "";
+                Filtro._Language.Name ??= "";
+
+                /*Filtro._Content ??= new Contents();
+                Filtro._Content.Name ??= "";*/
+
                 Accion = Enumerables.Ventanas.Listas;
                 var task = this.iPresentacion!.PorLanguage(Filtro!, llave, Convert.ToInt32(UserId));
                 task.Wait();

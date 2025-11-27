@@ -28,13 +28,13 @@ namespace asp_presentacion
             services.AddScoped<IPersonTypeRolesPresentacion, PersonTypeRolesPresentacion>();
             services.AddScoped<IPlansPresentacion, PlansPresentacion>();
             services.AddScoped<IReviewsPresentacion, ReviewsPresentacion>();
-            //services.AddScoped<IRoleTypesPresentacion, RoleTypesPresentacion>();
-            //services.AddScoped<ISeasonsPresentacion, SeasonsPresentacion>();
-            //services.AddScoped<IStudiosPresentacion, StudiosPresentacion>();
-            //services.AddScoped<ISubscriptionsPresentacion, SubscriptionsPresentacion>();
-            //services.AddScoped<ISubtitlesPresentacion, SubtitlesPresentacion>();
-            //services.AddScoped<IUsersPresentacion, UsersPresentacion>();
-            //services.AddScoped<IWatchlistsPresentacion, WatchlistsPresentacion>();
+            services.AddScoped<IRoleTypesPresentacion, RoleTypesPresentacion>();
+            services.AddScoped<ISeasonsPresentacion, SeasonsPresentacion>();
+            services.AddScoped<IStudiosPresentacion, StudiosPresentacion>();
+            services.AddScoped<ISubscriptionsPresentacion, SubscriptionsPresentacion>();
+            services.AddScoped<ISubtitlesPresentacion, SubtitlesPresentacion>();
+            services.AddScoped<IUsersPresentacion, UsersPresentacion>();
+            services.AddScoped<IWatchlistsPresentacion, WatchlistsPresentacion>();
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();

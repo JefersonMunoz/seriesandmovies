@@ -6,15 +6,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace asp_presentacion.Pages.Ventanas
 {
-    public class ReviewsModel : PageModel
+    public class SubscriptionsModel : PageModel
     {
-        private IReviewsPresentacion? iPresentacion = null;
-        public ReviewsModel(IReviewsPresentacion iPresentacion)
+        private ISubscriptionsPresentacion? iPresentacion = null;
+        public SubscriptionsModel(ISubscriptionsPresentacion iPresentacion)
         {
             try
             {
                 this.iPresentacion = iPresentacion;
-                Filtro = new Reviews();
+                Filtro = new Subscriptions();
+                Lista = new List<Subscriptions>();
+                ListaUsers = new List<Users>();
+                ListaPlans = new List<Plans>();
             }
             catch (Exception ex)
             {
@@ -23,11 +26,12 @@ namespace asp_presentacion.Pages.Ventanas
         }
         public IFormFile? FormFile { get; set; }
         [BindProperty] public Enumerables.Ventanas Accion { get; set; }
-        public List<Contents> ListaContents { get; set; } = new List<Contents>();
-        public List<Users> ListaUsers { get; set; } = new List<Users>();
-        [BindProperty] public Reviews? Actual { get; set; }
-        [BindProperty] public Reviews? Filtro { get; set; }
-        [BindProperty] public List<Reviews>? Lista { get; set; }
+        public List<SelectListItem> Estado { get; set; }/* = new List<SelectListItem>();*/
+        public List<Users> ListaUsers { get; set; }
+        public List<Plans> ListaPlans { get; set; }
+        [BindProperty] public Subscriptions? Actual { get; set; }
+        [BindProperty] public Subscriptions? Filtro { get; set; }
+        [BindProperty] public List<Subscriptions>? Lista { get; set; }
         public virtual void OnGet() { OnPostBtRefrescar(); }
         public void OnPostBtRefrescar()
         {
@@ -41,17 +45,24 @@ namespace asp_presentacion.Pages.Ventanas
                     HttpContext.Response.Redirect("/");
                     return;
                 }
-
-                Filtro._Content ??= new Contents();
+                //Filtro.Description = Filtro.Description ?? "";
+                Filtro ??= new Subscriptions();
                 Filtro._User ??= new Users();
-                Filtro._Content.Name = Filtro._Content.Name ?? "";
                 Filtro._User.Name = Filtro._User.Name ?? "";
+                Filtro._Plan ??= new Plans();
+                Filtro._Plan.Name = Filtro._Plan.Name ?? "";
 
                 Accion = Enumerables.Ventanas.Listas;
-                var task = this.iPresentacion!.PorContent(Filtro!, llave, Convert.ToInt32(UserId));
+                var task = this.iPresentacion!.PorPlan(Filtro!, llave, Convert.ToInt32(UserId));
                 task.Wait();
                 Lista = task.Result;
                 Actual = null;
+
+                Estado = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "1", Text = "Activo" },
+                    new SelectListItem { Value = "0", Text = "Inactivo" }
+                };
             }
             catch (Exception ex)
             {
@@ -65,16 +76,14 @@ namespace asp_presentacion.Pages.Ventanas
                 var llave = HttpContext.Session.GetString("Llave");
                 var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
-                Actual = new Reviews();
-                var task = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
+                Actual = new Subscriptions();
+                Lista = new List<Subscriptions>();
+                var task = this.iPresentacion!.Users(llave, Convert.ToInt32(UserId));
                 task.Wait();
-                ListaContents = task.Result;
-                var task1 = this.iPresentacion!.Users(llave, Convert.ToInt32(UserId));
+                ListaUsers = task.Result;
+                var task1 = this.iPresentacion!.Plans(llave, Convert.ToInt32(UserId));
                 task1.Wait();
-                ListaUsers = task1.Result;
-                var task2 = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
-                task2.Wait();
-                ListaContents = task2.Result;
+                ListaPlans = task1.Result;
             }
             catch (Exception ex)
             {
@@ -90,13 +99,12 @@ namespace asp_presentacion.Pages.Ventanas
                 var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
                 Actual = Lista!.FirstOrDefault(x => x.Id.ToString() == data);
-                var task = this.iPresentacion!.Contents(llave, Convert.ToInt32(UserId));
+                var task = this.iPresentacion!.Users(llave, Convert.ToInt32(UserId));
                 task.Wait();
-                ListaContents = task.Result;
-                var task1 = this.iPresentacion!.Users(llave, Convert.ToInt32(UserId));
+                ListaUsers = task.Result;
+                var task1 = this.iPresentacion!.Plans(llave, Convert.ToInt32(UserId));
                 task1.Wait();
-                ListaUsers = task1.Result;
-
+                ListaPlans = task1.Result;
             }
             catch (Exception ex)
             {
@@ -110,9 +118,9 @@ namespace asp_presentacion.Pages.Ventanas
                 var llave = HttpContext.Session.GetString("Llave");
                 var UserId = HttpContext.Session.GetString("Id");
                 Accion = Enumerables.Ventanas.Editar;
-                Task<Reviews>? task = null;
+                Task<Subscriptions>? task = null;
                 if (Actual!.Id == 0)
-                    task = this.iPresentacion!.Guardar(Actual!,llave, Convert.ToInt32(UserId))!;
+                    task = this.iPresentacion!.Guardar(Actual!, llave, Convert.ToInt32(UserId))!;
                 else
                     task = this.iPresentacion!.Modificar(Actual!, llave, Convert.ToInt32(UserId))!;
                 task.Wait();

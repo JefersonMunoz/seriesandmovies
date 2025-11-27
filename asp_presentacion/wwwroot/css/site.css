@@ -85,7 +85,7 @@ body {
 }
 
 .cl_hidden {
-    display: normal;
+    display: none;
 }
 
 @media (max-width: 950px) {
